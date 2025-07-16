@@ -2,15 +2,15 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 
 import Database from 'better-sqlite3';
 
-import * as schema from './schema';
-import * as authSchema from '../../../auth-schema';
+import * as appSchema from '../schemas/app-schema';
+import * as authSchema from '../schemas/auth-schema';
 
-const fullSchema = { ...schema, ...authSchema };
+const fullSchema = { ...appSchema, ...authSchema };
 
 const sqlite = new Database(process.env.DATABASE_URL || './dev.db');
 export const db = drizzle(sqlite, { schema: fullSchema });
 
-export { schema };
+export { appSchema };
 export { authSchema };
 export { fullSchema };
 
@@ -23,4 +23,4 @@ export type {
   NewSecret,
   ApiToken,
   NewApiToken,
-} from './schema';
+} from '../schemas/app-schema';
