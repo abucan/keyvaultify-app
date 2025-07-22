@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldValues, Path, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '../ui/button'
+import { Button as StatefulButton } from '../ui/stateful-button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { AuthFormConfig } from '@/lib/config/auth-forms'
@@ -22,12 +24,10 @@ export function AuthForm<T extends FieldValues>({ schema, config, onSubmit, isLo
   const [showPassword, setShowPassword] = useState<Record<string, boolean>>({})
 
   const form = useForm<T>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(schema as any),
     defaultValues: config.fields.reduce((acc, field) => {
       acc[field.name as keyof T] = '' as T[keyof T]
       return acc
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }, {} as any),
   })
 
@@ -99,10 +99,10 @@ export function AuthForm<T extends FieldValues>({ schema, config, onSubmit, isLo
           />
         ))}
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <StatefulButton type="submit" className="w-full" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {config.submitText}
-        </Button>
+        </StatefulButton>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">Or continue with</span>
         </div>
