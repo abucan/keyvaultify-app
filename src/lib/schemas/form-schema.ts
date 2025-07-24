@@ -7,15 +7,9 @@ const baseAuthSchema = z.object({
 
 export const signInSchema = baseAuthSchema
 
-export const signUpSchema = baseAuthSchema
-  .extend({
-    confirmPassword: z.string().min(8, 'Password confirmation is required'),
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  })
+export const signUpSchema = baseAuthSchema.extend({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+})
 
 export type SignInFormData = z.infer<typeof signInSchema>
 export type SignUpFormData = z.infer<typeof signUpSchema>

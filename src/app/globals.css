@@ -3,6 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-roboto: var(--font-roboto);
+  --font-poppins: var(--font-poppins);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

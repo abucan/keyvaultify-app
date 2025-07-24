@@ -19,20 +19,20 @@ export interface AuthFormConfig<T> {
 }
 
 export const signInConfig: AuthFormConfig<SignInFormData> = {
-  title: 'Welcome back',
-  subtitle: 'Sign in to your KeyVaultify account',
+  title: 'Login to your account',
+  subtitle: 'Enter your email below to login to your account',
   fields: [
     {
       name: 'email',
       label: 'Email',
-      placeholder: 'Enter your email',
+      placeholder: 'mail@example.com',
       type: 'email',
       description: "We'll never share your email with anyone else",
     },
     {
       name: 'password',
       label: 'Password',
-      placeholder: 'Enter your password',
+      placeholder: '',
       type: 'password',
     },
   ],
@@ -43,33 +43,27 @@ export const signInConfig: AuthFormConfig<SignInFormData> = {
 }
 
 export const signUpConfig: AuthFormConfig<SignUpFormData> = {
-  title: 'Create an account',
-  subtitle: 'Get started with KeyVaultify today',
+  title: 'Register for an account',
+  subtitle: 'Enter your email below to register for an account',
   fields: [
     {
       name: 'name',
       label: 'Full Name',
-      placeholder: 'Enter your full name',
+      placeholder: '',
       type: 'text',
     },
     {
       name: 'email',
       label: 'Email',
-      placeholder: 'Enter your email',
+      placeholder: 'mail@example.com',
       type: 'email',
     },
     {
       name: 'password',
       label: 'Password',
-      placeholder: 'Create a password',
+      placeholder: '',
       type: 'password',
       description: 'Must be at least 8 characters long',
-    },
-    {
-      name: 'confirmPassword',
-      label: 'Confirm Password',
-      placeholder: 'Confirm your password',
-      type: 'password',
     },
   ],
   submitText: 'Create Account',
