@@ -1,10 +1,15 @@
 import { Button, HStack } from '@chakra-ui/react'
-import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home() {
   return (
     <HStack justifyContent="center" alignItems="center" height="100vh">
-      <Button>Click me</Button>
+      <Button asChild>
+        <Link href="/auth/signin">Sign In</Link>
+      </Button>
+      <Button asChild>
+        <Link href="/auth/signup">Sign Up</Link>
+      </Button>
     </HStack>
   )
 }
