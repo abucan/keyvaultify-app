@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Poppins, Roboto } from 'next/font/google'
 import './globals.css'
-import { Toaster } from '@/components/ui/sonner'
+
+import { Provider } from '@/components/ui/provider'
 
 const fontPoppins = Poppins({
   subsets: ['latin'],
@@ -26,10 +27,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${fontPoppins.variable} ${fontRoboto.variable} antialiased`} suppressHydrationWarning>
-        <main>{children}</main>
-        <Toaster />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${fontPoppins.variable} ${fontRoboto.variable} antialiased`}>
+        <main>
+          <Provider>{children}</Provider>
+        </main>
       </body>
     </html>
   )
