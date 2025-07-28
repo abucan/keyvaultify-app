@@ -1,17 +1,35 @@
 import type { Metadata } from 'next'
-import { Poppins, Roboto } from 'next/font/google'
+import { Outfit, Roboto_Mono, Inter, Roboto, Spectral } from 'next/font/google'
 import './globals.css'
 
-const fontPoppins = Poppins({
+const fontRobotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
+  variable: '--font-roboto-mono'
+})
+
+const fontOutfit = Outfit({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-poppins'
+  variable: '--font-outfit'
+})
+
+const fontInter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-inter'
 })
 
 const fontRoboto = Roboto({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700'],
   variable: '--font-roboto'
+})
+
+const fontSpectral = Spectral({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-spectral'
 })
 
 export const metadata: Metadata = {
@@ -27,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontPoppins.variable} ${fontRoboto.variable} antialiased`}
+        className={`${fontRobotoMono.variable} ${fontOutfit.variable} ${fontInter.variable} ${fontRoboto.variable} ${fontSpectral.variable} antialiased`}
       >
         <main>{children}</main>
       </body>
