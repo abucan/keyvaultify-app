@@ -3,11 +3,7 @@ import { render } from '@react-email/render'
 import { resend, emailConfig } from './resend'
 import { OTPEmail } from './templates'
 
-// Email service class for organized email sending
 export class EmailService {
-  /**
-   * Send OTP verification email
-   */
   static async sendOTP(params: {
     email: string
     otp: string
@@ -30,14 +26,14 @@ export class EmailService {
           : 'Verify your KeyVaultify account'
 
       const result = await resend.emails.send({
-        from: 'ante.bucan.st@gmail.com',
-        to: 'delivered@resend.dev',
+        from: emailConfig.from,
+        to: email,
         subject,
         html: emailHtml,
         text: `Your KeyVaultify verification code is: ${otp}. This code will expire in 10 minutes.`
       })
-      console.log(result)
 
+      console.log(result)
       console.log(`OTP email sent to ${email}:`, result.data?.id)
       return result
     } catch (error) {

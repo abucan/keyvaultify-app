@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-// Base email layout component
 interface EmailLayoutProps {
   children: React.ReactNode
   title: string
@@ -145,7 +144,6 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({ otp, type, email }) => (
           : `Use this code to verify your email address and create your account:`}
       </p>
 
-      {/* OTP Code Box */}
       <div
         style={{
           backgroundColor: '#f8fafc',

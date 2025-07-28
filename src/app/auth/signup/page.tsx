@@ -10,17 +10,16 @@ import Link from 'next/link'
 export default function SignUp() {
   const handleSubmit = async () => {
     await authClient.emailOtp.sendVerificationOtp({
-      email: 'ante.bucan.s@gmail.com',
+      email: 'ante.bucan.st@gmail.com',
       type: 'email-verification'
     })
-    console.log('submit')
   }
 
   return (
     <div className="flex h-screen">
       <div className="flex flex-col w-[60%] relative">
         <div className="absolute flex flex-row justify-between items-center py-4 px-6">
-          <h1 className="font-spectral text-xl font-semibold flex flex-row items-center gap-[4px]">
+          <h1 className="font-spectral text-xl font-semibold flex flex-row items-center justify-center gap-[4px]">
             <ShieldCheck />
             Keyvaultify
           </h1>
