@@ -1,15 +1,10 @@
-import { Button, HStack } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
-    <HStack justifyContent="center" alignItems="center" height="100vh">
-      <Button asChild>
-        <Link href="/auth/signin">Sign In</Link>
-      </Button>
-      <Button asChild>
-        <Link href="/auth/signup">Sign Up</Link>
-      </Button>
-    </HStack>
+    <div className="flex h-screen items-center justify-center gap-4">
+      <Button>Sign In</Button>
+      <Button>Sign Up</Button>
+    </div>
   )
 }
