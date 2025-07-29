@@ -14,12 +14,12 @@ export const auth = betterAuth({
   plugins: [
     emailOTP({
       otpLength: 6,
-      expiresIn: 60 * 10,
-      allowedAttempts: 30,
+      expiresIn: 600,
+      sendVerificationOnSignUp: true,
       async sendVerificationOTP({ email, otp, type }) {
         await sendOTPEmail({
           email,
-          type: type === 'email-verification' ? 'sign-up' : 'sign-in',
+          type: 'sign-in',
           otp
         })
       }

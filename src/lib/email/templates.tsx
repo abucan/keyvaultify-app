@@ -107,7 +107,7 @@ const EmailLayout: React.FC<EmailLayoutProps> = ({ children, title }) => (
 
 interface OTPEmailProps {
   otp: string
-  type: 'sign-in' | 'sign-up'
+  type: 'sign-in' | 'email-verification' | 'forget-password'
   email: string
 }
 

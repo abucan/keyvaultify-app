@@ -8,7 +8,7 @@ import {
   InputOTPSlot
 } from '@/components/ui/input-otp'
 import { authClient } from '@/lib/auth-client'
-import { ChevronRight, ShieldCheck } from 'lucide-react'
+import { ChevronRight, MoveLeft, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -16,25 +16,25 @@ import { useState } from 'react'
 type Step = 'email' | 'otp'
 
 export default function SignUp() {
-  const [step, setStep] = useState<Step>('email')
+  const [step, setStep] = useState<Step>('otp')
   const [otp, setOtp] = useState('')
 
   const handleEmailSubmit = async () => {
     await authClient.emailOtp.sendVerificationOtp({
       email: 'ante.bucan.st@gmail.com',
-      type: 'email-verification'
+      type: 'sign-in'
     })
     setStep('otp')
   }
 
   const handleOtpSubmit = async () => {
     try {
-      await authClient.emailOtp.verifyEmail({
+      await authClient.signIn.emailOtp({
         email: 'ante.bucan.st@gmail.com',
         otp: otp
       })
       // Redirect to dashboard or success page
-      window.location.href = '/dashboard'
+      // window.location.href = '/dashboard'
     } catch (error) {
       console.error('Failed to verify OTP:', error)
       // Add error handling/toast here
@@ -112,27 +112,38 @@ export default function SignUp() {
             </div>
           )}
           {step === 'otp' && (
-            <div>
+            <div className="container max-w-sm space-y-8">
+              <div className="flex flex-col gap-2">
+                <h1 className="font-spectral text-3xl font-semibold">
+                  Verify your email
+                </h1>
+                <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+                  We sent a verification code to your email. Enter it below.
+                </p>
+              </div>
               <InputOTP
                 maxLength={6}
                 onChange={value => setOtp(value)}
                 value={otp}
+                // className="w-full"
               >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
+                <InputOTPGroup className="w-full gap-4">
+                  <InputOTPSlot index={0} className="" />
+                  <InputOTPSlot index={1} className="w-full" />
+                  <InputOTPSlot index={2} className="w-full" />
+                  <InputOTPSlot index={3} className="w-full" />
+                  <InputOTPSlot index={4} className="w-full" />
+                  <InputOTPSlot index={5} className="w-full" />
                 </InputOTPGroup>
               </InputOTP>
               <Button
-                className="w-full font-roboto-mono text-background"
+                className="w-full font-roboto-mono"
                 size={'lg'}
+                variant={'link'}
                 onClick={handleOtpSubmit}
               >
-                Continue
+                <MoveLeft />
+                Go Back
               </Button>
             </div>
           )}

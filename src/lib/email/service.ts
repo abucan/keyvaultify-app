@@ -7,7 +7,7 @@ export class EmailService {
   static async sendOTP(params: {
     email: string
     otp: string
-    type: 'sign-in' | 'sign-up'
+    type: 'sign-in' | 'email-verification' | 'forget-password'
   }) {
     const { email, otp, type } = params
 
