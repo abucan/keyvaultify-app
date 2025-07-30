@@ -1,9 +1,8 @@
 export interface FormField {
-  name: string
+  name: 'email' | 'otp'
   label: string
-  placeholder: string
-  type: 'email' | 'text' | 'otp'
-  description?: string
+  placeholder?: string
+  type: 'email' | 'otp'
 }
 
 export interface AuthFormConfig {
@@ -11,46 +10,60 @@ export interface AuthFormConfig {
   subtitle: string
   fields: FormField[]
   submitText: string
+  linkText?: string
+  linkHref?: string
+  middleText?: string
   footerText?: string
   footerLinkText?: string
   footerLinkHref?: string
 }
 
-export const emailRequestConfig: AuthFormConfig = {
-  title: 'Welcome to KeyVaultify',
-  subtitle: 'Enter your email to sign in or create an account',
+export const signUpFormConfig: AuthFormConfig = {
+  title: 'Sign up',
+  subtitle: 'Already have an account?',
+  linkText: 'Sign in',
+  linkHref: '/auth/signin',
+  middleText: 'Or sign up with email',
   fields: [
     {
       name: 'email',
       label: 'Email',
-      placeholder: 'Enter your email address',
-      type: 'email',
-      description: "We'll send you a verification code"
+      placeholder: 'mail@example.com',
+      type: 'email'
+    }
+  ],
+  submitText: 'Continue'
+}
+
+export const signInFormConfig: AuthFormConfig = {
+  title: 'Sign in',
+  subtitle: "Don't have an account?",
+  linkText: 'Sign up',
+  linkHref: '/auth/signup',
+  middleText: 'Or sign in with email',
+  fields: [
+    {
+      name: 'email',
+      label: 'Email',
+      placeholder: 'mail@example.com',
+      type: 'email'
     }
   ],
   submitText: 'Continue'
 }
 
 export const otpVerificationConfig: AuthFormConfig = {
-  title: 'Check your email',
-  subtitle: 'We sent a 6-digit code to your email address',
+  title: 'Verify your email',
+  subtitle: 'We sent a verification code to your email. Enter it below.',
   fields: [
-    {
-      name: 'email',
-      label: 'Email',
-      placeholder: 'your@email.com',
-      type: 'email'
-    },
     {
       name: 'otp',
       label: 'Verification Code',
-      placeholder: '000000',
-      type: 'otp',
-      description: 'Enter the 6-digit code from your email'
+      type: 'otp'
     }
   ],
-  submitText: 'Verify & Continue',
+  submitText: 'Continue',
   footerText: "Didn't receive the code?",
-  footerLinkText: 'Resend code',
+  footerLinkText: 'Go back',
   footerLinkHref: '#resend'
 }

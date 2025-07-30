@@ -1,0 +1,90 @@
+import { Button } from '../ui/button'
+import Link from 'next/link'
+import { FormField, FormItem, FormControl, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
+import { Loader } from 'lucide-react'
+import { Control } from 'react-hook-form'
+import { AuthFormData } from '@/lib/schemas/form-schema'
+import { AuthFormConfig } from '@/lib/config/auth-forms'
+import { OAuthButton } from './oauth-button'
+
+type SignUpFormProps = {
+  config: AuthFormConfig
+  control: Control<AuthFormData>
+  loading: boolean
+}
+
+export const SignUpForm = ({ config, control, loading }: SignUpFormProps) => {
+  return (
+    <div className="container max-w-sm space-y-8">
+      <div className="flex flex-col gap-2">
+        <h1 className="font-spectral text-3xl font-semibold">{config.title}</h1>
+        <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+          {config.subtitle}{' '}
+          <Link
+            href={config.linkHref || '#'}
+            className="text-primary underline"
+          >
+            {config.linkText}
+          </Link>
+        </p>
+      </div>
+      <div className="flex flex-col gap-4">
+        <OAuthButton
+          provider="google"
+          text="Continue with Google"
+          icon="google"
+          onClick={() => {}}
+        />
+        <OAuthButton
+          provider="github"
+          text="Continue with Github"
+          icon="github_light"
+          onClick={() => {}}
+        />
+      </div>
+      <div className="flex flex-col gap-4">
+        <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+          {config.middleText}
+        </p>
+        {config.fields.map(cfg => {
+          return (
+            <FormField
+              key={cfg.name}
+              name={cfg.name}
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder={cfg.placeholder}
+                      type={cfg.type}
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )
+        })}
+        <Button
+          type="submit"
+          className="w-full font-roboto-mono text-background"
+          size={'lg'}
+          disabled={loading}
+        >
+          {loading ? (
+            <div className="flex flex-row items-center justify-center gap-2">
+              <Loader className="animate-spin" />
+              <span>Sending...</span>
+            </div>
+          ) : (
+            <span>{config.submitText}</span>
+          )}
+        </Button>
+      </div>
+    </div>
+  )
+}
