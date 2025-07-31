@@ -1,3 +1,4 @@
+import KeyVaultifyTerminal from '@/components/terminal/keyvaultify-terminal'
 import { ShieldCheck } from 'lucide-react'
 
 export default function AuthLayout({
@@ -18,7 +19,9 @@ export default function AuthLayout({
           {children}
         </div>
       </div>
-      <div className="flex w-[40%] bg-primary"></div>
+      <div className="flex w-[40%] bg-[#F2F0EF] h-full">
+        <KeyVaultifyTerminal theme="light" />
+      </div>
     </div>
   )
 }
