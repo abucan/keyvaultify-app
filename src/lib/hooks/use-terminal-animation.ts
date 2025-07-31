@@ -14,6 +14,8 @@ export const useTerminalAnimation = (steps: Step[]) => {
     showContent: true
   })
 
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
+
   const currentStep = steps[state.currentStepIndex]
 
   // Auto-start animation on mount
@@ -51,6 +53,33 @@ export const useTerminalAnimation = (steps: Step[]) => {
     }, 500)
   }, [steps.length])
 
+  const jumpToStep = useCallback(
+    (stepIndex: number) => {
+      if (stepIndex === state.currentStepIndex) return
+
+      setIsAutoPlay(false) // Pause auto-play when manually navigating
+      setState(prev => ({ ...prev, isTransitioning: true, showContent: false }))
+
+      setTimeout(() => {
+        setState(prev => ({
+          ...prev,
+          currentStepIndex: stepIndex,
+          currentCharIndex: 0,
+          currentOutputIndex: 0,
+          isTypingInput: true,
+          showContent: true,
+          isTransitioning: false
+        }))
+
+        // Resume auto-play after a delay
+        setTimeout(() => {
+          setIsAutoPlay(true)
+        }, 2000)
+      }, 500)
+    },
+    [state.currentStepIndex]
+  )
+
   // Input typing animation
   useEffect(() => {
     if (!state.isTypingInput || state.isTransitioning) return
@@ -87,7 +116,7 @@ export const useTerminalAnimation = (steps: Step[]) => {
 
   // Output animation
   useEffect(() => {
-    if (state.isTypingInput || state.isTransitioning) return
+    if (state.isTypingInput || state.isTransitioning || !isAutoPlay) return
 
     const currentCommand = currentStep.command
 
@@ -113,7 +142,8 @@ export const useTerminalAnimation = (steps: Step[]) => {
     currentStep,
     state.isTypingInput,
     state.isTransitioning,
-    transitionToNextStep
+    transitionToNextStep,
+    isAutoPlay
   ])
 
   const getCurrentInput = () => {
@@ -129,6 +159,8 @@ export const useTerminalAnimation = (steps: Step[]) => {
     state,
     currentStep,
     getCurrentInput,
-    getCurrentOutput
+    getCurrentOutput,
+    jumpToStep,
+    isAutoPlay
   }
 }

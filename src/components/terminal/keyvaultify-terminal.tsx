@@ -23,7 +23,7 @@ interface KeyVaultifyTerminalProps {
 export default function KeyVaultifyTerminal({
   theme = 'dark'
 }: KeyVaultifyTerminalProps) {
-  const { state, currentStep, getCurrentInput, getCurrentOutput } =
+  const { state, currentStep, getCurrentInput, getCurrentOutput, jumpToStep } =
     useTerminalAnimation(steps)
   const terminalTheme = getTerminalTheme(theme)
 
@@ -50,6 +50,7 @@ export default function KeyVaultifyTerminal({
           currentStepIndex={state.currentStepIndex}
           theme={terminalTheme}
           showContent={state.showContent}
+          onStepClick={jumpToStep}
         />
       </div>
     </div>
