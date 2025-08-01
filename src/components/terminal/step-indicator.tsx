@@ -23,15 +23,15 @@ export function StepIndicator({
           className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
             index === currentStepIndex
               ? theme.isDark
-                ? 'bg-primary hover:bg-purple-400'
-                : 'bg-primary hover:bg-purple-500'
+                ? 'bg-primary hover:bg-primary'
+                : 'bg-primary hover:bg-primary'
               : index < currentStepIndex
                 ? theme.isDark
-                  ? 'bg-gray-500 hover:bg-green-400'
-                  : 'bg-gray-600 hover:bg-green-500'
+                  ? 'bg-gray-600 hover:bg-primary'
+                  : 'bg-gray-300 hover:bg-primary'
                 : theme.isDark
-                  ? 'bg-gray-600 hover:bg-gray-500'
-                  : 'bg-gray-300 hover:bg-gray-400'
+                  ? 'bg-gray-600 hover:bg-primary'
+                  : 'bg-gray-300 hover:bg-primary'
           }`}
           aria-label={`Go to step ${index + 1}: ${steps[index].title}`}
         />

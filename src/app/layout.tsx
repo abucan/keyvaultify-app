@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Outfit, Roboto_Mono, Inter, Roboto, Spectral } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const fontRobotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -47,7 +48,14 @@ export default function RootLayout({
       <body
         className={`${fontRobotoMono.variable} ${fontOutfit.variable} ${fontInter.variable} ${fontRoboto.variable} ${fontSpectral.variable} antialiased`}
       >
-        <main>{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          // enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -7,13 +7,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { redirect } from 'next/navigation'
 import { Form } from '@/components/ui/form'
-import { SignUpForm } from '@/components/auth-form/sign-up-form'
-import {
-  otpVerificationConfig,
-  signUpFormConfig
-} from '@/lib/config/auth-forms'
+import { AuthForm } from '@/components/auth-form'
+import { otpVerificationConfig, authFormConfig } from '@/lib/config/auth-forms'
 import { OTPForm } from '@/components/auth-form/otp-form'
-import { checkEmail } from '../../../../actions/user-actions'
+import { checkEmail } from '../../../actions/user-actions'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { TriangleAlert } from 'lucide-react'
 
@@ -123,8 +120,8 @@ export default function SignUp() {
           onSubmit={handleSubmit(onSubmit)}
         >
           {currentStep === 'email' && (
-            <SignUpForm
-              config={signUpFormConfig}
+            <AuthForm
+              config={authFormConfig}
               control={control}
               loading={loading}
             />

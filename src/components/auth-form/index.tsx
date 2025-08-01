@@ -14,9 +14,10 @@ type SignUpFormProps = {
   loading: boolean
 }
 
-export const SignUpForm = ({ config, control, loading }: SignUpFormProps) => {
+export const AuthForm = ({ config, control, loading }: SignUpFormProps) => {
   return (
     <div className="container max-w-sm space-y-8">
+      {/* Title and subtitle */}
       <div className="flex flex-col gap-2">
         <h1 className="font-spectral text-3xl font-semibold">{config.title}</h1>
         <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
@@ -29,6 +30,7 @@ export const SignUpForm = ({ config, control, loading }: SignUpFormProps) => {
           </Link>
         </p>
       </div>
+      {/* OAuth buttons */}
       <div className="flex flex-col gap-4">
         <OAuthButton
           provider="google"
@@ -43,6 +45,7 @@ export const SignUpForm = ({ config, control, loading }: SignUpFormProps) => {
           onClick={() => {}}
         />
       </div>
+      {/* Email input */}
       <div className="flex flex-col gap-4">
         <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
           {config.middleText}

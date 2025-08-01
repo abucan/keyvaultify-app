@@ -18,12 +18,12 @@ export interface AuthFormConfig {
   footerLinkHref?: string
 }
 
-export const signUpFormConfig: AuthFormConfig = {
-  title: 'Sign up',
-  subtitle: 'Already have an account?',
-  linkText: 'Sign in',
-  linkHref: '/auth/signin',
-  middleText: 'Or sign up with email',
+export const authFormConfig: AuthFormConfig = {
+  title: 'Welcome to Keyvaultify',
+  subtitle: 'Enter your email to sign in or create a new account.',
+  // linkText: 'Sign in',
+  // linkHref: '/auth/signin',
+  middleText: 'Or continue using email',
   fields: [
     {
       name: 'email',
@@ -32,24 +32,7 @@ export const signUpFormConfig: AuthFormConfig = {
       type: 'email'
     }
   ],
-  submitText: 'Continue'
-}
-
-export const signInFormConfig: AuthFormConfig = {
-  title: 'Sign in',
-  subtitle: "Don't have an account?",
-  linkText: 'Sign up',
-  linkHref: '/auth/signup',
-  middleText: 'Or sign in with email',
-  fields: [
-    {
-      name: 'email',
-      label: 'Email',
-      placeholder: 'mail@example.com',
-      type: 'email'
-    }
-  ],
-  submitText: 'Continue'
+  submitText: 'Continue with Email'
 }
 
 export const otpVerificationConfig: AuthFormConfig = {
