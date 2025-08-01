@@ -36,13 +36,11 @@ export const AuthForm = ({ config, control, loading }: SignUpFormProps) => {
           provider="google"
           text="Continue with Google"
           icon="google"
-          onClick={() => {}}
         />
         <OAuthButton
           provider="github"
           text="Continue with Github"
           icon="github_light"
-          onClick={() => {}}
         />
       </div>
       {/* Email input */}
