@@ -8,6 +8,8 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  Home,
+  Key,
   Map,
   PieChart,
   Settings2,
@@ -26,7 +28,6 @@ import {
   SidebarRail
 } from '@/components/ui/sidebar'
 
-// This is sample data.
 const data = {
   user: {
     name: 'shadcn',
@@ -52,43 +53,10 @@ const data = {
   ],
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: 'History',
-          url: '#'
-        },
-        {
-          title: 'Starred',
-          url: '#'
-        },
-        {
-          title: 'Settings',
-          url: '#'
-        }
-      ]
-    },
-    {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-      items: [
-        {
-          title: 'Genesis',
-          url: '#'
-        },
-        {
-          title: 'Explorer',
-          url: '#'
-        },
-        {
-          title: 'Quantum',
-          url: '#'
-        }
-      ]
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: Home
+      // isActive: true
     },
     {
       title: 'Documentation',
@@ -120,38 +88,24 @@ const data = {
       items: [
         {
           title: 'General',
-          url: '#'
-        },
-        {
-          title: 'Team',
-          url: '#'
+          url: '/settings/general'
         },
         {
           title: 'Billing',
-          url: '#'
+          url: '/settings/billing'
         },
         {
-          title: 'Limits',
-          url: '#'
+          title: 'Danger',
+          url: '/settings/danger'
         }
       ]
     }
   ],
   projects: [
     {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: Map
+      name: 'Keyvaultify',
+      url: '/projects/keyvaultify',
+      icon: Key
     }
   ]
 }
