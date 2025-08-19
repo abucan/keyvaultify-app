@@ -36,7 +36,7 @@ export default function SettingsLayout({
           Manage your account settings and preferences.
         </p>
       </div>
-      <div className="flex flex-row gap-12">
+      <div className="flex flex-row gap-10">
         <Card className="w-1/4 py-2 px-2">
           <div className="flex flex-col gap-2">
             {settings.map(setting => (
@@ -64,6 +64,7 @@ export default function SettingsLayout({
             ))}
           </div>
         </Card>
+        <div className="w-full">{children}</div>
       </div>
     </div>
   )
