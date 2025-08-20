@@ -10,6 +10,7 @@
   --font-inter: var(--font-inter);
   --font-roboto: var(--font-roboto);
   --font-spectral: var(--font-spectral);
+  --font-bricolage-grotesque: var(--font-bricolage-grotesque);
 }
 
 @theme inline {

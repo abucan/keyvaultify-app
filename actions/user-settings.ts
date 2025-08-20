@@ -1,22 +1,46 @@
 'use server'
 
-import { authClient, getSession } from '@/lib/auth-client'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
 import { unauthorized } from 'next/navigation'
 
 export async function updateUserProfile({
   image,
   name
 }: {
-  image: string
-  name: string
+  image?: string
+  name?: string
 }) {
-  const session = await getSession()
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
   if (!session) {
     unauthorized()
   }
 
-  await authClient.updateUser({
-    name,
-    image
+  await auth.api.updateUser({
+    body: {
+      ...(name ? { name } : {}),
+      ...(image ? { image } : {})
+    },
+    headers: await headers()
+  })
+}
+
+export async function deleteUserProfile() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session) {
+    unauthorized()
+  }
+  console.log(session.session.token)
+
+  await auth.api.deleteUser({
+    body: {
+      callbackURL: '/auth'
+    },
+    headers: await headers()
   })
 }

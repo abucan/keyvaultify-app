@@ -54,7 +54,11 @@ export function NavMain({
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title} isActive={isActive}>
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      isActive={isActive}
+                      className="hover:cursor-pointer"
+                    >
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -82,7 +86,7 @@ export function NavMain({
           }
           // Non-collapsible item (e.g., Dashboard)
           return (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.title} className="hover:cursor-pointer">
               <SidebarMenuButton
                 asChild
                 tooltip={item.title}

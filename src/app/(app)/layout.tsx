@@ -8,13 +8,14 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar'
 import { ModeToggle } from '@/components/mode-toggle'
+import { SearchCommand } from '@/components/search-command'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <SidebarProvider>
         <AppSidebar variant="floating" side="left" />
-        <SidebarInset className="max-w-7xl mx-auto">
+        <SidebarInset className="container mx-auto px-12">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
             <div className="flex flex-row w-full items-center justify-between gap-2">
               <div className="flex flex-row items-center gap-2">
@@ -23,6 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   orientation="vertical"
                   className="mr-2 data-[orientation=vertical]:h-4"
                 />
+                <SearchCommand />
               </div>
               <ModeToggle />
             </div>

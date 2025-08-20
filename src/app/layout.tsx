@@ -1,7 +1,15 @@
 import type { Metadata } from 'next'
-import { Outfit, Roboto_Mono, Inter, Roboto, Spectral } from 'next/font/google'
+import {
+  Outfit,
+  Roboto_Mono,
+  Inter,
+  Roboto,
+  Spectral,
+  Bricolage_Grotesque
+} from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 
 const fontRobotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -33,6 +41,12 @@ const fontSpectral = Spectral({
   variable: '--font-spectral'
 })
 
+const fontBricolageGrotesque = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-bricolage-grotesque'
+})
+
 export const metadata: Metadata = {
   title: 'Keyvaultify - ENV Management',
   description: 'Keyvaultify - ENV Management'
@@ -46,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontRobotoMono.variable} ${fontOutfit.variable} ${fontInter.variable} ${fontRoboto.variable} ${fontSpectral.variable} antialiased`}
+        className={`${fontRobotoMono.variable} ${fontOutfit.variable} ${fontInter.variable} ${fontRoboto.variable} ${fontSpectral.variable} ${fontBricolageGrotesque.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -55,6 +69,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main>{children}</main>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

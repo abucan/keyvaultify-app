@@ -12,12 +12,12 @@ const settings = [
   },
   {
     title: 'Billing',
-    description: 'Manage your billing settings and preferences.',
+    description: 'Manage your billing information and subscriptions.',
     href: '/settings/billing'
   },
   {
     title: 'Danger',
-    description: 'Manage your danger settings and preferences.',
+    description: 'Delete your account and all associated data.',
     href: '/settings/danger'
   }
 ]
@@ -30,32 +30,38 @@ export default function SettingsLayout({
   const pathname = usePathname()
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold font-spectral">Account Settings</h1>
-        <p className="text-sm text-muted-foreground font-roboto-mono">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold font-bricolage-grotesque">
+          Account Settings
+        </h1>
+        <p className="text-base text-muted-foreground font-bricolage-grotesque">
           Manage your account settings and preferences.
         </p>
       </div>
       <div className="flex flex-row gap-10">
-        <Card className="w-1/4 py-2 px-2">
-          <div className="flex flex-col gap-2">
+        <Card className="py-2 px-2 h-52">
+          <div className="flex flex-col justify-between h-full">
             {settings.map(setting => (
               <Link
                 href={setting.href}
                 key={setting.title}
-                className={`${pathname === setting.href ? 'bg-muted' : 'hover:bg-muted'} p-2 rounded-xl`}
+                className={`${pathname === setting.href ? 'bg-primary/10' : 'hover:bg-muted'} py-2.5 pl-2 pr-10 rounded-xl`}
               >
                 <div className="flex flex-row items-center gap-2">
                   <Settings
-                    className="bg-red-200 p-1 rounded-md mr-1"
-                    width={28}
-                    height={28}
+                    className={`${pathname === setting.href ? 'bg-primary text-primary-foreground' : 'text-muted-foreground bg-muted'} p-1.5 rounded-md mr-1`}
+                    width={30}
+                    height={30}
                   />
                   <div className="flex flex-col">
-                    <p className="text-base font-bold font-spectral">
+                    <p
+                      className={`text-base font-bold font-bricolage-grotesque ${pathname === setting.href ? 'text-primary-foreground' : 'text-muted-foreground'}`}
+                    >
                       {setting.title}
                     </p>
-                    <p className="text-xs text-muted-foreground font-roboto-mono">
+                    <p
+                      className={`text-xs ${pathname === setting.href ? 'text-primary-foreground' : 'text-muted-foreground'} font-bricolage-grotesque`}
+                    >
                       {setting.description}
                     </p>
                   </div>
@@ -64,7 +70,7 @@ export default function SettingsLayout({
             ))}
           </div>
         </Card>
-        <div className="w-full">{children}</div>
+        <div className="flex flex-1">{children}</div>
       </div>
     </div>
   )
