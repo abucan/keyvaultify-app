@@ -1,10 +1,12 @@
 import { betterAuth } from 'better-auth'
-import { emailOTP } from 'better-auth/plugins'
+import { emailOTP, organization } from 'better-auth/plugins'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from './db'
 import { sendOTPEmail } from './email/service'
-import { cookies, headers } from 'next/headers'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { eq } from 'drizzle-orm'
+import { organization as Organization } from './schemas/auth-schema'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -20,6 +22,53 @@ export const auth = betterAuth({
         } catch (error) {
           console.error('Error during post-delete cleanup:', error)
           redirect('/auth') // Fallback redirect
+        }
+      }
+    }
+  },
+  databaseHooks: {
+    session: {
+      create: {
+        before: async session => {
+          const slug = `u-${session.userId}`
+          const org = await db.query.organization.findFirst({
+            where: eq(Organization.slug, slug),
+            columns: { id: true }
+          })
+
+          return {
+            data: {
+              ...session,
+              activeOrganizationId: org?.id ?? null
+            }
+          }
+        }
+      }
+    },
+    user: {
+      create: {
+        after: async user => {
+          const slug = `u-${user.id}`
+
+          const slugExists = await auth.api.checkOrganizationSlug({
+            body: {
+              slug
+            }
+          })
+
+          if (slugExists) {
+            // TODO: slug already exists, create another one
+          }
+
+          await auth.api.createOrganization({
+            body: {
+              name: user?.name
+                ? `${user.name}'s Workspace`
+                : 'Personal Workspace',
+              slug,
+              userId: user.id
+            }
+          })
         }
       }
     }
@@ -51,7 +100,8 @@ export const auth = betterAuth({
           otp
         })
       }
-    })
+    }),
+    organization()
   ]
 })
 

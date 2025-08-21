@@ -1,3 +1,4 @@
+import { PricingTables } from '@/components/pricing-tables'
 import { Card, CardContent } from '@/components/ui/card'
 import { CreditCard } from 'lucide-react'
 
@@ -14,19 +15,19 @@ export default function BillingSettings() {
       </div>
       <Card className="py-4 bg-muted">
         <CardContent className="flex flex-row items-center gap-4">
-          {/* subscription icon card */}
           <CreditCard className="p-2 bg-white rounded-lg" size={40} />
           <div>
             <h2 className="text-sm font-bold font-bricolage-grotesque">
-              On Trial Period
+              Current Plan: Hobby
             </h2>
             <p className="text-sm text-muted-foreground font-bricolage-grotesque">
-              You&apos;re currently on a trial period. Select a plan to continue
-              accessing premium features when your trial ends.
+              You&apos;re currently on the Hobby plan. Select a plan to continue
+              accessing premium features.
             </p>
           </div>
         </CardContent>
       </Card>
+      <PricingTables />
     </div>
   )
 }

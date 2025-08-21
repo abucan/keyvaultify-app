@@ -1,9 +1,10 @@
-import { defineConfig } from 'drizzle-kit';
+import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
   schema: [
     './src/lib/schemas/app-schema.ts',
     './src/lib/schemas/auth-schema.ts',
+    './src/lib/schemas/subscription-schema.ts'
   ],
   out: './src/lib/db/migrations',
   dialect: 'sqlite',
@@ -11,8 +12,8 @@ export default defineConfig({
     url:
       process.env.NODE_ENV === 'production'
         ? process.env.DATABASE_URL!
-        : './dev.db',
+        : './dev.db'
   },
   verbose: true,
-  strict: true,
-});
+  strict: true
+})
