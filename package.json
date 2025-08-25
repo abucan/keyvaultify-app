@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:app": "next dev",
+    "dev:stripe": "stripe listen --events checkout.session.completed,customer.subscription.created,customer.subscription.updated,customer.subscription.deleted --forward-to http://localhost:3000/api/stripe/webhook",
+    "dev:all": "concurrently -k -n next,stripe -c auto \"npm:dev:app\" \"npm:dev:stripe\"",
+
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -60,6 +64,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.0",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",

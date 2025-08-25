@@ -12,19 +12,29 @@ export const runtime = 'nodejs'
 
 type SubInsert = typeof subscriptions.$inferInsert
 
-function mapSub(
+export function mapSub(
   orgId: string,
   sub: Stripe.Subscription
 ): Omit<SubInsert, 'id' | 'createdAt'> {
-  const item = sub.items.data[0]?.price as Stripe.Price | undefined
+  const items = sub?.items.data ?? []
 
-  // Use bracket form to avoid rare TS complaints about snake_case fields.
-  const cps = (sub as any)['current_period_start'] as number | undefined
-  const cpe = (sub as any)['current_period_end'] as number | undefined
-  const cancelAt = (sub as any)['cancel_at'] as number | undefined
-  const cancelAtPeriodEnd = (sub as any)['cancel_at_period_end'] as
-    | boolean
-    | undefined
+  const starts = items
+    .map((it: Stripe.SubscriptionItem) => it?.['current_period_start'])
+    .filter(Boolean) as number[]
+
+  const ends = items
+    .map((it: Stripe.SubscriptionItem) => it?.['current_period_end'])
+    .filter(Boolean) as number[]
+
+  const periodStartMs = starts.length > 0 ? Math.min(...starts) * 1000 : null
+  const periodEndMs = ends.length > 0 ? Math.max(...ends) * 1000 : null
+
+  const firstPrice = items[0]?.price as Stripe.Price | undefined
+
+  const stripeProductId =
+    (typeof firstPrice?.product === 'string'
+      ? firstPrice?.product
+      : firstPrice?.product?.id) ?? null
 
   return {
     organizationId: orgId,
@@ -34,19 +44,18 @@ function mapSub(
     status: sub.status,
     mode: 'subscription',
 
-    stripePriceId: item?.id ?? null,
-    stripeProductId:
-      (typeof item?.product === 'string' ? item?.product : item?.product?.id) ??
-      null,
-    quantity: sub.items.data[0]?.quantity ?? 1,
+    stripePriceId: firstPrice?.id ?? null,
+    stripeProductId: stripeProductId ?? null,
+    quantity: items[0]?.quantity ?? 1,
 
-    currency: item?.currency ?? null,
-    unitAmount: item?.unit_amount ?? null,
+    currency: firstPrice?.currency ?? null,
+    unitAmount: firstPrice?.unit_amount ?? null,
 
-    currentPeriodStart: cps ? new Date(cps * 1000) : null,
-    currentPeriodEnd: cpe ? new Date(cpe * 1000) : null,
-    cancelAt: cancelAt ? new Date(cancelAt * 1000) : null,
-    cancelAtPeriodEnd: cancelAtPeriodEnd ? 1 : 0,
+    currentPeriodStart: periodStartMs ? new Date(periodStartMs) : null,
+    currentPeriodEnd: periodEndMs ? new Date(periodEndMs) : null,
+
+    cancelAt: sub.cancel_at ? new Date(sub.cancel_at * 1000) : null,
+    cancelAtPeriodEnd: sub.cancel_at_period_end ? 1 : 0,
 
     updatedAt: new Date()
   }
