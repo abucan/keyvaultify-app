@@ -1,5 +1,6 @@
-import { getSession } from '@/lib/auth-client'
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
+
+import { getSession } from '@/lib/auth-client'
 
 const f = createUploadthing()
 

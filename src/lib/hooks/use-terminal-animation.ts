@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback,useEffect, useState } from 'react'
+
 import type { Step, TerminalState } from '../../../types/terminal'
 
 export const useTerminalAnimation = (steps: Step[]) => {

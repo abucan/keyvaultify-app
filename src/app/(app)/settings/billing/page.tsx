@@ -1,13 +1,11 @@
-import { PricingTables } from '@/components/pricing-tables'
-import { Card, CardContent } from '@/components/ui/card'
-import { getEntitlements } from '@/lib/entitlements'
-import { Calendar, CreditCard } from 'lucide-react'
+import { CurrentPlanCard } from '@/components/billing/CurrentPlanCard'
+import { PricingTables } from '@/components/billing/PricingTables'
+import { getEntitlements } from '@/lib/billing/entitlements'
 
-export default async function BillingSettings() {
+export default async function BillingSettingsPage() {
   const ent = await getEntitlements()
-  console.log(ent)
 
-  const label = ent.plan
+  const plan_name = ent.plan
     ? `${ent.plan[0].toUpperCase()}${ent.plan.slice(1)} (${ent.interval})`
     : 'Hobby'
 
@@ -21,20 +19,7 @@ export default async function BillingSettings() {
           Choose the plan that best suits your needs.
         </p>
       </div>
-      <Card className="py-4 bg-muted">
-        <CardContent className="flex flex-row items-center gap-4">
-          <CreditCard className="p-2 bg-white rounded-lg" size={40} />
-          <div>
-            <h2 className="text-sm font-bold font-bricolage-grotesque capitalize">
-              Current Plan: {label}
-            </h2>
-            <p className="text-sm text-muted-foreground font-bricolage-grotesque">
-              You&apos;re currently on the Hobby plan. Select a plan to continue
-              accessing premium features.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+      <CurrentPlanCard plan_name={plan_name} />
       <PricingTables />
     </div>
   )

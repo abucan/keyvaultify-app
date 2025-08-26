@@ -1,4 +1,5 @@
 import { CardContent } from '@/components/ui/card'
+
 import type { TerminalTheme } from '../../../types/terminal'
 import { formatOutputLine } from '../../lib/utils/terminal-formatters'
 

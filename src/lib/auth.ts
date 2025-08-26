@@ -1,12 +1,14 @@
-import { betterAuth } from 'better-auth'
-import { emailOTP, organization } from 'better-auth/plugins'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { db } from './db'
-import { sendOTPEmail } from './email/service'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { betterAuth } from 'better-auth'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { emailOTP, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
-import { organization as Organization } from './schemas/auth-schema'
+
+import { organization as Organization } from '../db/schemas/auth-schema'
+
+import { sendOTPEmail } from './email/service'
+import { db } from './db'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

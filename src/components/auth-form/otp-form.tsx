@@ -1,11 +1,13 @@
-import { AuthFormConfig } from '@/lib/config/auth-forms'
-import { InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
-import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { InputOTP } from '../ui/input-otp'
-import { Button } from '../ui/button'
 import { MoveLeft } from 'lucide-react'
-import { AuthFormData } from '@/lib/schemas/form-schema'
 import { Control } from 'react-hook-form'
+
+import { AuthFormConfig } from '@/lib/config/auth-forms'
+import { AuthFormData } from '@/lib/schemas/form-schema'
+
+import { Button } from '../ui/button'
+import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
+import { InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
+import { InputOTP } from '../ui/input-otp'
 
 type OTPFormProps = {
   config: AuthFormConfig

@@ -1,5 +1,6 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import {
   BadgeCheck,
   Bell,
@@ -26,7 +27,6 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { authClient } from '@/lib/auth-client'
-import { redirect } from 'next/navigation'
 
 export function NavUser({
   user

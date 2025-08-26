@@ -1,7 +1,6 @@
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
 import { generateReactHelpers } from '@uploadthing/react'
+import { type ClassValue,clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 import type { ourFileRouter } from '@/app/api/uploadthing/core'
 

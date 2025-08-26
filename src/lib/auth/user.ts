@@ -1,10 +1,9 @@
-'use server'
-
-import { db } from '@/lib/db'
-import { user } from '@/lib/schemas/auth-schema'
 import { eq } from 'drizzle-orm'
 
-const checkEmail = async (email: string): Promise<boolean> => {
+import { user } from '../../db/schemas/auth-schema'
+import { db } from '../db'
+
+export async function checkEmail(email: string): Promise<boolean> {
   try {
     const existingUser = await db
       .select({ id: user.id })
@@ -17,5 +16,3 @@ const checkEmail = async (email: string): Promise<boolean> => {
     throw new Error('Failed to check user existence')
   }
 }
-
-export { checkEmail }

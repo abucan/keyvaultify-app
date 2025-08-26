@@ -1,5 +1,7 @@
 'use client'
 
+import { ModeToggle } from '@/components/ModeToggle'
+import { SearchCommand } from '@/components/SearchCommand'
 import { AppSidebar } from '@/components/sidebar/app-sidebar'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -7,8 +9,6 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '@/components/ui/sidebar'
-import { ModeToggle } from '@/components/mode-toggle'
-import { SearchCommand } from '@/components/search-command'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,5 +1,7 @@
-import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
+
+import { auth } from '@/lib/auth'
+
 import { GeneralSettingsForm } from './components/GeneralSettingsForm'
 
 export default async function GeneralSettingsPage() {
@@ -17,8 +19,8 @@ export default async function GeneralSettingsPage() {
   return (
     <GeneralSettingsForm
       initialUsername={user.name ?? ''}
-      email={user.email}
       initialImage={user.image ?? ''}
+      email={user.email}
     />
   )
 }

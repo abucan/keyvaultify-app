@@ -1,8 +1,10 @@
-'use server'
+// src/lib/billing/subscriptions.ts
+import 'server-only'
 
-import { getActiveSubscriptionForOrg } from '@/lib/entitlements'
-import { requireOwner } from './organizations'
 import { headers } from 'next/headers'
+
+import { requireOwner } from '@/lib/auth/guards'
+import { getActiveSubscriptionForOrg } from '@/lib/billing/entitlements'
 import { stripe } from '@/lib/stripe/stripe'
 
 function err(msg: string) {

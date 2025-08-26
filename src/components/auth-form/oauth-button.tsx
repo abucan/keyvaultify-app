@@ -1,7 +1,8 @@
-import { ChevronRight } from 'lucide-react'
-import { Button } from '../ui/button'
 import Image from 'next/image'
 import { createAuthClient } from 'better-auth/client'
+import { ChevronRight } from 'lucide-react'
+
+import { Button } from '../ui/button'
 
 type OAuthButtonProps = {
   provider: 'google' | 'github'

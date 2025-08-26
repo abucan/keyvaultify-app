@@ -1,9 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { plans } from '@/lib/plan-overview'
+import Link from 'next/link'
+import NumberFlow from '@number-flow/react'
+import { ArrowRight,BadgeCheck } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -12,11 +15,9 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { plans } from '@/lib/billing/plans'
 import { cn } from '@/lib/utils'
-import NumberFlow from '@number-flow/react'
-import { BadgeCheck, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
 
 export const PricingTables = () => {
   const [frequency, setFrequency] = useState<string>('monthly')

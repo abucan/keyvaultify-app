@@ -16,10 +16,6 @@ import {
   SquareTerminal
 } from 'lucide-react'
 
-import { NavMain } from './nav-main'
-import { NavProjects } from './nav-projects'
-import { NavUser } from './nav-user'
-import { TeamSwitcher } from './team-switcher'
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +23,11 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/components/ui/sidebar'
+
+import { NavMain } from './nav-main'
+import { NavProjects } from './nav-projects'
+import { NavUser } from './nav-user'
+import { TeamSwitcher } from './team-switcher'
 
 const data = {
   user: {

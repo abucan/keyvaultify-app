@@ -1,10 +1,11 @@
 'use client'
-import { StepTitle } from './step-title'
-import { TerminalWindow } from './terminal-window'
-import { StepIndicator } from './step-indicator'
+import { steps } from '@/data/terminal-steps'
 import { useTerminalAnimation } from '@/lib/hooks/use-terminal-animation'
 import { getTerminalTheme } from '@/lib/utils/terminal-formatters'
-import { steps } from '@/data/terminal-steps'
+
+import { StepIndicator } from './step-indicator'
+import { StepTitle } from './step-title'
+import { TerminalWindow } from './terminal-window'
 
 interface Step {
   title: string

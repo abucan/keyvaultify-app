@@ -1,15 +1,16 @@
-import type { Metadata } from 'next'
 import {
-  Outfit,
-  Roboto_Mono,
+  Bricolage_Grotesque,
   Inter,
+  Outfit,
   Roboto,
-  Spectral,
-  Bricolage_Grotesque
-} from 'next/font/google'
-import './globals.css'
+  Roboto_Mono,
+  Spectral} from 'next/font/google'
+import type { Metadata } from 'next'
+
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
+
+import './globals.css'
 
 const fontRobotoMono = Roboto_Mono({
   subsets: ['latin'],

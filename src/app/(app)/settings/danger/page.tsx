@@ -1,3 +1,8 @@
+import Link from 'next/link'
+import { AlertTriangle, Trash2 } from 'lucide-react'
+
+import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -6,13 +11,9 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { AlertTriangle, Trash2 } from 'lucide-react'
-import Link from 'next/link'
-import { ConfirmDialog } from '@/components/confirm-dialog'
-import { deleteUserProfile } from '../../../../../actions/user-settings'
+import { deleteUserProfile } from '@/lib/auth/profile'
 
-export default function DangerSettings() {
+export default function DangerSettingsPage() {
   return (
     <Card className="w-3/4">
       <CardHeader className="gap-0">
@@ -24,7 +25,6 @@ export default function DangerSettings() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* warning icon and message that deleting account is irreversible and it will not end subscription */}
         <div className="flex flex-row items-start gap-2">
           <AlertTriangle className="w-5 h-5 text-destructive" />
           <p className="text-sm font-bricolage-grotesque text-muted-foreground">

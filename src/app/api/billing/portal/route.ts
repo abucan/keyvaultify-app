@@ -1,9 +1,10 @@
 // app/billing/portal/route.ts
-import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+import { requireOwner } from '@/lib/auth/guards'
+import { ensureStripeCustomerForActiveOrg } from '@/lib/billing/customer'
 import { stripe } from '@/lib/stripe/stripe'
-import { ensureStripeCustomerForActiveOrg } from '../../../../../actions/billings'
-import { requireOwner } from '../../../../../actions/organizations'
 
 export const runtime = 'nodejs'
 

@@ -1,6 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as z from 'zod'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,12 +27,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { updateUserProfile } from '@/lib/auth/profile'
 import { useUploadThing } from '@/lib/utils'
-import { updateUserProfile } from '../../../../../../actions/user-settings'
-import { toast } from 'sonner'
 
 const ProfileFormSchema = z.object({
   username: z.string().optional(),

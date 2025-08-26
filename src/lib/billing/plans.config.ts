@@ -1,6 +1,5 @@
-// lib/plans.ts
-export type BillingInterval = 'monthly' | 'yearly'
-export type PlanKey = 'starter' | 'pro' // extend later
+// src/lib/plans.config.ts
+import { BillingInterval, PlanKey } from '../../../types/billing'
 
 const must = (v: string | undefined, name: string) => {
   if (!v) throw new Error(`Missing env ${name}`)

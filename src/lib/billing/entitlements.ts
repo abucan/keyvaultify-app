@@ -1,9 +1,12 @@
 // lib/entitlements.ts
-import { db } from '@/lib/db'
-import { subscriptions } from '@/lib/schemas/subscription-schema'
 import { desc, eq } from 'drizzle-orm'
-import { PRICE_IDS, PlanKey, BillingInterval } from '@/lib/plans'
-import { getActiveOrgId } from '../../actions/organizations'
+
+import { subscriptions } from '@/db/schemas/subscription-schema'
+import { PRICE_IDS } from '@/lib/billing/plans.config'
+import { db } from '@/lib/db'
+
+import { getActiveOrgId } from '../../../actions/organizations'
+import { BillingInterval,PlanKey } from '../../../types/billing'
 
 type SubStatus =
   | 'incomplete'

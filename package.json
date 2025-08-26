@@ -7,7 +7,6 @@
     "dev:app": "next dev",
     "dev:stripe": "stripe listen --events checkout.session.completed,customer.subscription.created,customer.subscription.updated,customer.subscription.deleted --forward-to http://localhost:3000/api/stripe/webhook",
     "dev:all": "concurrently -k -n next,stripe -c auto \"npm:dev:app\" \"npm:dev:stripe\"",
-
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -39,6 +38,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "drizzle-orm": "^0.44.3",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.525.0",
     "motion": "^12.23.12",

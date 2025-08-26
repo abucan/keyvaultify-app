@@ -1,5 +1,6 @@
-import KeyVaultifyTerminal from '@/components/terminal/keyvaultify-terminal'
 import { ShieldCheck } from 'lucide-react'
+
+import KeyVaultifyTerminal from '@/components/terminal/keyvaultify-terminal'
 
 export default function AuthLayout({
   children

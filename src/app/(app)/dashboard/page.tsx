@@ -1,7 +1,7 @@
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <div>
-      <h1 className="text-2xl font-roboto-mono font-bold">Dashboard</h1>
+      <h1 className="text-2xl font-bricolage-grotesque font-bold">Dashboard</h1>
     </div>
   )
 }

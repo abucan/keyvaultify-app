@@ -1,5 +1,16 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import {
+  Calculator,
+  Calendar,
+  CreditCard,
+  Search,
+  Settings,
+  Smile,
+  User
+} from 'lucide-react'
+
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,16 +21,7 @@ import {
   CommandSeparator,
   CommandShortcut
 } from '@/components/ui/command'
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Search,
-  Settings,
-  Smile,
-  User
-} from 'lucide-react'
-import { useEffect, useState } from 'react'
+
 import { Button } from './ui/button'
 
 export function SearchCommand() {

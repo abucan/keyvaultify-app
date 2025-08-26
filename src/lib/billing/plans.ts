@@ -1,10 +1,13 @@
-export const plans = [
+// src/lib/billing/plans.ts
+import { BasePlan } from '../../../types/billing'
+
+export const plans: BasePlan[] = [
   {
     id: 'hobby',
     name: 'Hobby',
     price: {
-      monthly: 'Free forever',
-      yearly: 'Free forever'
+      monthly: 0,
+      yearly: 0
     },
     description:
       'The perfect starting place for your web app or personal project.',
@@ -20,8 +23,8 @@ export const plans = [
     id: 'starter',
     name: 'Starter',
     price: {
-      monthly: 5,
-      yearly: 50
+      monthly: 4.99,
+      yearly: 49.99
     },
     description:
       'The perfect starting place for your web app or personal project.',
@@ -38,8 +41,8 @@ export const plans = [
     id: 'pro',
     name: 'Pro',
     price: {
-      monthly: 10,
-      yearly: 100
+      monthly: 8.99,
+      yearly: 89.99
     },
     description:
       'For personal projects or small teams looking for additional features.',

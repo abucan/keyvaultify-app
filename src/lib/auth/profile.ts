@@ -1,8 +1,10 @@
-'use server'
+// src/lib/auth/profile.ts
+import 'server-only'
 
-import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import { unauthorized } from 'next/navigation'
+
+import { auth } from '../auth'
 
 export async function updateUserProfile({
   image,

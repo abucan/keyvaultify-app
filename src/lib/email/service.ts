@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@react-email/render'
-import { resend, emailConfig } from './resend'
+
+import { emailConfig,resend } from './resend'
 import { OTPEmail } from './templates'
 
 export class EmailService {

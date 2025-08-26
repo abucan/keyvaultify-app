@@ -1,10 +1,9 @@
+import Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
-import Database from 'better-sqlite3'
-
-import * as appSchema from '../schemas/app-schema'
-import * as authSchema from '../schemas/auth-schema'
-import * as subscriptionSchema from '../schemas/subscription-schema'
+import * as appSchema from '../../db/schemas/app-schema'
+import * as authSchema from '../../db/schemas/auth-schema'
+import * as subscriptionSchema from '../../db/schemas/subscription-schema'
 
 const fullSchema = { ...appSchema, ...authSchema, ...subscriptionSchema }
 
@@ -17,12 +16,11 @@ export { subscriptionSchema }
 export { fullSchema }
 
 export type {
-  Project,
-  NewProject,
-  Environment,
-  NewEnvironment,
-  Secret,
-  NewSecret,
   ApiToken,
-  NewApiToken
-} from '../schemas/app-schema'
+  Environment,
+  NewApiToken,
+  NewEnvironment,
+  NewProject,
+  NewSecret,
+  Project,
+  Secret} from '../../db/schemas/app-schema'

@@ -1,11 +1,14 @@
-import { Button } from '../ui/button'
 import Link from 'next/link'
-import { FormField, FormItem, FormControl, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
 import { Loader } from 'lucide-react'
 import { Control } from 'react-hook-form'
-import { AuthFormData } from '@/lib/schemas/form-schema'
+
 import { AuthFormConfig } from '@/lib/config/auth-forms'
+import { AuthFormData } from '@/lib/schemas/form-schema'
+
+import { Button } from '../ui/button'
+import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
+
 import { OAuthButton } from './oauth-button'
 
 type SignUpFormProps = {

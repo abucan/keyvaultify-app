@@ -1,7 +1,8 @@
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-export default function Home() {
+import { Button } from '@/components/ui/button'
+
+export default function MarketingPage() {
   if (typeof window === 'undefined') {
     console.log('Rendering on server')
   } else {

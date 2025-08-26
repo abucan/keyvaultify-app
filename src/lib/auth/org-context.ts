@@ -1,7 +1,9 @@
-'use server'
+// src/lib/auth/org-context.ts
+import 'server-only'
+
+import { headers } from 'next/headers'
 
 import { auth } from '@/lib/auth'
-import { headers } from 'next/headers'
 
 export async function setActiveOrganization({
   organizationId,
@@ -11,7 +13,7 @@ export async function setActiveOrganization({
   organizationSlug?: string
 }) {
   await auth.api.setActiveOrganization({
-    headers: await headers(), // ensures we mutate the caller's session
+    headers: await headers(),
     body: { organizationId: organizationId ?? null, organizationSlug }
   })
 }
@@ -27,18 +29,5 @@ export async function getActiveOrgFull() {
   const org = await auth.api.getFullOrganization({
     headers: await headers()
   })
-  return org // includes members, etc.
-}
-
-export async function requireOwner() {
-  const member = await auth.api.getActiveMember({
-    headers: await headers()
-  })
-
-  const roles = Array.isArray(member?.role) ? member!.role : [member?.role]
-
-  if (!roles?.includes('owner')) {
-    throw new Error('Forbidden')
-  }
-  return member
+  return org
 }

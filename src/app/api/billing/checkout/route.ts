@@ -1,13 +1,14 @@
 // app/billing/checkout/route.ts
-import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { PRICE_IDS, type PlanKey, type BillingInterval } from '@/lib/plans'
-import {
-  getActiveOrgId,
-  requireOwner
-} from '../../../../../actions/organizations'
-import { ensureStripeCustomerForActiveOrg } from '../../../../../actions/billings'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { requireOwner } from '@/lib/auth/guards'
+import { getActiveOrgId } from '@/lib/auth/org-context'
+import { ensureStripeCustomerForActiveOrg } from '@/lib/billing/customer'
+import { PRICE_IDS } from '@/lib/billing/plans.config'
 import { stripe } from '@/lib/stripe/stripe'
+
+import { BillingInterval, PlanKey } from '../../../../../types/billing'
 
 export const runtime = 'nodejs'
 
@@ -15,7 +16,6 @@ const PLAN_KEYS: PlanKey[] = ['starter', 'pro']
 const INTERVALS: BillingInterval[] = ['monthly', 'yearly']
 
 export async function GET(req: NextRequest) {
-  // bind to caller session and enforce owner
   await headers()
   await requireOwner()
 
