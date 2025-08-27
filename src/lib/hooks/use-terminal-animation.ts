@@ -1,10 +1,11 @@
+// src/lib/hooks/use-terminal-animation.ts
 'use client'
 
-import { useCallback,useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import type { Step, TerminalState } from '../../../types/terminal'
+import type { Step, TerminalState } from '../../types/terminal'
 
-export const useTerminalAnimation = (steps: Step[]) => {
+export function useTerminalAnimation(steps: Step[]) {
   const [state, setState] = useState<TerminalState>({
     currentStepIndex: 0,
     currentCharIndex: 0,

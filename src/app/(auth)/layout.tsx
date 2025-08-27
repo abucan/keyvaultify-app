@@ -1,3 +1,4 @@
+// src/app/(auth)/layout.tsx
 import { ShieldCheck } from 'lucide-react'
 
 import KeyVaultifyTerminal from '@/components/terminal/keyvaultify-terminal'

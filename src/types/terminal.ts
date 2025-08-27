@@ -1,3 +1,4 @@
+// src/types/terminal.ts
 export interface Step {
   title: string
   description: string

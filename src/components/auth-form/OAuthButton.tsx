@@ -1,3 +1,4 @@
+// src/components/auth-form/OAuthButton.tsx
 import Image from 'next/image'
 import { createAuthClient } from 'better-auth/client'
 import { ChevronRight } from 'lucide-react'
@@ -10,7 +11,7 @@ type OAuthButtonProps = {
   icon: string
 }
 
-export const OAuthButton = ({ provider, text, icon }: OAuthButtonProps) => {
+export function OAuthButton({ provider, text, icon }: OAuthButtonProps) {
   const auth = createAuthClient()
 
   const handleGithubSignIn = async () => {

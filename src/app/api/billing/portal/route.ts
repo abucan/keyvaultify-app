@@ -1,4 +1,4 @@
-// app/billing/portal/route.ts
+// src/app/api/billing/portal/route.ts
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 

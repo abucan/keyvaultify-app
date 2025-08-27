@@ -1,8 +1,9 @@
+// src/lib/auth/guards.ts
 import 'server-only'
 
 import { headers } from 'next/headers'
 
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/better-auth/auth'
 
 export async function requireOwner() {
   const member = await auth.api.getActiveMember({

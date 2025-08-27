@@ -1,3 +1,4 @@
+// src/lib/config/auth-forms.ts
 export interface FormField {
   name: 'email' | 'otp'
   label: string

@@ -1,4 +1,4 @@
-import type { Step, TerminalTheme } from '../../../types/terminal'
+import type { Step, TerminalTheme } from '@/types/terminal'
 
 interface StepIndicatorProps {
   steps: Step[]

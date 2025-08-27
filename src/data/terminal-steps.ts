@@ -1,4 +1,5 @@
-import type { Step } from '../../types/terminal'
+// src/data/terminal-steps.ts
+import type { Step } from '@/types/terminal'
 
 export const steps: Step[] = [
   {

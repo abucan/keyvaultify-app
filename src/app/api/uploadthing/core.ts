@@ -1,6 +1,7 @@
+// src/app/api/uploadthing/core.ts
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
 
-import { getSession } from '@/lib/auth-client'
+import { getSession } from '@/lib/better-auth/auth-client'
 
 const f = createUploadthing()
 

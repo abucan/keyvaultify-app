@@ -5,14 +5,10 @@ import { headers } from 'next/headers'
 import { eq } from 'drizzle-orm'
 
 import { stripeCustomers } from '@/db/schemas/subscription-schema'
+import { requireOwner } from '@/lib/auth/guards'
+import { getActiveOrgFull, getActiveOrgId } from '@/lib/auth/org-context'
 import { db } from '@/lib/db'
 import { stripe } from '@/lib/stripe/stripe'
-
-import {
-  getActiveOrgFull,
-  getActiveOrgId,
-  requireOwner
-} from '../../../actions/organizations'
 
 export async function ensureStripeCustomerForActiveOrg() {
   const orgId = await getActiveOrgId()

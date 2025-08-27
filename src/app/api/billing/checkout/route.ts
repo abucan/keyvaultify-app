@@ -1,4 +1,4 @@
-// app/billing/checkout/route.ts
+// src/app/api/billing/checkout/route.ts
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -7,8 +7,7 @@ import { getActiveOrgId } from '@/lib/auth/org-context'
 import { ensureStripeCustomerForActiveOrg } from '@/lib/billing/customer'
 import { PRICE_IDS } from '@/lib/billing/plans.config'
 import { stripe } from '@/lib/stripe/stripe'
-
-import { BillingInterval, PlanKey } from '../../../../../types/billing'
+import { BillingInterval, PlanKey } from '@/types/billing'
 
 export const runtime = 'nodejs'
 

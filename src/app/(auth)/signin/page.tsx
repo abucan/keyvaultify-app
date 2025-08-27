@@ -1,3 +1,4 @@
+// src/app/(auth)/signin/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -7,13 +8,13 @@ import { TriangleAlert } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { AuthForm } from '@/components/auth-form'
-import { OTPForm } from '@/components/auth-form/otp-form'
+import { OTPForm } from '@/components/auth-form/OTPForm'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Form } from '@/components/ui/form'
 import { checkEmail } from '@/lib/auth/user'
-import { authClient } from '@/lib/auth-client'
+import { authClient } from '@/lib/better-auth/auth-client'
 import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-forms'
-import { AuthFormData, authFormSchema } from '@/lib/schemas/form-schema'
+import { AuthFormData, authFormSchema } from '@/lib/zod-schemas/form-schema'
 
 type Step = 'email' | 'otp'
 

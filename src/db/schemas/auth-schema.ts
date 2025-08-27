@@ -1,4 +1,5 @@
-import { integer,sqliteTable, text } from 'drizzle-orm/sqlite-core'
+// src/db/schemas/auth-schema.ts
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const user = sqliteTable('user', {
   id: text('id').primaryKey(),

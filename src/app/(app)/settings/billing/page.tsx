@@ -1,3 +1,4 @@
+// src/app/(app)/settings/billing/page.tsx
 import { CurrentPlanCard } from '@/components/billing/CurrentPlanCard'
 import { PricingTables } from '@/components/billing/PricingTables'
 import { getEntitlements } from '@/lib/billing/entitlements'

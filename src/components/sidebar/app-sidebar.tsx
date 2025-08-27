@@ -4,16 +4,11 @@ import * as React from 'react'
 import {
   AudioWaveform,
   BookOpen,
-  Bot,
   Command,
-  Frame,
   GalleryVerticalEnd,
   Home,
   Key,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal
+  Settings2
 } from 'lucide-react'
 
 import {

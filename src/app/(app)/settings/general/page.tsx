@@ -1,6 +1,7 @@
+// src/app/(app)/settings/general/page.tsx
 import { headers } from 'next/headers'
 
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/better-auth/auth'
 
 import { GeneralSettingsForm } from './components/GeneralSettingsForm'
 

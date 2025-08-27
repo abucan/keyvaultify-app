@@ -1,9 +1,10 @@
+// src/app/(app)/settings/layout.tsx
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Settings } from 'lucide-react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 
 const settings = [
   {

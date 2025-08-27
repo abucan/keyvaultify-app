@@ -1,10 +1,12 @@
+// src/app/layout.tsx
 import {
   Bricolage_Grotesque,
   Inter,
   Outfit,
   Roboto,
   Roboto_Mono,
-  Spectral} from 'next/font/google'
+  Spectral
+} from 'next/font/google'
 import type { Metadata } from 'next'
 
 import { ThemeProvider } from '@/components/theme-provider'

@@ -1,15 +1,16 @@
+// src/components/auth-form/index.tsx
 import Link from 'next/link'
 import { Loader } from 'lucide-react'
 import { Control } from 'react-hook-form'
 
 import { AuthFormConfig } from '@/lib/config/auth-forms'
-import { AuthFormData } from '@/lib/schemas/form-schema'
+import { AuthFormData } from '@/lib/zod-schemas/form-schema'
 
 import { Button } from '../ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 
-import { OAuthButton } from './oauth-button'
+import { OAuthButton } from './OAuthButton'
 
 type SignUpFormProps = {
   config: AuthFormConfig
@@ -17,7 +18,7 @@ type SignUpFormProps = {
   loading: boolean
 }
 
-export const AuthForm = ({ config, control, loading }: SignUpFormProps) => {
+export function AuthForm({ config, control, loading }: SignUpFormProps) {
   return (
     <div className="container max-w-sm space-y-8">
       {/* Title and subtitle */}

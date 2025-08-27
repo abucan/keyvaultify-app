@@ -1,7 +1,6 @@
 import { CardContent } from '@/components/ui/card'
-
-import type { TerminalTheme } from '../../../types/terminal'
-import { formatOutputLine } from '../../lib/utils/terminal-formatters'
+import { formatOutputLine } from '@/lib/utils/terminal-formatters'
+import type { TerminalTheme } from '@/types/terminal'
 
 interface TerminalContentProps {
   theme: TerminalTheme

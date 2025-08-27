@@ -1,8 +1,9 @@
+// src/components/auth-form/OTPForm.tsx
 import { MoveLeft } from 'lucide-react'
 import { Control } from 'react-hook-form'
 
 import { AuthFormConfig } from '@/lib/config/auth-forms'
-import { AuthFormData } from '@/lib/schemas/form-schema'
+import { AuthFormData } from '@/lib/zod-schemas/form-schema'
 
 import { Button } from '../ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
@@ -16,12 +17,12 @@ type OTPFormProps = {
   goBackToEmail: () => void
 }
 
-export const OTPForm = ({
+export function OTPForm({
   config,
   control,
   handleOtpSubmit,
   goBackToEmail
-}: OTPFormProps) => {
+}: OTPFormProps) {
   return (
     <div className="container max-w-sm space-y-8">
       <div className="flex flex-col gap-2">

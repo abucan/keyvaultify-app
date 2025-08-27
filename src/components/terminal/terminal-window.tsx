@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card'
-
-import type { TerminalTheme } from '../../../types/terminal'
+import type { TerminalTheme } from '@/types/terminal'
 
 import { TerminalContent } from './terminal-content'
 import { TerminalHeader } from './terminal-header'

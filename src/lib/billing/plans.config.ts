@@ -1,5 +1,5 @@
-// src/lib/plans.config.ts
-import { BillingInterval, PlanKey } from '../../../types/billing'
+// src/lib/billing/plans.config.ts
+import { BillingInterval, PlanKey } from '@/types/billing'
 
 const must = (v: string | undefined, name: string) => {
   if (!v) throw new Error(`Missing env ${name}`)

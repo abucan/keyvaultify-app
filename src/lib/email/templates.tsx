@@ -1,3 +1,4 @@
+// src/lib/email/templates.tsx
 import * as React from 'react'
 
 interface EmailLayoutProps {

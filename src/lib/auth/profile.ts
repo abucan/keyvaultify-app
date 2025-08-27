@@ -4,7 +4,7 @@ import 'server-only'
 import { headers } from 'next/headers'
 import { unauthorized } from 'next/navigation'
 
-import { auth } from '../auth'
+import { auth } from '@/lib/better-auth/auth'
 
 export async function updateUserProfile({
   image,

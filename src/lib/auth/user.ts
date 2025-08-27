@@ -1,7 +1,10 @@
+// src/lib/auth/user.ts
+import 'server-only'
+
 import { eq } from 'drizzle-orm'
 
-import { user } from '../../db/schemas/auth-schema'
-import { db } from '../db'
+import { user } from '@/db/schemas/auth-schema'
+import { db } from '@/lib/db'
 
 export async function checkEmail(email: string): Promise<boolean> {
   try {

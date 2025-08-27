@@ -1,6 +1,7 @@
+// src/lib/billing/webhook.ts
 import Stripe from 'stripe'
 
-import { subscriptions } from '../../db/schemas/subscription-schema'
+import { subscriptions } from '@/db/schemas/subscription-schema'
 
 type SubInsert = typeof subscriptions.$inferInsert
 

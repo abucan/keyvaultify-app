@@ -1,3 +1,4 @@
+// src/lib/better-auth/auth-client.ts
 import { createAuthClient } from 'better-auth/client'
 import { emailOTPClient, organizationClient } from 'better-auth/client/plugins'
 

@@ -1,3 +1,4 @@
+// src/app/(app)/settings/general/components/GeneralSettingsForm.tsx
 'use client'
 
 import { useRef } from 'react'

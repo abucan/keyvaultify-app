@@ -1,4 +1,4 @@
-import type { TerminalTheme } from '../../../types/terminal'
+import type { TerminalTheme } from '@/types/terminal'
 
 interface TerminalHeaderProps {
   theme: TerminalTheme

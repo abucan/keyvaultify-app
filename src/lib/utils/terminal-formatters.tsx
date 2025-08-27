@@ -1,4 +1,5 @@
-export const formatOutputLine = (line: string, isDark: boolean) => {
+// src/lib/utils/terminal-formatters.tsx
+export function formatOutputLine(line: string, isDark: boolean) {
   if (line.startsWith('✅'))
     return (
       <span className={isDark ? 'text-green-400' : 'text-green-600'}>

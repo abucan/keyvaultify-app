@@ -1,4 +1,4 @@
-// app/api/stripe/webhook/route.ts
+// src/app/api/stripe/webhook/route.ts
 import { NextRequest } from 'next/server'
 import { eq } from 'drizzle-orm'
 import Stripe from 'stripe' // note: value+type import

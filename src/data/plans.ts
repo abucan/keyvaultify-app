@@ -1,5 +1,5 @@
-// src/lib/billing/plans.ts
-import { BasePlan } from '../../../types/billing'
+// src/data/plans.ts
+import { BasePlan } from '@/types/billing'
 
 export const plans: BasePlan[] = [
   {

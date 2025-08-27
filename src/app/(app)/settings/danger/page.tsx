@@ -1,3 +1,4 @@
+// src/app/(app)/settings/danger/page.tsx
 import Link from 'next/link'
 import { AlertTriangle, Trash2 } from 'lucide-react'
 

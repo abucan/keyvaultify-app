@@ -1,5 +1,6 @@
-import { sql } from 'drizzle-orm';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+// src/db/schemas/app-schema.ts
+import { sql } from 'drizzle-orm'
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const projects = sqliteTable('projects', {
   id: text('id')
@@ -13,8 +14,8 @@ export const projects = sqliteTable('projects', {
   ),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
     sql`CURRENT_TIMESTAMP`
-  ),
-});
+  )
+})
 
 export const environments = sqliteTable('environments', {
   id: text('id')
@@ -30,8 +31,8 @@ export const environments = sqliteTable('environments', {
   ),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
     sql`CURRENT_TIMESTAMP`
-  ),
-});
+  )
+})
 
 export const secrets = sqliteTable('secrets', {
   id: text('id')
@@ -47,8 +48,8 @@ export const secrets = sqliteTable('secrets', {
   ),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
     sql`CURRENT_TIMESTAMP`
-  ),
-});
+  )
+})
 
 export const apiTokens = sqliteTable('api_tokens', {
   id: text('id')
@@ -64,14 +65,14 @@ export const apiTokens = sqliteTable('api_tokens', {
   ),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
     sql`CURRENT_TIMESTAMP`
-  ),
-});
+  )
+})
 
-export type Project = typeof projects.$inferSelect;
-export type NewProject = typeof projects.$inferInsert;
-export type Environment = typeof environments.$inferSelect;
-export type NewEnvironment = typeof environments.$inferInsert;
-export type Secret = typeof secrets.$inferSelect;
-export type NewSecret = typeof secrets.$inferInsert;
-export type ApiToken = typeof apiTokens.$inferSelect;
-export type NewApiToken = typeof apiTokens.$inferInsert;
+export type Project = typeof projects.$inferSelect
+export type NewProject = typeof projects.$inferInsert
+export type Environment = typeof environments.$inferSelect
+export type NewEnvironment = typeof environments.$inferInsert
+export type Secret = typeof secrets.$inferSelect
+export type NewSecret = typeof secrets.$inferInsert
+export type ApiToken = typeof apiTokens.$inferSelect
+export type NewApiToken = typeof apiTokens.$inferInsert
