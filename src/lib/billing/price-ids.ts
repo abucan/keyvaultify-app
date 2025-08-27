@@ -1,4 +1,4 @@
-// src/lib/billing/plans.config.ts
+// src/lib/billing/price-ids.ts
 import { BillingInterval, PlanKey } from '@/types/billing'
 
 const must = (v: string | undefined, name: string) => {

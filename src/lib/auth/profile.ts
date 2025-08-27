@@ -30,7 +30,6 @@ export async function updateUserProfile({
 }
 
 export async function deleteUserProfile() {
-  'use server'
   const session = await auth.api.getSession({
     headers: await headers()
   })

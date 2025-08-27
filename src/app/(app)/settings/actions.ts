@@ -1,4 +1,4 @@
-// src/app/(app)/settings/general/actions.ts
+// src/app/(app)/settings/actions.ts
 'use server'
 
 import {

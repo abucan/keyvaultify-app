@@ -1,4 +1,5 @@
 // src/lib/better-auth/auth.ts
+// TODO: consider adding server-only import
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { betterAuth } from 'better-auth'

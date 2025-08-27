@@ -15,7 +15,7 @@ export async function GET() {
   const customerId = await ensureStripeCustomerForActiveOrg()
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
-    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/billing`
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing`
   })
 
   return NextResponse.redirect(session.url!, { status: 303 })
