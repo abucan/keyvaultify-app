@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { updateUserProfile } from '@/lib/auth/profile'
 import { useUploadThing } from '@/lib/utils'
 
 const ProfileFormSchema = z.object({
@@ -39,11 +38,16 @@ const ProfileFormSchema = z.object({
 export function GeneralSettingsForm({
   initialUsername,
   initialImage,
-  email
+  email,
+  updateUserProfile
 }: {
   initialUsername: string
   initialImage: string
   email: string
+  updateUserProfile: (values: {
+    name?: string
+    image?: string
+  }) => Promise<void>
 }) {
   const form = useForm<z.infer<typeof ProfileFormSchema>>({
     resolver: zodResolver(ProfileFormSchema),

@@ -13,6 +13,7 @@ export async function updateUserProfile({
   image?: string
   name?: string
 }) {
+  'use server'
   const session = await auth.api.getSession({
     headers: await headers()
   })
@@ -30,6 +31,7 @@ export async function updateUserProfile({
 }
 
 export async function deleteUserProfile() {
+  'use server'
   const session = await auth.api.getSession({
     headers: await headers()
   })
@@ -37,11 +39,10 @@ export async function deleteUserProfile() {
   if (!session) {
     unauthorized()
   }
-  console.log(session.session.token)
 
   await auth.api.deleteUser({
     body: {
-      callbackURL: '/auth'
+      callbackURL: '/signin'
     },
     headers: await headers()
   })

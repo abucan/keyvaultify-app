@@ -23,8 +23,10 @@ export function AuthForm({ config, control, loading }: SignUpFormProps) {
     <div className="container max-w-sm space-y-8">
       {/* Title and subtitle */}
       <div className="flex flex-col gap-2">
-        <h1 className="font-spectral text-3xl font-semibold">{config.title}</h1>
-        <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+        <h1 className="font-bricolage-grotesque text-3xl font-semibold">
+          {config.title}
+        </h1>
+        <p className="font-bricolage-grotesque font-[400] text-muted-foreground text-sm">
           {config.subtitle}{' '}
           <Link
             href={config.linkHref || '#'}
@@ -49,7 +51,7 @@ export function AuthForm({ config, control, loading }: SignUpFormProps) {
       </div>
       {/* Email input */}
       <div className="flex flex-col gap-4">
-        <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+        <p className="font-bricolage-grotesque font-[400] text-muted-foreground text-sm">
           {config.middleText}
         </p>
         {config.fields.map(cfg => {
@@ -76,7 +78,7 @@ export function AuthForm({ config, control, loading }: SignUpFormProps) {
         })}
         <Button
           type="submit"
-          className="w-full font-roboto-mono text-background"
+          className="w-full font-bricolage-grotesque text-background"
           size={'lg'}
           disabled={loading}
         >

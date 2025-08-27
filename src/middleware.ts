@@ -7,14 +7,14 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  const publicRoutes = ['/', '/auth']
+  const publicRoutes = ['/', '/signin']
   const isPublicRoute = publicRoutes.some(route => pathname === route)
 
   try {
     const sessionToken = request.cookies.get('better-auth.session_token')?.value
 
     // If user is authenticated and trying to access auth pages, redirect to dashboard
-    if (sessionToken && pathname === '/auth') {
+    if (sessionToken && pathname === '/signin') {
       console.log('✅ User already authenticated, redirecting to dashboard')
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
@@ -27,18 +27,21 @@ export async function middleware(request: NextRequest) {
 
     // For protected routes, check authentication
     if (!sessionToken) {
-      console.log('❌ No session token, redirecting to /auth')
-      return NextResponse.redirect(new URL('/auth', request.url))
+      console.log('❌ No session token, redirecting to /signin')
+      return NextResponse.redirect(new URL('/signin', request.url))
     }
 
     console.log('✅ Session token found, allowing access to protected route')
     return NextResponse.next()
   } catch (error) {
     console.error('Middleware auth error:', error)
-    return NextResponse.redirect(new URL('/auth', request.url))
+    return NextResponse.redirect(new URL('/signin', request.url))
   }
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)']
+  // matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)']
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|txt|xml|woff2?|woff|ttf|otf|eot)).*)'
+  ]
 }

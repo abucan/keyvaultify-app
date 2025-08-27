@@ -36,7 +36,7 @@ export function OAuthButton({ provider, text, icon }: OAuthButtonProps) {
 
   return (
     <Button
-      className="justify-between rounded-full font-roboto-mono"
+      className="justify-between rounded-full font-bricolage-grotesque"
       size={'lg'}
       variant={'outline'}
       type="button"

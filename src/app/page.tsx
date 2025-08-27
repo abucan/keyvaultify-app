@@ -13,7 +13,7 @@ export default function MarketingPage() {
   return (
     <div className="flex h-screen items-center justify-center gap-4">
       <Button asChild>
-        <Link href="/auth">Authentication</Link>
+        <Link href="/signin">Authentication</Link>
       </Button>
       <Button asChild>
         <Link href="/dashboard">Dashboard</Link>
