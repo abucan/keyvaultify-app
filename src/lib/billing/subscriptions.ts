@@ -25,7 +25,6 @@ export async function cancelAtPeriodEnd() {
   await stripe.subscriptions.update(sub.stripeSubscriptionId, {
     cancel_at_period_end: true
   })
-  // Webhooks will update your DB immediately (updated) and at period end (deleted). :contentReference[oaicite:0]{index=0}
 
   return { ok: true }
 }
@@ -44,7 +43,6 @@ export async function resumeScheduledCancellation() {
   await stripe.subscriptions.update(sub.stripeSubscriptionId, {
     cancel_at_period_end: false
   })
-  // Stripe marks it to renew again at the next cycle. :contentReference[oaicite:1]{index=1}
 
   return { ok: true }
 }

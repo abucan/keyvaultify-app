@@ -21,10 +21,10 @@ export const auth = betterAuth({
       afterDelete: async ({}) => {
         try {
           ;(await cookies()).delete('better-auth.session_token')
-          redirect('/auth')
+          redirect('/signin')
         } catch (error) {
           console.error('Error during post-delete cleanup:', error)
-          redirect('/auth') // Fallback redirect
+          redirect('/signin') // Fallback redirect
         }
       }
     }

@@ -1,8 +1,9 @@
 // src/app/(app)/settings/general/page.tsx
 import { headers } from 'next/headers'
 
-import { updateUserProfile } from '@/lib/auth/profile'
 import { auth } from '@/lib/better-auth/auth'
+
+import { updateUserProfileAction } from '../actions'
 
 import { GeneralSettingsForm } from './components/GeneralSettingsForm'
 
@@ -23,7 +24,7 @@ export default async function GeneralSettingsPage() {
       initialUsername={user.name ?? ''}
       initialImage={user.image ?? ''}
       email={user.email}
-      updateUserProfile={updateUserProfile}
+      updateUserProfile={updateUserProfileAction}
     />
   )
 }

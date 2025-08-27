@@ -1,4 +1,4 @@
-// lib/types/billing.ts
+// src/types/billing.ts
 export type PlanKey = 'starter' | 'pro'
 export type BillingInterval = 'monthly' | 'yearly'
 

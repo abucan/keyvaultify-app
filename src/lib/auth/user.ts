@@ -13,7 +13,7 @@ export async function checkEmail(email: string): Promise<boolean> {
       .from(user)
       .where(eq(user.email, email))
 
-    return existingUser.length > 0
+    return existingUser.length > 0 ? true : false
   } catch (error) {
     console.error('Error checking user existence:', error)
     throw new Error('Failed to check user existence')

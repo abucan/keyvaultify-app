@@ -5,7 +5,7 @@ import { desc, eq } from 'drizzle-orm'
 
 import { subscriptions } from '@/db/schemas/subscription-schema'
 import { getActiveOrgId } from '@/lib/auth/org-context'
-import { PRICE_IDS } from '@/lib/billing/plans.config'
+import { PRICE_IDS } from '@/lib/billing/price-ids'
 import { db } from '@/lib/sqlite-db'
 import { BillingInterval, PlanKey } from '@/types/billing'
 

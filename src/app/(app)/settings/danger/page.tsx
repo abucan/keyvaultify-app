@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { deleteUserProfile } from '@/lib/auth/profile'
+
+import { deleteUserProfileAction } from '../actions'
 
 export default function DangerSettingsPage() {
   return (
@@ -47,7 +48,7 @@ export default function DangerSettingsPage() {
           }
           title="Delete your account"
           description="Deleting your account is irreversible and will not end your subscription. For managing your subscription, please visit the billing page."
-          onConfirm={deleteUserProfile}
+          onConfirm={deleteUserProfileAction}
           loadingText="Deleting..."
         />
       </CardFooter>

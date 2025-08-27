@@ -13,7 +13,6 @@ export async function updateUserProfile({
   image?: string
   name?: string
 }) {
-  'use server'
   const session = await auth.api.getSession({
     headers: await headers()
   })

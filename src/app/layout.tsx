@@ -11,6 +11,7 @@ import type { Metadata } from 'next'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
+import { env } from '@/lib/utils/env'
 
 import './globals.css'
 
