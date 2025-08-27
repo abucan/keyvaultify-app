@@ -7,7 +7,7 @@ import { StepIndicator } from './step-indicator'
 import { StepTitle } from './step-title'
 import { TerminalWindow } from './terminal-window'
 
-interface Step {
+/* interface Step {
   title: string
   description: string
   command: {
@@ -15,7 +15,7 @@ interface Step {
     output: string[]
     delay: number
   }
-}
+} */
 
 interface KeyVaultifyTerminalProps {
   theme?: 'dark' | 'light'

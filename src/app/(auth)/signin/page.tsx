@@ -39,8 +39,7 @@ export default function SignInPage() {
     clearErrors,
     setError,
     control,
-    reset,
-    formState: { errors }
+    reset
   } = form
 
   const watchedEmail = watch('email')
@@ -58,7 +57,7 @@ export default function SignInPage() {
         return
       }
 
-      const { data, error } = await authClient.emailOtp.sendVerificationOtp({
+      const { data } = await authClient.emailOtp.sendVerificationOtp({
         email: watchedEmail,
         type: 'sign-in'
       })
@@ -82,7 +81,7 @@ export default function SignInPage() {
 
     setLoading(true)
     try {
-      const { data, error } = await authClient.signIn.emailOtp({
+      const { data } = await authClient.signIn.emailOtp({
         email: watchedEmail,
         otp: watchedOtp!
       })
