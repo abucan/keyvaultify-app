@@ -1,4 +1,4 @@
-// src/components/SearchCommand.tsx
+// src/components/shared/SearchCommand.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ import {
   User
 } from 'lucide-react'
 
+import { Button } from '@/components/ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -22,8 +23,6 @@ import {
   CommandSeparator,
   CommandShortcut
 } from '@/components/ui/command'
-
-import { Button } from './ui/button'
 
 export function SearchCommand() {
   const [open, setOpen] = useState(false)

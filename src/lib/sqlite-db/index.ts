@@ -1,4 +1,4 @@
-// src/lib/db/index.ts
+// src/lib/sqlite-db/index.ts
 import Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
@@ -25,4 +25,4 @@ export type {
   NewSecret,
   Project,
   Secret
-} from '../../db/schemas/app-schema'
+} from '@/db/schemas/app-schema'

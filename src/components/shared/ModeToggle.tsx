@@ -1,4 +1,4 @@
-// src/components/ModeToggle.tsx
+// src/components/shared/ModeToggle.tsx
 'use client'
 
 import * as React from 'react'

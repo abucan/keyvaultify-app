@@ -7,8 +7,8 @@ import { emailOTP, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 
 import { organization as Organization } from '@/db/schemas/auth-schema'
+import { db } from '@/lib/sqlite-db'
 
-import { db } from '../db'
 import { sendOTPEmail } from '../email/service'
 
 export const auth = betterAuth({

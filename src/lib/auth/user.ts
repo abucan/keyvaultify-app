@@ -4,7 +4,7 @@ import 'server-only'
 import { eq } from 'drizzle-orm'
 
 import { user } from '@/db/schemas/auth-schema'
-import { db } from '@/lib/db'
+import { db } from '@/lib/sqlite-db'
 
 export async function checkEmail(email: string): Promise<boolean> {
   try {

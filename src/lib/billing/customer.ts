@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm'
 import { stripeCustomers } from '@/db/schemas/subscription-schema'
 import { requireOwner } from '@/lib/auth/guards'
 import { getActiveOrgFull, getActiveOrgId } from '@/lib/auth/org-context'
-import { db } from '@/lib/db'
+import { db } from '@/lib/sqlite-db'
 import { stripe } from '@/lib/stripe/stripe'
 
 export async function ensureStripeCustomerForActiveOrg() {

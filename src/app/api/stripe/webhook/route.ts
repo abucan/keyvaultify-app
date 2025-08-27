@@ -6,7 +6,7 @@ import Stripe from 'stripe' // note: value+type import
 import { subscriptions } from '@/db/schemas/subscription-schema'
 import { stripeCustomers } from '@/db/schemas/subscription-schema'
 import { mapSub } from '@/lib/billing/webhook'
-import { db } from '@/lib/db'
+import { db } from '@/lib/sqlite-db'
 import { stripe } from '@/lib/stripe/stripe'
 
 export const runtime = 'nodejs'

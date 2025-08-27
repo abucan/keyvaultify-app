@@ -1,4 +1,4 @@
-// src/components/ConfirmDialog.tsx
+// src/components/shared/ConfirmDialog.tsx
 'use client'
 
 import { useState } from 'react'
