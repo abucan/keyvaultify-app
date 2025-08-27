@@ -14,7 +14,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 
-import { Input } from './ui/input'
+import { Input } from '../ui/input'
 
 interface ConfirmDialogProps {
   triggerButton: React.ReactNode

@@ -1,8 +1,8 @@
 // src/app/(app)/layout.tsx
 'use client'
 
-import { ModeToggle } from '@/components/ModeToggle'
-import { SearchCommand } from '@/components/SearchCommand'
+import { ModeToggle } from '@/components/shared/ModeToggle'
+import { SearchCommand } from '@/components/shared/SearchCommand'
 import { AppSidebar } from '@/components/sidebar/app-sidebar'
 import { Separator } from '@/components/ui/separator'
 import {

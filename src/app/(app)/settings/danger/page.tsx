@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { AlertTriangle, Trash2 } from 'lucide-react'
 
-import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import {
   Card,
