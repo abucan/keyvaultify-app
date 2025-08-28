@@ -31,23 +31,6 @@ const data = {
     email: 'm@example.com',
     avatar: '/shadcn.jfif'
   },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise'
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup'
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free'
-    }
-  ],
   navMain: [
     {
       title: 'Dashboard',
@@ -77,6 +60,11 @@ const data = {
           url: '#'
         }
       ]
+    },
+    {
+      title: 'Team Settings',
+      url: '/teams/settings',
+      icon: Settings2
     },
     {
       title: 'Settings',
