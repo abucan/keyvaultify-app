@@ -1,5 +1,4 @@
 // src/app/(app)/layout.tsx
-'use client'
 
 import { ModeToggle } from '@/components/shared/ModeToggle'
 import { SearchCommand } from '@/components/shared/SearchCommand'
@@ -11,11 +10,19 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar'
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+import { listTeams } from './teams/actions'
+
+export default async function AppLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
+  const teams = await listTeams()
+
   return (
     <div>
       <SidebarProvider>
-        <AppSidebar variant="floating" side="left" />
+        <AppSidebar variant="floating" side="left" teams={teams} />
         <SidebarInset className="container mx-auto px-12">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
             <div className="flex flex-row w-full items-center justify-between gap-2">

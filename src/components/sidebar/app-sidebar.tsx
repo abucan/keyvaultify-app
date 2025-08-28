@@ -18,6 +18,7 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/components/ui/sidebar'
+import { Team } from '@/types/auth'
 
 import { NavMain } from './nav-main'
 import { NavProjects } from './nav-projects'
@@ -106,11 +107,14 @@ const data = {
   ]
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  teams,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { teams: Team[] }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
