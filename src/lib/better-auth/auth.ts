@@ -10,7 +10,7 @@ import { eq } from 'drizzle-orm'
 import { organization as Organization } from '@/db/schemas/auth-schema'
 import { db } from '@/lib/sqlite-db'
 
-import { sendOTPEmail } from '../email/service'
+import { sendInvitationEmail, sendOTPEmail } from '../email/service'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -105,7 +105,17 @@ export const auth = betterAuth({
         })
       }
     }),
-    organization()
+    organization({
+      requireEmailVerificationOnInvitation: true,
+      sendInvitationEmail: async ({ invitation, organization, inviter }) => {
+        await sendInvitationEmail({
+          email: invitation?.email,
+          teamName: organization?.name,
+          acceptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/accept-invitation/${invitation.id}`,
+          inviterName: inviter?.user?.name || inviter?.user?.email
+        })
+      }
+    })
   ]
 })
 

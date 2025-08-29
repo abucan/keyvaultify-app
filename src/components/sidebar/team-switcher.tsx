@@ -21,28 +21,39 @@ import {
 } from '@/components/ui/sidebar'
 import { Team } from '@/types/auth'
 
-import { AddTeamDialog } from '../teams/AddTeamDialog'
+import { AddDialog } from '../shared/AddDialog'
+import { AddTeamForm } from '../teams/AddTeamForm'
 
-export function TeamSwitcher({ teams }: { teams: Team[] }) {
+export function TeamSwitcher({
+  teams,
+  orgId
+}: {
+  teams: Team[]
+  orgId: string | null
+}) {
   const router = useRouter()
   const pathname = usePathname()
 
   const { isMobile } = useSidebar()
 
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
   const [addTeamDialogOpen, setAddTeamDialogOpen] = React.useState(false)
 
-  if (!activeTeam) {
-    return null
-  }
+  const activeTeam = React.useMemo(
+    () => teams.find(t => t.id === orgId) ?? teams[0],
+    [teams, orgId]
+  )
 
   // TODO: get active organization
   return (
     <>
-      <AddTeamDialog
+      <AddDialog
         open={addTeamDialogOpen}
         onOpenChange={setAddTeamDialogOpen}
-      />
+        title="Add team"
+        description="Add a new team to your organization."
+      >
+        <AddTeamForm />
+      </AddDialog>
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu modal={false}>
@@ -56,7 +67,7 @@ export function TeamSwitcher({ teams }: { teams: Team[] }) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {activeTeam.name}
+                    {activeTeam?.name}
                   </span>
                   {/* <span className="truncate text-xs">{activeTeam.plan}</span> */}
                 </div>
@@ -74,7 +85,7 @@ export function TeamSwitcher({ teams }: { teams: Team[] }) {
               </DropdownMenuLabel>
               {teams.map((team, index) => (
                 <DropdownMenuItem
-                  key={team.name}
+                  key={team.slug}
                   onClick={() => router.push(`/o/${team.slug}?to=${pathname}`)}
                   className="gap-2 p-2"
                 >

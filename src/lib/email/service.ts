@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@react-email/render'
 
 import { emailConfig, resend } from './resend'
-import { OTPEmail } from './templates'
+import { OTPEmail, TeamInvitationEmail } from './templates'
 
 export class EmailService {
   static async sendOTP(params: {
@@ -43,6 +43,45 @@ export class EmailService {
       throw new Error('Failed to send verification code. Please try again.')
     }
   }
+
+  static async sendInvitation(params: {
+    email: string
+    teamName: string
+    acceptUrl: string
+    inviterName?: string
+  }) {
+    const { email, teamName, acceptUrl, inviterName } = params
+
+    try {
+      const emailHtml = await render(
+        React.createElement(TeamInvitationEmail, {
+          teamName,
+          acceptUrl,
+          inviterName
+        })
+      )
+
+      const subject = `You’re invited to join ${teamName} on KeyVaultify`
+
+      const result = await resend.emails.send({
+        from: emailConfig.from,
+        to: email,
+        subject,
+        html: emailHtml,
+        text:
+          `${inviterName ?? 'Someone'} invited you to join the team ${teamName}.\n\n` +
+          `Accept the invitation: ${acceptUrl}\n\n` +
+          `If you didn’t expect this invitation, please ignore this message.`
+      })
+
+      console.log(result)
+      return result
+    } catch (error) {
+      console.error('Failed to send invitation email:', error)
+      throw new Error('Failed to send invitation. Please try again.')
+    }
+  }
 }
 
 export const sendOTPEmail = EmailService.sendOTP
+export const sendInvitationEmail = EmailService.sendInvitation

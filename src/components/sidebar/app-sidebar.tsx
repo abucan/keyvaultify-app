@@ -1,15 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import {
-  AudioWaveform,
-  BookOpen,
-  Command,
-  GalleryVerticalEnd,
-  Home,
-  Key,
-  Settings2
-} from 'lucide-react'
+import { BookOpen, Home, Key, Settings2, Users } from 'lucide-react'
 
 import {
   Sidebar,
@@ -62,9 +54,23 @@ const data = {
       ]
     },
     {
-      title: 'Team Settings',
-      url: '/teams/settings',
-      icon: Settings2
+      title: 'Teams',
+      url: '/teams',
+      icon: Users,
+      items: [
+        {
+          title: 'Members',
+          url: '/teams/members'
+        },
+        {
+          title: 'Invitations',
+          url: '/teams/invitations'
+        },
+        {
+          title: 'Settings',
+          url: '/teams/settings'
+        }
+      ]
     },
     {
       title: 'Settings',
@@ -97,12 +103,16 @@ const data = {
 
 export function AppSidebar({
   teams,
+  orgId,
   ...props
-}: React.ComponentProps<typeof Sidebar> & { teams: Team[] }) {
+}: React.ComponentProps<typeof Sidebar> & {
+  teams: Team[]
+  orgId: string | null
+}) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={teams} />
+        <TeamSwitcher teams={teams} orgId={orgId} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

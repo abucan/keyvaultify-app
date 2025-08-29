@@ -1,5 +1,6 @@
 // GET /o/:slug?to=
 
+import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -19,6 +20,8 @@ export async function GET(
         organizationSlug: params.slug
       }
     })
+
+    revalidatePath(to || '/dashboard')
   } catch {
     return NextResponse.redirect(new URL('/not-found', to))
   }

@@ -9,6 +9,7 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '@/components/ui/sidebar'
+import { getActiveOrgId } from '@/lib/auth/org-context'
 
 import { listTeams } from './teams/actions'
 
@@ -18,11 +19,17 @@ export default async function AppLayout({
   children: React.ReactNode
 }) {
   const teams = await listTeams()
+  const orgId = await getActiveOrgId()
 
   return (
     <div>
       <SidebarProvider>
-        <AppSidebar variant="floating" side="left" teams={teams} />
+        <AppSidebar
+          variant="floating"
+          side="left"
+          teams={teams}
+          orgId={orgId}
+        />
         <SidebarInset className="container mx-auto px-12">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
             <div className="flex flex-row w-full items-center justify-between gap-2">
