@@ -19,6 +19,7 @@ export type Member = {
   image: string
   joinedAt: string
   role: string
+  currentUserRole: Role | null
 }
 
 export type InviteRow = {

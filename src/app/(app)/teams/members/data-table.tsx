@@ -21,15 +21,18 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import { Role } from '@/types/auth'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  currentUserRole: Role
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  currentUserRole
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -54,6 +57,7 @@ export function DataTable<TData, TValue>({
           variant="outline"
           className="border-primary"
           onClick={() => setAddMemberDialogOpen(true)}
+          disabled={currentUserRole !== 'owner' && currentUserRole !== 'admin'}
         >
           <Plus className="size-4 text-primary-foreground" />
           <span className="text-primary-foreground font-bricolage-grotesque">

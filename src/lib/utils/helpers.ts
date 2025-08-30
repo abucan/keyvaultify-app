@@ -1,9 +1,9 @@
 // src/lib/utils/helpers.ts
 
-import { InviteRow, Member } from '@/types/auth'
+import { InviteRow, Member, Role } from '@/types/auth'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mapToMembers(data: any[]): Member[] {
+export function mapToMembers(data: any[], currentUserRole: Role): Member[] {
   return data.map(item => ({
     id: item.id,
     name: item.user.name,
@@ -14,7 +14,8 @@ export function mapToMembers(data: any[]): Member[] {
       month: 'long',
       day: 'numeric'
     }),
-    role: item.role
+    role: item.role,
+    currentUserRole: currentUserRole
   }))
 }
 

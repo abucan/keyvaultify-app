@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'
-import { SquareArrowOutUpLeft } from 'lucide-react'
+import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +13,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Member } from '@/types/auth'
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 
 export const columns: ColumnDef<Member>[] = [
   {
@@ -73,7 +74,10 @@ export const columns: ColumnDef<Member>[] = [
       return (
         <Select
           defaultValue={row.original.role}
-          disabled={row.original.role === 'member'}
+          disabled={
+            row.original.currentUserRole !== 'owner' &&
+            row.original.currentUserRole !== 'admin'
+          }
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Role" defaultValue={row.original.role} />
@@ -92,14 +96,34 @@ export const columns: ColumnDef<Member>[] = [
     header: () => <p className="text-sm font-bricolage-grotesque">Actions</p>,
     cell: ({ row }) => {
       return (
-        <Button
-          variant="outline"
-          className="border-red-100"
-          disabled={row.original.role === 'owner'}
-        >
-          <SquareArrowOutUpLeft className="size-4 text-red-500" />
-          <span className="text-red-500 font-bricolage-grotesque">Leave</span>
-        </Button>
+        <div className="flex flex-row gap-4">
+          <ConfirmDialog
+            triggerButton={
+              <Button
+                variant="outline"
+                className="border-red-100"
+                disabled={row.original.role === 'owner'}
+              >
+                <SquareArrowOutUpLeft className="size-4 text-red-500" />
+                <span className="text-red-500 font-bricolage-grotesque">
+                  Leave
+                </span>
+              </Button>
+            }
+            title="Leave Team"
+            description="Are you sure you want to leave the team?"
+            onConfirm={() => {}}
+          />
+
+          {row.original.currentUserRole === 'owner' && (
+            <Button variant="outline" className="border-red-100">
+              <CircleX className="size-4 text-red-500" />
+              <span className="text-red-500 font-bricolage-grotesque">
+                Remove
+              </span>
+            </Button>
+          )}
+        </div>
       )
     }
   }

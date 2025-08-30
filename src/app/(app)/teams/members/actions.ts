@@ -6,6 +6,8 @@ import { headers } from 'next/headers'
 
 import { auth } from '@/lib/better-auth/auth'
 import { mapToInviteRows, mapToMembers } from '@/lib/utils/helpers'
+import { getMyRole } from '@/lib/teams/acl'
+import { Role } from '@/types/auth'
 
 export async function inviteMemberAction(formData: FormData) {
   const email = String(formData.get('email') ?? '').trim()
@@ -52,11 +54,13 @@ export async function removeMemberAction(formData: FormData) {
 
 // server-side lists for your page
 export async function listTeamMembers() {
-  const data =
+  const members =
     (await auth.api.getFullOrganization({ headers: await headers() }))
       ?.members ?? []
 
-  return mapToMembers(data)
+  const currentUserRole = await getMyRole()
+
+  return mapToMembers(members, currentUserRole as Role)
 }
 
 export async function listInvitations() {
