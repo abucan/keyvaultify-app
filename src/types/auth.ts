@@ -43,3 +43,17 @@ export type InviteRow = {
   organizationId: string
   inviterId: string
 }
+
+export type InvitationRow = {
+  id: string
+  email: string
+  role: 'member' | 'admin' | 'owner'
+  expiresAt: string
+  status?: string
+  acceptUrl: string
+  _acl: {
+    canResend: boolean
+    canCancel: boolean
+    canCopy: boolean
+  }
+}

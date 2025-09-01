@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'
 import { CircleX, Copy, Send, SquareArrowOutUpLeft } from 'lucide-react'
 
+import { CopyLinkCell } from '@/components/shared/CopyLinkCell'
+import { InvitationActionsCell } from '@/components/teams/InvitationActionsCell'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,7 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { InviteRow, InviteStatus } from '@/types/auth'
+import { InvitationRow, InviteRow, InviteStatus } from '@/types/auth'
 
 const STATUS_STYLES: Record<
   InviteStatus,
@@ -46,7 +48,7 @@ const STATUS_STYLES: Record<
   }
 }
 
-export const columns: ColumnDef<InviteRow>[] = [
+export const columns: ColumnDef<InvitationRow>[] = [
   {
     accessorKey: 'email',
     header: () => <p className="text-sm font-bricolage-grotesque ml-2">Name</p>,
@@ -75,7 +77,7 @@ export const columns: ColumnDef<InviteRow>[] = [
     accessorKey: 'status',
     header: () => <p className="text-sm font-bricolage-grotesque">Status</p>,
     cell: ({ row }) => {
-      const stats = STATUS_STYLES[row.original.status]
+      const stats = STATUS_STYLES[row.original.status as InviteStatus]
       return <Badge className={stats.className}>{stats.label}</Badge>
     }
   },
@@ -83,53 +85,20 @@ export const columns: ColumnDef<InviteRow>[] = [
     id: 'actions',
     header: () => <p className="text-sm font-bricolage-grotesque">Actions</p>,
     cell: ({ row }) => {
+      const r = row.original
       return (
-        <div className="flex flex-row gap-4">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size={'icon'}
-                variant="outline"
-                className="border-red-100"
-                disabled={row.original.role === 'owner'}
-              >
-                <Send className="size-4 text-muted-foreground" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Resend</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size={'icon'}
-                variant="outline"
-                className="border-red-100"
-                disabled={row.original.role === 'owner'}
-              >
-                <Copy className="size-4 text-muted-foreground" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Copy</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size={'icon'}
-                variant="outline"
-                className="border-red-100"
-                disabled={row.original.role === 'owner'}
-              >
-                <CircleX className="size-4 text-red-500" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Cancel</p>
-            </TooltipContent>
-          </Tooltip>
+        <div className="flex flex-row gap-2">
+          <CopyLinkCell
+            url={row.original.acceptUrl}
+            canCopy={row.original._acl.canCopy}
+          />
+          <InvitationActionsCell
+            invitationId={r.id}
+            email={r.email}
+            role={r.role}
+            canResend={r._acl.canResend}
+            canCancel={r._acl.canCancel}
+          />
         </div>
       )
     }
