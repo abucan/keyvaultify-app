@@ -19,7 +19,19 @@ export type Member = {
   image: string
   joinedAt: string
   role: string
-  currentUserRole: Role | null
+}
+
+export type MemberRow = Member & {
+  _acl: {
+    canEditRole: boolean
+    canRemove: boolean
+    canLeave: boolean
+  }
+  _meta: {
+    hasOtherOwners: boolean
+    isSelf: boolean
+    isOwner: boolean
+  }
 }
 
 export type InviteRow = {

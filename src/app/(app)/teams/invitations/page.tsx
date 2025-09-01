@@ -6,8 +6,5 @@ import { DataTable } from './data-table'
 
 export default async function InvitationsPage() {
   const invitations = await listInvitations()
-
-  console.log(invitations)
-
   return <DataTable columns={columns} data={invitations} />
 }

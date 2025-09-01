@@ -1,10 +1,17 @@
 // src/lib/utils/helpers.ts
 
-import { InviteRow, Member, Role } from '@/types/auth'
+import { InviteRow, Member, MemberRow, Role } from '@/types/auth'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mapToMembers(data: any[], currentUserRole: Role): Member[] {
-  return data.map(item => ({
+/* export function mapToMemberRow(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  item: any,
+  ctx: {
+    currentRole: Role
+    currentUserId: string | null
+    hasOtherOwners: boolean
+  }
+): MemberRow {
+  const base: Member = {
     id: item.id,
     name: item.user.name,
     email: item.user.email,
@@ -14,10 +21,26 @@ export function mapToMembers(data: any[], currentUserRole: Role): Member[] {
       month: 'long',
       day: 'numeric'
     }),
-    role: item.role,
-    currentUserRole: currentUserRole
-  }))
-}
+    role: item.role as Role
+  }
+
+  const isOwner = item.role === 'owner'
+  const isSelf = !!ctx.currentUserId && item.userId === ctx.currentUserId
+
+  // Owners can edit anyone; Admins can edit everyone except Owners; Members cannot edit
+  const canEditRole =
+    ctx.currentRole === 'owner' || (ctx.currentRole === 'admin' && !isOwner)
+
+  return {
+    ...base,
+    _acl: { canEditRole },
+    _meta: {
+      hasOtherOwners: ctx.hasOtherOwners,
+      isSelf,
+      isOwner
+    }
+  }
+} */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapToInviteRows(data: any[]): InviteRow[] {
@@ -34,4 +57,8 @@ export function mapToInviteRows(data: any[]): InviteRow[] {
     organizationId: i.organizationId,
     inviterId: i.inviterId
   }))
+}
+
+export function requireAdminOrOwner(role: Role) {
+  return role === 'admin' || role === 'owner'
 }

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'
-import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
+import { CircleX, Copy, Send, SquareArrowOutUpLeft } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import { InviteRow, InviteStatus } from '@/types/auth'
 
 const STATUS_STYLES: Record<
@@ -79,14 +84,53 @@ export const columns: ColumnDef<InviteRow>[] = [
     header: () => <p className="text-sm font-bricolage-grotesque">Actions</p>,
     cell: ({ row }) => {
       return (
-        <Button
-          variant="outline"
-          className="border-red-100"
-          disabled={row.original.role === 'owner'}
-        >
-          <CircleX className="size-4 text-red-500" />
-          <span className="text-red-500 font-bricolage-grotesque">Cancel</span>
-        </Button>
+        <div className="flex flex-row gap-4">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size={'icon'}
+                variant="outline"
+                className="border-red-100"
+                disabled={row.original.role === 'owner'}
+              >
+                <Send className="size-4 text-muted-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Resend</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size={'icon'}
+                variant="outline"
+                className="border-red-100"
+                disabled={row.original.role === 'owner'}
+              >
+                <Copy className="size-4 text-muted-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Copy</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size={'icon'}
+                variant="outline"
+                className="border-red-100"
+                disabled={row.original.role === 'owner'}
+              >
+                <CircleX className="size-4 text-red-500" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Cancel</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       )
     }
   }

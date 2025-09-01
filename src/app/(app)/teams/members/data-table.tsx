@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import { requireAdminOrOwner } from '@/lib/utils/helpers'
 import { Role } from '@/types/auth'
 
 interface DataTableProps<TData, TValue> {
@@ -57,7 +58,7 @@ export function DataTable<TData, TValue>({
           variant="outline"
           className="border-primary"
           onClick={() => setAddMemberDialogOpen(true)}
-          disabled={currentUserRole !== 'owner' && currentUserRole !== 'admin'}
+          disabled={!requireAdminOrOwner(currentUserRole)}
         >
           <Plus className="size-4 text-primary-foreground" />
           <span className="text-primary-foreground font-bricolage-grotesque">

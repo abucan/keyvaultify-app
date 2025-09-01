@@ -1,9 +1,15 @@
 'use client'
 
+import { useTransition } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { ColumnDef } from '@tanstack/react-table'
 import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
+import { toast } from 'sonner'
 
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import { ActionsCell } from '@/components/teams/ActionsCell'
+import { RoleCell } from '@/components/teams/RoleCell'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -12,10 +18,16 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Member } from '@/types/auth'
-import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+import { Member, MemberRow, Role } from '@/types/auth'
 
-export const columns: ColumnDef<Member>[] = [
+import { updateMemberRoleAction } from './actions'
+
+export const columns: ColumnDef<MemberRow>[] = [
   {
     accessorKey: 'image',
     header: () => <p className="text-sm font-bricolage-grotesque">Name</p>,
@@ -70,24 +82,19 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: 'role',
     header: () => <p className="text-sm font-bricolage-grotesque">Role</p>,
     cell: ({ row }) => {
-      /* owner cannot leave the team and only owner or admin can change the role */
+      const m = row.original
+      const canEdit = m._acl?.canEditRole === true
+      const isTargetOwner = m.role === 'owner'
+      const hasOtherOwners = m._meta?.hasOtherOwners === true
+
       return (
-        <Select
-          defaultValue={row.original.role}
-          disabled={
-            row.original.currentUserRole !== 'owner' &&
-            row.original.currentUserRole !== 'admin'
-          }
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Role" defaultValue={row.original.role} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="owner">Owner</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
-            <SelectItem value="member">Member</SelectItem>
-          </SelectContent>
-        </Select>
+        <RoleCell
+          memberId={m.id}
+          initialRole={m.role as Role}
+          canEdit={canEdit}
+          isTargetOwner={isTargetOwner}
+          hasOtherOwners={hasOtherOwners}
+        />
       )
     }
   },
@@ -95,35 +102,16 @@ export const columns: ColumnDef<Member>[] = [
     id: 'actions',
     header: () => <p className="text-sm font-bricolage-grotesque">Actions</p>,
     cell: ({ row }) => {
-      return (
-        <div className="flex flex-row gap-4">
-          <ConfirmDialog
-            triggerButton={
-              <Button
-                variant="outline"
-                className="border-red-100"
-                disabled={row.original.role === 'owner'}
-              >
-                <SquareArrowOutUpLeft className="size-4 text-red-500" />
-                <span className="text-red-500 font-bricolage-grotesque">
-                  Leave
-                </span>
-              </Button>
-            }
-            title="Leave Team"
-            description="Are you sure you want to leave the team?"
-            onConfirm={() => {}}
-          />
+      const m = row.original
+      const canLeave = m._acl?.canLeave === true
+      const canRemove = m._acl?.canRemove === true
 
-          {row.original.currentUserRole === 'owner' && (
-            <Button variant="outline" className="border-red-100">
-              <CircleX className="size-4 text-red-500" />
-              <span className="text-red-500 font-bricolage-grotesque">
-                Remove
-              </span>
-            </Button>
-          )}
-        </div>
+      return (
+        <ActionsCell
+          memberId={m.id}
+          canLeave={canLeave}
+          canRemove={canRemove}
+        />
       )
     }
   }

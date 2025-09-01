@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/teams/acl.ts
 import 'server-only'
+
 import { headers } from 'next/headers'
+
 import { auth } from '@/lib/better-auth/auth'
 
 type Role = 'owner' | 'admin' | 'member'
