@@ -8,8 +8,9 @@ import { auth } from '@/lib/better-auth/auth'
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params
   const url = new URL(request.url)
   const to = url.searchParams.get('to') || '/dashboard'
 
@@ -17,7 +18,7 @@ export async function GET(
     await auth.api.setActiveOrganization({
       headers: await headers(),
       body: {
-        organizationSlug: params.slug
+        organizationSlug: slug
       }
     })
 
