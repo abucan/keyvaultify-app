@@ -11,7 +11,17 @@ export type ActionResult =
   | { ok: true }
   | { ok: false; code: 'NOT_AUTHORIZED' | 'INVALID_INPUT' | 'UNKNOWN' }
 
-export async function listTeamInvitations(): Promise<InvitationRow[]> {
+async function bindOrg(slug: string) {
+  await auth.api.setActiveOrganization({
+    headers: await headers(),
+    body: { organizationSlug: slug }
+  })
+}
+
+export async function listTeamInvitations(
+  orgSlug: string
+): Promise<InvitationRow[]> {
+  await bindOrg(orgSlug)
   const hdrs = await headers()
 
   const [full, session, invitesRes] = await Promise.all([
@@ -54,8 +64,10 @@ export async function listTeamInvitations(): Promise<InvitationRow[]> {
 }
 
 export async function resendInvitationAction(
+  orgSlug: string,
   fd: FormData
 ): Promise<ActionResult> {
+  await bindOrg(orgSlug)
   const email = String(fd.get('email') ?? '').trim()
   const role = String(fd.get('role') ?? 'member') as
     | 'member'
@@ -79,8 +91,10 @@ export async function resendInvitationAction(
 }
 
 export async function cancelInvitationAction(
+  orgSlug: string,
   fd: FormData
 ): Promise<ActionResult> {
+  await bindOrg(orgSlug)
   const invitationId = String(fd.get('invitationId') ?? '')
   if (!invitationId) return { ok: false, code: 'INVALID_INPUT' }
 

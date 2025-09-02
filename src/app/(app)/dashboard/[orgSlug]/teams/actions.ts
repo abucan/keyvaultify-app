@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { APIError } from 'better-auth/api'
 
 import { auth } from '@/lib/better-auth/auth'
+import { orgDash } from '@/lib/router/path'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
 
 export async function createTeamAction(formData: FormData) {
@@ -45,17 +46,23 @@ export async function createTeamAction(formData: FormData) {
   }
 }
 
-export async function switchTeamAction(formData: FormData) {
-  const organizationId = String(formData.get('organizationId') ?? '')
-  if (!organizationId) throw new Error('Missing organizationId')
+export async function switchTeamAction(
+  targetOrgId: string,
+  currentPathname: string
+) {
+  if (!targetOrgId) throw new Error('Missing organizationId')
 
   await auth.api.setActiveOrganization({
     headers: await headers(),
-    body: { organizationId }
+    body: { organizationId: targetOrgId }
   })
 
-  revalidatePath('/dashboard')
-  redirect('/dashboard')
+  // Get slug for target id
+  const full = await auth.api.getFullOrganization({ headers: await headers() })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const slug = (full as any)?.slug as string
+  const rest = currentPathname.replace(/^\/dashboard\/[^/]+/, '') || '/'
+  redirect(orgDash(slug, rest))
 }
 
 export async function listTeams() {
