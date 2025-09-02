@@ -5,7 +5,7 @@ import * as React from 'react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 
-import { updateMemberRoleAction } from '@/app/(app)/dashboard/[orgSlug]/teams/members/actions'
+import { updateMemberRoleAction } from '@/app/(app)/dashboard/[orgSlug]/team/members/actions'
 import {
   Select,
   SelectContent,

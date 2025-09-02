@@ -4,6 +4,7 @@ import * as React from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 
+import { switchTeamAction } from '@/app/(app)/dashboard/[orgSlug]/team/actions'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +24,7 @@ import { stripDashPrefix } from '@/lib/router/path'
 import { Team } from '@/types/auth'
 
 import { AddDialog } from '../shared/AddDialog'
-import { AddTeamForm } from '../teams/AddTeamForm'
+import { AddTeamForm } from '../team/AddTeamForm'
 
 export function TeamSwitcher({
   teams,
@@ -34,7 +35,6 @@ export function TeamSwitcher({
   orgId: string | null
   orgSlug: string | null
 }) {
-  const router = useRouter()
   const pathname = usePathname()
 
   const { isMobile } = useSidebar()
@@ -46,10 +46,6 @@ export function TeamSwitcher({
     [teams, orgId]
   )
 
-  const rest = React.useMemo(() => stripDashPrefix(pathname), [pathname])
-  const onSelect = (team: Team) => router.push(`/dashboard/${team.slug}${rest}`)
-
-  // TODO: get active organization
   return (
     <>
       <AddDialog
@@ -92,7 +88,7 @@ export function TeamSwitcher({
               {teams.map((team, index) => (
                 <DropdownMenuItem
                   key={team.slug}
-                  onClick={() => onSelect(team)}
+                  onClick={() => switchTeamAction(team.id, pathname)}
                   className="gap-2 p-2"
                 >
                   <div className="flex size-6 items-center justify-center rounded-md border">

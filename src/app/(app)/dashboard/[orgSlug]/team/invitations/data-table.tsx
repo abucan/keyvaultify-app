@@ -10,7 +10,7 @@ import {
 import { Plus } from 'lucide-react'
 
 import { AddDialog } from '@/components/shared/AddDialog'
-import { AddMemberForm } from '@/components/teams/AddMemberForm'
+import { AddMemberForm } from '@/components/team/AddMemberForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {

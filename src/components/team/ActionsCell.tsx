@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import {
   leaveTeamAction,
   removeMemberAction
-} from '@/app/(app)/dashboard/[orgSlug]/teams/members/actions'
+} from '@/app/(app)/dashboard/[orgSlug]/team/members/actions'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import {

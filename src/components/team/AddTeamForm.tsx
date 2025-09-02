@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createTeamAction } from '@/app/(app)/dashboard/[orgSlug]/teams/actions'
+import { createTeamAction } from '@/app/(app)/dashboard/[orgSlug]/team/actions'
 
 import { Button } from '../ui/button'
 import {

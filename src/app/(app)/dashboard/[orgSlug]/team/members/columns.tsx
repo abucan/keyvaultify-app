@@ -8,8 +8,8 @@ import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
-import { ActionsCell } from '@/components/teams/ActionsCell'
-import { RoleCell } from '@/components/teams/RoleCell'
+import { ActionsCell } from '@/components/team/ActionsCell'
+import { RoleCell } from '@/components/team/RoleCell'
 import { Button } from '@/components/ui/button'
 import {
   Select,

@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import {
   cancelInvitationAction,
   resendInvitationAction
-} from '@/app/(app)/dashboard/[orgSlug]/teams/invitations/actions'
+} from '@/app/(app)/dashboard/[orgSlug]/team/invitations/actions'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 

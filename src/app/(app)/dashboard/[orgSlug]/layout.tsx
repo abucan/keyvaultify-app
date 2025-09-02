@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar'
 import { auth } from '@/lib/better-auth/auth'
 
-import { listTeams } from './teams/actions'
+import { listTeams } from './team/actions'
 
 export const dynamic = 'force-dynamic'
 

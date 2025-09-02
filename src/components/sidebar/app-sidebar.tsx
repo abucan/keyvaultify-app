@@ -41,9 +41,9 @@ export function AppSidebar({
           url: base('/teams'),
           icon: Users,
           items: [
-            { title: 'Members', url: base('/teams/members') },
-            { title: 'Invitations', url: base('/teams/invitations') },
-            { title: 'Settings', url: base('/teams/settings') }
+            { title: 'Members', url: base('/team/members') },
+            { title: 'Invitations', url: base('/team/invitations') },
+            { title: 'Settings', url: base('/team/settings') }
           ]
         },
         {

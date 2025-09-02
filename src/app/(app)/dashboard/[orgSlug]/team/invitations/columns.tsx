@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { CircleX, Copy, Send, SquareArrowOutUpLeft } from 'lucide-react'
 
 import { CopyLinkCell } from '@/components/shared/CopyLinkCell'
-import { InvitationActionsCell } from '@/components/teams/InvitationActionsCell'
+import { InvitationActionsCell } from '@/components/team/InvitationActionsCell'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
