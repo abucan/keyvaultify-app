@@ -134,6 +134,8 @@ export async function listTeamMembers(): Promise<MemberRow[]> {
   const ownersCount = raw.filter((m: any) => m.role === 'owner').length
   const hasOtherOwners = ownersCount > 1
 
+  const isPersonalOrg = full?.metadata?.isPersonal ?? false
+
   return raw.map((item: any) => {
     const base: Member = {
       id: item.id,
@@ -172,7 +174,7 @@ export async function listTeamMembers(): Promise<MemberRow[]> {
     return {
       ...base,
       _acl: { canEditRole, canRemove, canLeave },
-      _meta: { hasOtherOwners, isSelf, isOwner }
+      _meta: { hasOtherOwners, isSelf, isOwner, isPersonalOrg }
     } satisfies MemberRow
   })
 }

@@ -30,6 +30,7 @@ export type MemberRow = Member & {
     hasOtherOwners: boolean
     isSelf: boolean
     isOwner: boolean
+    isPersonalOrg: boolean
   }
 }
 
