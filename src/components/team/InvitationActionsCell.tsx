@@ -1,15 +1,15 @@
+// src/components/team/InvitationActionsCell.tsx
 'use client'
-
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import { Button } from '@/components/ui/button'
 import {
   cancelInvitationAction,
   resendInvitationAction
-} from '@/app/(app)/dashboard/[orgSlug]/team/invitations/actions'
-import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
-import { Button } from '@/components/ui/button'
+} from '@/server/invitations.actions'
 
 export function InvitationActionsCell(props: {
   invitationId: string

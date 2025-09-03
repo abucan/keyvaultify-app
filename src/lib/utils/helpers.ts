@@ -1,6 +1,5 @@
 // src/lib/utils/helpers.ts
-
-import { InviteRow, Member, MemberRow, Role } from '@/types/auth'
+import { InviteRow, Role } from '@/types/auth'
 
 /* export function mapToMemberRow(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

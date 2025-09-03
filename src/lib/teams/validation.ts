@@ -1,3 +1,4 @@
+// src/lib/teams/validation.ts
 export function normalizeTeamSlug(s: string) {
   return s
     .toLowerCase()

@@ -1,5 +1,4 @@
 // src/types/auth.ts
-
 export type Role = 'owner' | 'admin' | 'member'
 export type InviteStatus = 'accepted' | 'canceled' | 'rejected' | 'pending'
 

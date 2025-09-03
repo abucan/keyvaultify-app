@@ -1,6 +1,5 @@
 // src/lib/hooks/use-terminal-animation.ts
 'use client'
-
 import { useCallback, useEffect, useState } from 'react'
 
 import type { Step, TerminalState } from '../../types/terminal'

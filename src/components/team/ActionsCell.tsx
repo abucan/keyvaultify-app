@@ -1,29 +1,23 @@
+// src/components/team/ActionsCell.tsx
 'use client'
-
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
-import {
-  leaveTeamAction,
-  removeMemberAction
-} from '@/app/(app)/dashboard/[orgSlug]/team/members/actions'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
+import { leaveTeamAction, removeMemberAction } from '@/server/members.actions'
 
-type Props = {
+export function ActionsCell({
+  memberId,
+  canLeave,
+  canRemove
+}: {
   memberId: string
   canLeave: boolean
   canRemove: boolean
-}
-
-export function ActionsCell({ memberId, canLeave, canRemove }: Props) {
+}) {
   const [leaving, startLeave] = useTransition()
   const [removing, startRemove] = useTransition()
   const router = useRouter()

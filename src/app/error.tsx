@@ -1,5 +1,5 @@
+// src/app/error.tsx
 'use client'
-
 import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -35,7 +35,11 @@ export default function GlobalError({
           If the problem persists, contact support.
         </p>
       </div>
-      <Button onClick={() => reset()} className="font-bricolage-grotesque">
+      <Button
+        variant="outline"
+        onClick={() => reset()}
+        className="font-bricolage-grotesque"
+      >
         Try again
       </Button>
       <Button asChild className="font-bricolage-grotesque">

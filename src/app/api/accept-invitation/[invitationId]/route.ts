@@ -1,3 +1,4 @@
+// src/app/api/accept-invitation/[invitationId]/route.ts
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export default function MarketingPage() {
+  // TODO: Remove in production
   if (typeof window === 'undefined') {
     console.log('Rendering on server')
   } else {
@@ -16,7 +17,7 @@ export default function MarketingPage() {
         <Link href="/signin">Authentication</Link>
       </Button>
       <Button asChild>
-        <Link href="/dashboard">Dashboard</Link>
+        <Link href="/bucan">Dashboard</Link>
       </Button>
     </div>
   )

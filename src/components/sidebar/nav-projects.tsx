@@ -1,11 +1,12 @@
+// src/components/sidebar/nav-projects.tsx
 'use client'
-
 import {
   Folder,
   Forward,
   type LucideIcon,
   MoreHorizontal,
-  Trash2} from 'lucide-react'
+  Trash2
+} from 'lucide-react'
 
 import {
   DropdownMenu,

@@ -70,7 +70,10 @@ export const auth = betterAuth({
                 ? `${user.name}'s Workspace`
                 : 'Personal Workspace',
               slug,
-              userId: user.id
+              userId: user.id,
+              metadata: {
+                isPersonal: true
+              }
             }
           })
         }

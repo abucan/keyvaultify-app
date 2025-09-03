@@ -1,12 +1,5 @@
 // src/app/layout.tsx
-import {
-  Bricolage_Grotesque,
-  Inter,
-  Outfit,
-  Roboto,
-  Roboto_Mono,
-  Spectral
-} from 'next/font/google'
+import { Bricolage_Grotesque } from 'next/font/google'
 import type { Metadata } from 'next'
 
 import { ThemeProvider } from '@/components/theme-provider'
@@ -15,35 +8,7 @@ import { env } from '@/lib/utils/env'
 
 import './globals.css'
 
-const fontRobotoMono = Roboto_Mono({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  variable: '--font-roboto-mono'
-})
-
-const fontOutfit = Outfit({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-outfit'
-})
-
-const fontInter = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-inter'
-})
-
-const fontRoboto = Roboto({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  variable: '--font-roboto'
-})
-
-const fontSpectral = Spectral({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-spectral'
-})
+// Inter, Outfit, Roboto, Roboto_Mono, Spectral
 
 const fontBricolageGrotesque = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -63,9 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${fontRobotoMono.variable} ${fontOutfit.variable} ${fontInter.variable} ${fontRoboto.variable} ${fontSpectral.variable} ${fontBricolageGrotesque.variable} antialiased`}
-      >
+      <body className={`${fontBricolageGrotesque.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

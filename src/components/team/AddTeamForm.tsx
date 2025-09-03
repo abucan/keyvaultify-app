@@ -1,3 +1,4 @@
+// src/components/team/AddTeamForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createTeamAction } from '@/app/(app)/dashboard/[orgSlug]/team/actions'
+import { createTeamAction } from '@/server/team.actions'
 
 import { Button } from '../ui/button'
 import {
@@ -23,6 +24,7 @@ const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   slug: z.string().min(3, { message: 'Slug is required' })
 })
+
 type FormValues = z.infer<typeof schema>
 
 export function AddTeamForm() {

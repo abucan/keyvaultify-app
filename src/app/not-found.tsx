@@ -1,3 +1,4 @@
+// src/app/not-found.tsx
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'

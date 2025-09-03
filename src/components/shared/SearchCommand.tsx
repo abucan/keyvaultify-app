@@ -1,6 +1,5 @@
 // src/components/shared/SearchCommand.tsx
 'use client'
-
 import { useEffect, useState } from 'react'
 import {
   Calculator,

@@ -3,7 +3,7 @@ import { CreditCard } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
 
-interface CurrentPlanCardProps {
+type CurrentPlanCardProps = {
   plan_name: string
 }
 

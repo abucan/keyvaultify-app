@@ -1,5 +1,5 @@
+// src/components/shared/CopyLinkCell.tsx
 'use client'
-
 import { Copy } from 'lucide-react'
 import { toast } from 'sonner'
 

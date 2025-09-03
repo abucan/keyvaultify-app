@@ -1,6 +1,5 @@
 // src/components/billing/PricingTables.tsx
 'use client'
-
 import { useState } from 'react'
 import Link from 'next/link'
 import NumberFlow from '@number-flow/react'

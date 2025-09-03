@@ -1,11 +1,9 @@
-// src/app/(app)/teams/members/RoleCell.tsx
+// src/components/team/RoleCell.tsx
 'use client'
-
 import * as React from 'react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 
-import { updateMemberRoleAction } from '@/app/(app)/dashboard/[orgSlug]/team/members/actions'
 import {
   Select,
   SelectContent,
@@ -13,12 +11,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { updateMemberRoleAction } from '@/server/members.actions'
 import type { Role } from '@/types/auth'
 
-type Props = {
+type RoleCellProps = {
   memberId: string
   initialRole: Role
-  // optional hints to disable options in UI (still enforced server-side)
   canEdit: boolean
   isTargetOwner: boolean
   hasOtherOwners: boolean
@@ -30,7 +28,7 @@ export function RoleCell({
   canEdit,
   isTargetOwner,
   hasOtherOwners
-}: Props) {
+}: RoleCellProps) {
   const [optimisticRole, setOptimisticRole] = React.useState<Role>(initialRole)
   const [isPending, startTransition] = useTransition()
 

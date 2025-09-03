@@ -1,17 +1,16 @@
+// src/components/sidebar/team-switcher.tsx
 'use client'
-
 import * as React from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 
-import { switchTeamAction } from '@/app/(app)/dashboard/[orgSlug]/team/actions'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
@@ -20,7 +19,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/components/ui/sidebar'
-import { stripDashPrefix } from '@/lib/router/path'
+import { switchTeamAction } from '@/server/team.actions'
 import { Team } from '@/types/auth'
 
 import { AddDialog } from '../shared/AddDialog'
@@ -52,7 +51,7 @@ export function TeamSwitcher({
         open={addTeamDialogOpen}
         onOpenChange={setAddTeamDialogOpen}
         title="Add team"
-        description="Add a new team to your organization."
+        description="Add a new team."
       >
         <AddTeamForm />
       </AddDialog>
@@ -65,13 +64,21 @@ export function TeamSwitcher({
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
               >
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  {/* <activeTeam.logo className="size-4" /> */}
+                  <Image
+                    src={activeTeam?.logo ?? '/shadcn.jfif'}
+                    alt={activeTeam?.name ?? 'team logo'}
+                    width={32}
+                    height={32}
+                    className="rounded-lg"
+                  />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
+                  <span className="truncate font-medium font-bricolage-grotesque">
                     {activeTeam?.name}
                   </span>
-                  {/* <span className="truncate text-xs">{activeTeam.plan}</span> */}
+                  <span className="truncate text-xs font-bricolage-grotesque">
+                    Hobby
+                  </span>
                 </div>
                 <ChevronsUpDown className="ml-auto" />
               </SidebarMenuButton>
@@ -92,10 +99,15 @@ export function TeamSwitcher({
                   className="gap-2 p-2"
                 >
                   <div className="flex size-6 items-center justify-center rounded-md border">
-                    {/* <team.logo className="size-3.5 shrink-0" /> */}
+                    <Image
+                      src={team.logo ?? '/shadcn.jfif'}
+                      alt={team.name ?? 'team logo'}
+                      width={32}
+                      height={32}
+                      className="rounded-md"
+                    />
                   </div>
                   {team.name}
-                  <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
@@ -107,7 +119,7 @@ export function TeamSwitcher({
                   <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                     <Plus className="size-4" />
                   </div>
-                  <div className="text-muted-foreground font-medium">
+                  <div className="text-muted-foreground font-medium font-bricolage-grotesque">
                     Add team
                   </div>
                 </div>

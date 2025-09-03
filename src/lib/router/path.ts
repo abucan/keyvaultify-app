@@ -1,10 +1,9 @@
-// src/lib/router/paths.ts
-
+// Build "/:orgSlug(/path)"
 export const orgDash = (slug: string, path = '') =>
-  `/dashboard/${slug}${path.startsWith('/') ? path : `/${path}`}`
+  `/${slug}${path ? (path.startsWith('/') ? path : `/${path}`) : ''}`
 
-// Remove "/dashboard/:slug" prefix from a pathname, return "/..." (or "/")
+// Remove "/:orgSlug" prefix from a pathname, return "/..." (or "/")
 export function stripDashPrefix(pathname: string) {
-  const m = pathname.match(/^\/dashboard\/[^/]+(\/.*)?$/)
+  const m = pathname.match(/^\/[^/]+(\/.*)?$/)
   return m?.[1] || '/'
 }

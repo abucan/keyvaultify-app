@@ -1,5 +1,5 @@
+// src/components/sidebar/app-sidebar.tsx
 'use client'
-
 import * as React from 'react'
 import { BookOpen, Home, Key, Settings2, Users } from 'lucide-react'
 
@@ -20,16 +20,16 @@ import { NavUser } from './nav-user'
 import { TeamSwitcher } from './team-switcher'
 
 export function AppSidebar({
-  teams,
-  orgSlug,
-  orgId,
   user,
+  teams,
+  orgId,
+  orgSlug,
   ...props
 }: React.ComponentProps<typeof Sidebar> & {
-  teams: Team[]
-  orgSlug: string | null
-  orgId: string | null
   user: User | null
+  teams: Team[]
+  orgId: string | null
+  orgSlug: string | null
 }) {
   const data = React.useMemo(() => {
     const base = (p = '/') => orgDash(orgSlug ?? '', p)
@@ -37,8 +37,8 @@ export function AppSidebar({
       navMain: [
         { title: 'Dashboard', url: base('/'), icon: Home },
         {
-          title: 'Teams',
-          url: base('/teams'),
+          title: 'Team',
+          url: base('/team'),
           icon: Users,
           items: [
             { title: 'Members', url: base('/team/members') },
@@ -48,7 +48,7 @@ export function AppSidebar({
         },
         {
           title: 'Settings',
-          url: '#',
+          url: base('/settings'),
           icon: Settings2,
           items: [
             { title: 'General', url: base('/settings/general') },
@@ -57,9 +57,7 @@ export function AppSidebar({
           ]
         }
       ],
-      projects: [
-        { name: 'Keyvaultify', url: base('/projects/keyvaultify'), icon: Key }
-      ],
+      projects: [{ name: 'Keyvaultify (DEMO)', url: '#', icon: Key }],
       docs: { title: 'Documentation', url: '#', icon: BookOpen }
     }
   }, [orgSlug])

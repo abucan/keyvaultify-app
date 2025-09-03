@@ -1,5 +1,5 @@
+// src/components/sidebar/nav-main.tsx
 'use client'
-
 import { usePathname } from 'next/navigation'
 import { ChevronRight, type LucideIcon } from 'lucide-react'
 

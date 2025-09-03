@@ -1,3 +1,4 @@
+// src/components/team/AddMemberForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -5,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { inviteMemberAction } from '@/app/(app)/dashboard/[orgSlug]/team/members/actions'
+import { inviteMemberAction } from '@/server/members.actions'
 
 import { Button } from '../ui/button'
 import {
