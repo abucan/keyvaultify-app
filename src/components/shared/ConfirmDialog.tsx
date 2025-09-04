@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import { Result } from '@/types/auth'
 
 import { Input } from '../ui/input'
 
@@ -19,7 +20,7 @@ interface ConfirmDialogProps {
   triggerButton: React.ReactNode
   title: string
   description: string
-  onConfirm: () => Promise<void> | void
+  onConfirm: () => Promise<Result> | void
   disabled?: boolean
   loadingText?: string
 }

@@ -1,14 +1,24 @@
 // src/app/page.tsx
+import { headers } from 'next/headers'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
+import { auth } from '@/lib/better-auth/auth'
 
-export default function MarketingPage() {
-  // TODO: Remove in production
-  if (typeof window === 'undefined') {
-    console.log('Rendering on server')
-  } else {
-    console.log('Rendering on client')
+export default async function MarketingPage() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (session?.session?.activeOrganizationId) {
+    const orgSlug = await auth.api.getFullOrganization({
+      headers: await headers(),
+      query: {
+        organizationId: session?.session?.activeOrganizationId
+      }
+    })
+    redirect(`/${orgSlug?.slug}`)
   }
 
   return (
