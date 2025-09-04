@@ -8,6 +8,6 @@ if (!process.env.RESEND_API_KEY) {
 export const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const emailConfig = {
-  from: process.env.EMAIL_FROM || 'Acme <onboarding@resend.dev>',
-  replyTo: process.env.EMAIL_REPLY_TO || 'support@keyvaultify.com'
+  from: process.env.EMAIL_FROM || 'Keyvaultify <welcome@keyvaultify.app>',
+  replyTo: process.env.EMAIL_REPLY_TO || 'support@keyvaultify.app'
 } as const
