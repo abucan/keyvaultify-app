@@ -1,6 +1,6 @@
 // src/components/auth-form/OTPForm.tsx
 import { MoveLeft } from 'lucide-react'
-import { Control } from 'react-hook-form'
+import { Control, useWatch } from 'react-hook-form'
 
 import { AuthFormConfig } from '@/lib/config/auth-forms'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
@@ -15,14 +15,18 @@ type OTPFormProps = {
   control: Control<AuthFormData>
   handleOtpSubmit: () => void
   goBackToEmail: () => void
+  loading?: boolean
 }
 
 export function OTPForm({
   config,
   control,
   handleOtpSubmit,
-  goBackToEmail
+  goBackToEmail,
+  loading = false
 }: OTPFormProps) {
+  const otp = useWatch({ control, name: 'otp' })
+
   return (
     <div className="container max-w-sm space-y-8">
       <div className="flex flex-col gap-2">
@@ -42,8 +46,10 @@ export function OTPForm({
                 <FormControl>
                   <InputOTP
                     maxLength={6}
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    aria-label="One-time password"
                     {...field}
-                    onComplete={handleOtpSubmit}
                   >
                     <InputOTPGroup className="w-full gap-4">
                       <InputOTPSlot index={0} className="" />
@@ -65,16 +71,19 @@ export function OTPForm({
         <Button
           className="w-full font-roboto-mono text-background"
           size={'lg'}
-          onClick={goBackToEmail}
+          onClick={handleOtpSubmit}
           type="submit"
+          disabled={loading || String(otp).length !== 6}
         >
           {config.submitText}
         </Button>
         <Button
           className="w-full font-roboto-mono"
           size={'lg'}
+          type="button"
           variant={'link'}
           onClick={goBackToEmail}
+          disabled={loading}
         >
           <MoveLeft />
           {config.footerLinkText}

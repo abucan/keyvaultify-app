@@ -16,9 +16,15 @@ type SignUpFormProps = {
   config: AuthFormConfig
   control: Control<AuthFormData>
   loading: boolean
+  disabled?: boolean
 }
 
-export function AuthForm({ config, control, loading }: SignUpFormProps) {
+export function AuthForm({
+  config,
+  control,
+  loading,
+  disabled
+}: SignUpFormProps) {
   return (
     <div className="container max-w-sm space-y-8">
       {/* Title and subtitle */}
@@ -80,7 +86,7 @@ export function AuthForm({ config, control, loading }: SignUpFormProps) {
           type="submit"
           className="w-full font-bricolage-grotesque text-background"
           size={'lg'}
-          disabled={loading}
+          disabled={loading || disabled}
         >
           {loading ? (
             <div className="flex flex-row items-center justify-center gap-2">

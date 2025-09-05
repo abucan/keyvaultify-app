@@ -1,6 +1,9 @@
 // src/middleware.ts
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { Organization } from 'better-auth/plugins'
+
+import { auth } from './lib/better-auth/auth'
 
 export async function middleware(request: NextRequest) {
   console.log('✅ Middleware running for:', request.nextUrl.pathname)

@@ -66,9 +66,7 @@ export const auth = betterAuth({
 
           await auth.api.createOrganization({
             body: {
-              name: user?.name
-                ? `${user.name}'s Workspace`
-                : 'Personal Workspace',
+              name: 'Personal Workspace',
               slug,
               userId: user.id,
               metadata: {

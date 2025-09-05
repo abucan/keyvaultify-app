@@ -12,6 +12,7 @@ import { Form } from '@/components/ui/form'
 import { authClient } from '@/lib/better-auth/auth-client'
 import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-forms'
 import { AuthFormData, authFormSchema } from '@/lib/zod-schemas/form-schema'
+import { sendSignInWithOtp, verifySignInWithOtp } from '@/server/auth.actions'
 
 type Step = 'email' | 'otp'
 
@@ -25,7 +26,7 @@ export default function SignInPage() {
       email: '',
       otp: ''
     },
-    mode: 'onSubmit'
+    mode: 'onBlur'
   })
 
   const {
@@ -35,7 +36,8 @@ export default function SignInPage() {
     clearErrors,
     setError,
     control,
-    reset
+    reset,
+    formState: { isDirty, isValid }
   } = form
 
   const watchedEmail = watch('email')
@@ -46,20 +48,31 @@ export default function SignInPage() {
     if (!isValid) return
 
     setLoading(true)
+
     try {
-      const { data } = await authClient.emailOtp.sendVerificationOtp({
-        email: watchedEmail,
-        type: 'sign-in'
-      })
-      console.log(data)
+      const fd = new FormData()
+      fd.append('email', watchedEmail)
+      const res = await sendSignInWithOtp(fd)
+
+      if (!res.ok) {
+        if (res.code === 'INVALID_EMAIL') {
+          setError('email', { type: 'manual', message: 'Enter a valid email.' })
+        } else if (res.code === 'RATE_LIMITED') {
+          setError('email', {
+            type: 'manual',
+            message: 'Too many attempts. Try again later.'
+          })
+        } else {
+          setError('email', {
+            type: 'manual',
+            message: 'Could not send code. Please try again.'
+          })
+        }
+        return
+      }
 
       setCurrentStep('otp')
-    } catch (error) {
-      console.error('Failed to send OTP:', error)
-      setError('email', {
-        type: 'manual',
-        message: 'Something went wrong. Please try again.'
-      })
+      clearErrors('otp')
     } finally {
       setLoading(false)
     }
@@ -70,20 +83,31 @@ export default function SignInPage() {
     if (!isValid) return
 
     setLoading(true)
-    try {
-      const { data } = await authClient.signIn.emailOtp({
-        email: watchedEmail,
-        otp: watchedOtp!
-      })
-      console.log(data)
 
-      redirect('/dashboard')
-    } catch (error) {
-      console.error('Failed to verify OTP:', error)
-      setError('otp', {
-        type: 'manual',
-        message: 'Invalid verification code. Please try again.'
-      })
+    try {
+      const fd = new FormData()
+      fd.append('email', watchedEmail)
+      fd.append('otp', watchedOtp!)
+      const res = await verifySignInWithOtp(fd)
+
+      if (!res?.ok) {
+        if (res.code === 'OTP_EXPIRED') {
+          setError('otp', {
+            type: 'manual',
+            message: 'Code expired. Request a new one.'
+          })
+        } else if (res.code === 'INVALID_OTP') {
+          setError('otp', {
+            type: 'manual',
+            message: 'Invalid code. Please try again.'
+          })
+        } else {
+          setError('otp', {
+            type: 'manual',
+            message: 'Could not verify code. Try again.'
+          })
+        }
+      }
     } finally {
       setLoading(false)
     }
@@ -115,6 +139,7 @@ export default function SignInPage() {
               config={authFormConfig}
               control={control}
               loading={loading}
+              disabled={!isDirty || !isValid}
             />
           )}
           {currentStep === 'otp' && (
@@ -123,6 +148,7 @@ export default function SignInPage() {
               control={control}
               handleOtpSubmit={handleOtpSubmit}
               goBackToEmail={goBackToEmail}
+              loading={loading}
             />
           )}
         </form>
