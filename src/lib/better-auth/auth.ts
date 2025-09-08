@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { nextCookies } from 'better-auth/next-js'
 import { emailOTP, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 
@@ -37,13 +38,14 @@ export const auth = betterAuth({
           const slug = `u-${session.userId}`
           const org = await db.query.organization.findFirst({
             where: eq(Organization.slug, slug),
-            columns: { id: true }
+            columns: { id: true, slug: true }
           })
 
           return {
             data: {
               ...session,
-              activeOrganizationId: org?.id ?? null
+              activeOrganizationId: org?.id ?? null,
+              activeOrganizationSlug: org?.slug ?? null
             }
           }
         }
@@ -98,12 +100,15 @@ export const auth = betterAuth({
       otpLength: 6,
       expiresIn: 600,
       sendVerificationOnSignUp: true,
+      allowedAttempts: 3,
       async sendVerificationOTP({ email, otp }) {
-        await sendOTPEmail({
+        /*      
+           await sendOTPEmail({
           email,
           type: 'sign-in',
           otp
         })
+        */
       }
     }),
     organization({
@@ -116,7 +121,8 @@ export const auth = betterAuth({
           inviterName: inviter?.user?.name || inviter?.user?.email
         })
       }
-    })
+    }),
+    nextCookies()
   ]
 })
 

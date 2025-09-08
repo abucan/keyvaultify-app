@@ -39,7 +39,7 @@ export function AddMemberForm() {
       email: '',
       role: 'member'
     },
-    mode: 'onChange'
+    mode: 'onSubmit'
   })
   const [pending, startTransition] = useTransition()
 

@@ -26,10 +26,10 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/components/ui/sidebar'
-import { User } from '@/lib/better-auth/auth'
 import { authClient } from '@/lib/better-auth/auth-client'
+import { SidebarCtx } from '@/types'
 
-export function NavUser({ user }: { user: User | null }) {
+export function NavUser({ user }: { user: SidebarCtx['user'] }) {
   const { isMobile } = useSidebar()
 
   return (

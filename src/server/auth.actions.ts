@@ -3,22 +3,16 @@
 'use server'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import z from 'zod'
 
 import { auth } from '@/lib/better-auth/auth'
+import { emailOnlySchema, otpOnlySchema } from '@/lib/zod-schemas/form-schema'
 import { OTPSignInResult } from '@/types/api-results'
-
-const emailSchema = z.string().email()
-const otpSchema = z
-  .string()
-  .length(6)
-  .regex(/^\d{6}$/)
 
 export async function sendSignInWithOtp(
   fd: FormData
 ): Promise<OTPSignInResult> {
   const email = String(fd.get('email') ?? '').trim()
-  if (!emailSchema.safeParse(email).success)
+  if (!emailOnlySchema.safeParse({ email }).success)
     return { ok: false, code: 'INVALID_EMAIL' }
 
   try {
@@ -42,9 +36,9 @@ export async function verifySignInWithOtp(
   const email = String(fd.get('email') ?? '').trim()
   const otp = String(fd.get('otp') ?? '').trim()
 
-  if (!emailSchema.safeParse(email).success)
+  if (!emailOnlySchema.safeParse({ email }).success)
     return { ok: false, code: 'INVALID_EMAIL' }
-  if (!otpSchema.safeParse(otp).success)
+  if (!otpOnlySchema.safeParse({ otp }).success)
     return { ok: false, code: 'INVALID_OTP' }
 
   try {
@@ -56,7 +50,6 @@ export async function verifySignInWithOtp(
       }
     })
   } catch (e: any) {
-    console.log(e)
     const msg = String(e?.message || '')
     if (msg.toLowerCase().includes('expired'))
       return { ok: false, code: 'OTP_EXPIRED' }
@@ -66,5 +59,5 @@ export async function verifySignInWithOtp(
     return { ok: false, code: 'UNKNOWN' }
   }
 
-  redirect(`/o?to=/`)
+  redirect('/dashboard')
 }

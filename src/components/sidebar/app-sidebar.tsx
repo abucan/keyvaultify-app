@@ -10,9 +10,7 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/components/ui/sidebar'
-import { User } from '@/lib/better-auth/auth'
-import { orgDash } from '@/lib/router/path'
-import { Team } from '@/types/auth'
+import { AppSidebarProps } from '@/types'
 
 import { NavMain } from './nav-main'
 import { NavProjects } from './nav-projects'
@@ -20,59 +18,54 @@ import { NavUser } from './nav-user'
 import { TeamSwitcher } from './team-switcher'
 
 export function AppSidebar({
-  user,
-  teams,
-  orgId,
-  orgSlug,
+  ctx,
   ...props
-}: React.ComponentProps<typeof Sidebar> & {
-  user: User | null
-  teams: Team[]
-  orgId: string | null
-  orgSlug: string | null
-}) {
+}: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
   const data = React.useMemo(() => {
-    const base = (p = '/') => orgDash(orgSlug ?? '', p)
     return {
       navMain: [
-        { title: 'Dashboard', url: base('/'), icon: Home },
+        { title: 'Dashboard', url: '/dashboard', icon: Home },
         {
           title: 'Team',
-          url: base('/team'),
+          url: '/team',
           icon: Users,
           items: [
-            { title: 'Members', url: base('/team/members') },
-            { title: 'Invitations', url: base('/team/invitations') },
-            { title: 'Settings', url: base('/team/settings') }
+            { title: 'Members', url: '/team/members' },
+            { title: 'Invitations', url: '/team/invitations' },
+            { title: 'Settings', url: '/team/settings' }
           ]
         },
         {
           title: 'Settings',
-          url: base('/settings'),
+          url: '/settings',
           icon: Settings2,
           items: [
-            { title: 'General', url: base('/settings/general') },
-            { title: 'Billing', url: base('/settings/billing') },
-            { title: 'Danger', url: base('/settings/danger') }
+            { title: 'General', url: '/settings/general' },
+            { title: 'Billing', url: '/settings/billing' },
+            { title: 'Danger', url: '/settings/danger' }
           ]
         }
       ],
       projects: [{ name: 'Keyvaultify (DEMO)', url: '#', icon: Key }],
       docs: { title: 'Documentation', url: '#', icon: BookOpen }
     }
-  }, [orgSlug])
+  }, [])
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={teams} orgId={orgId} orgSlug={orgSlug} />
+        <TeamSwitcher
+          teams={ctx.teams}
+          orgId={ctx.org.id}
+          orgSlug={ctx.org.slug}
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={ctx.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

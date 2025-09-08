@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/settings/general/components/GeneralSettingsForm.tsx
+// src/app/(private)/settings/general/components/GeneralSettingsForm.tsx
 'use client'
 import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'

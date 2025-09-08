@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/team/members/page.tsx
+// src/app/(private)/team/members/page.tsx
 import { listTeamMembers } from '@/server/members.actions'
 
 import { columns } from './columns'

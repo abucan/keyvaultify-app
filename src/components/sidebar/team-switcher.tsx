@@ -1,9 +1,11 @@
 // src/components/sidebar/team-switcher.tsx
 'use client'
 import * as React from 'react'
+import { useTransition } from 'react'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
+import { toast } from 'sonner'
 
 import {
   DropdownMenu,
@@ -35,6 +37,8 @@ export function TeamSwitcher({
   orgSlug: string | null
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [pending, startTransition] = useTransition()
 
   const { isMobile } = useSidebar()
 
@@ -95,7 +99,23 @@ export function TeamSwitcher({
               {teams.map((team, index) => (
                 <DropdownMenuItem
                   key={team.slug}
-                  onClick={() => switchTeamAction(team.id, pathname)}
+                  onClick={() => {
+                    startTransition(async () => {
+                      const res = await switchTeamAction(team.id)
+                      if (res.ok) {
+                        toast.success('Switched team.')
+                        router.refresh() // pick up new active org in the same /dashboard path
+                      } else {
+                        const msg =
+                          res.code === 'NOT_FOUND_OR_NO_ACCESS'
+                            ? "You don't have access to that team."
+                            : res.code === 'MISSING_ORG_ID'
+                              ? 'Missing team id.'
+                              : 'Could not switch team.'
+                        toast.error(msg)
+                      }
+                    })
+                  }}
                   className="gap-2 p-2"
                 >
                   <div className="flex size-6 items-center justify-center rounded-md border">

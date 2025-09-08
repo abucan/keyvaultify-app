@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/team/members/columns.tsx
+// src/app/(private)/team/members/columns.tsx
 'use client'
 import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'

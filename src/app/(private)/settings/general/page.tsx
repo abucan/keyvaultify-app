@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/settings/general/page.tsx
+// src/app/(private)/settings/general/page.tsx
 import { headers } from 'next/headers'
 
 import { auth } from '@/lib/better-auth/auth'

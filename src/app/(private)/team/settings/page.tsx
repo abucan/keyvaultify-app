@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/team/settings/page.tsx
+// src/app/(private)/team/settings/page.tsx
 import { headers } from 'next/headers'
 
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'

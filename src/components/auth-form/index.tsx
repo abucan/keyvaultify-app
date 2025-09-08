@@ -56,7 +56,7 @@ export function AuthForm({
         />
       </div>
       {/* Email input */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <p className="font-bricolage-grotesque font-[400] text-muted-foreground text-sm">
           {config.middleText}
         </p>

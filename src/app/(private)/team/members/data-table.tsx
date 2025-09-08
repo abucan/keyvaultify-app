@@ -1,12 +1,18 @@
-// src/app/(dashboard)/[orgSlug]/team/invitations/data-table.tsx
+// src/app/(private)/team/members/data-table.tsx
 'use client'
+import { useState } from 'react'
+import { TooltipTrigger } from '@radix-ui/react-tooltip'
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
 
+import { AddDialog } from '@/components/shared/AddDialog'
+import { AddMemberForm } from '@/components/team/AddMemberForm'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
   Table,
@@ -16,15 +22,24 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider
+} from '@/components/ui/tooltip'
+import { requireAdminOrOwner } from '@/lib/utils/helpers'
+import { MemberRow, Role } from '@/types/auth'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  currentUser: MemberRow | null
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  currentUser
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -32,9 +47,59 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel()
   })
 
+  const [addMemberDialogOpen, setAddMemberDialogOpen] = useState(false)
+
+  const isDisabled =
+    !requireAdminOrOwner(currentUser?.role as Role) ||
+    currentUser?._meta?.isPersonalOrg
+
   return (
     <>
+      <AddDialog
+        open={addMemberDialogOpen}
+        onOpenChange={setAddMemberDialogOpen}
+        title="Add member"
+        description="Add a new member to your team."
+      >
+        <AddMemberForm />
+      </AddDialog>
       <div className="flex flex-col gap-4 w-3/4">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {isDisabled ? (
+                <span tabIndex={0} aria-disabled="true" className="inline-flex">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="border-primary disabled:pointer-events-none w-full"
+                    onClick={() => setAddMemberDialogOpen(true)}
+                    disabled
+                  >
+                    <Plus className="size-4 mr-2" />
+                    <span className="font-bricolage-grotesque">Add Member</span>
+                  </Button>
+                </span>
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-primary w-full"
+                  onClick={() => setAddMemberDialogOpen(true)}
+                >
+                  <Plus className="size-4 mr-2" />
+                  <span className="font-bricolage-grotesque">Add Member</span>
+                </Button>
+              )}
+            </TooltipTrigger>
+
+            <TooltipContent>
+              {isDisabled
+                ? 'This is a personal organization. You cannot add members.'
+                : 'Add a member'}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Card className="overflow-hidden rounded-md border p-0 m-0 w-full">
           <Table>
             <TableHeader>

@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
-import { env } from '@/lib/utils/env'
 
+// import { env } from '@/lib/utils/env'
 import './globals.css'
 
 // Inter, Outfit, Roboto, Roboto_Mono, Spectral
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   description: 'Keyvaultify - ENV Management'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
@@ -40,8 +40,8 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
-          // enableSystem
           disableTransitionOnChange
+          // LATER: enableSystem
         >
           <main>{children}</main>
           <Toaster richColors />

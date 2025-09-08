@@ -9,6 +9,7 @@ import { auth } from '@/lib/better-auth/auth'
 import { orgDash } from '@/lib/router/path'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
+import { SwitchOrganizationResult } from '@/types/api-results'
 
 type Result<T extends string = string> =
   | { ok: true }
@@ -67,22 +68,26 @@ export async function createTeamAction(formData: FormData) {
 }
 
 export async function switchTeamAction(
-  targetOrgId: string,
-  currentPathname: string
-) {
-  if (!targetOrgId) throw new Error('Missing organizationId')
+  targetOrgId: string
+): Promise<SwitchOrganizationResult> {
+  try {
+    if (!targetOrgId) return { ok: false, code: 'MISSING_ORG_ID' }
 
-  await auth.api.setActiveOrganization({
-    headers: await headers(),
-    body: { organizationId: targetOrgId }
-  })
+    const hdrs = await headers()
 
-  // Get slug for target id
-  const full = await auth.api.getFullOrganization({ headers: await headers() })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const slug = (full as any)?.slug as string
-  const rest = currentPathname.replace(/^(?:\/dashboard)?\/[^/]+/, '') || '/'
-  redirect(orgDash(slug, rest))
+    const orgs = await auth.api.listOrganizations({ headers: hdrs })
+    const target = orgs?.find(o => o.id === targetOrgId)
+    if (!target) return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
+
+    await auth.api.setActiveOrganization({
+      headers: hdrs,
+      body: { organizationId: targetOrgId }
+    })
+
+    return { ok: true }
+  } catch {
+    return { ok: false, code: 'UNKNOWN' }
+  }
 }
 
 export async function listTeams() {

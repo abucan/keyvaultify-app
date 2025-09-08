@@ -11,3 +11,7 @@ export type OTPSignInResult =
         | 'NOT_AUTHORIZED'
         | 'UNKNOWN'
     }
+
+export type SwitchOrganizationResult =
+  | { ok: true }
+  | { ok: false; code: 'MISSING_ORG_ID' | 'NOT_FOUND_OR_NO_ACCESS' | 'UNKNOWN' }

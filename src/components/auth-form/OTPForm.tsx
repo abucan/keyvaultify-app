@@ -16,6 +16,7 @@ type OTPFormProps = {
   handleOtpSubmit: () => void
   goBackToEmail: () => void
   loading?: boolean
+  disabled?: boolean
 }
 
 export function OTPForm({
@@ -23,15 +24,18 @@ export function OTPForm({
   control,
   handleOtpSubmit,
   goBackToEmail,
-  loading = false
+  loading = false,
+  disabled = false
 }: OTPFormProps) {
   const otp = useWatch({ control, name: 'otp' })
 
   return (
     <div className="container max-w-sm space-y-8">
       <div className="flex flex-col gap-2">
-        <h1 className="font-spectral text-3xl font-semibold">{config.title}</h1>
-        <p className="font-roboto-mono font-[400] text-muted-foreground text-sm">
+        <h1 className="font-bricolage-grotesque text-3xl font-semibold">
+          {config.title}
+        </h1>
+        <p className="font-bricolage-grotesque font-[400] text-muted-foreground text-sm">
           {config.subtitle}
         </p>
       </div>
@@ -73,7 +77,7 @@ export function OTPForm({
           size={'lg'}
           onClick={handleOtpSubmit}
           type="submit"
-          disabled={loading || String(otp).length !== 6}
+          disabled={loading || String(otp).length !== 6 || disabled}
         >
           {config.submitText}
         </Button>

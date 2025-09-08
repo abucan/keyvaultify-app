@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/settings/danger/page.tsx
+// src/app/(private)/settings/danger/page.tsx
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
 import { deleteUserProfileAction } from '@/server/settings.actions'
 

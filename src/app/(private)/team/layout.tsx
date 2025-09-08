@@ -1,7 +1,7 @@
-// src/app/(dashboard)/[orgSlug]/team/layout.tsx
+// src/app/(private)/team/layout.tsx
 'use client'
 import Link from 'next/link'
-import { useParams, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { Settings } from 'lucide-react'
 
 import { Card } from '@/components/ui/card'
@@ -12,25 +12,21 @@ export default function TeamsLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const { orgSlug } = useParams<{ orgSlug: string }>() as { orgSlug?: string }
-
-  const base = `/${orgSlug}/team`
-
   const teams = [
     {
       title: 'Members',
       description: 'Manage your team members.',
-      href: `${base}/members`
+      href: `/team/members`
     },
     {
       title: 'Invitations',
       description: 'Manage your team invitations.',
-      href: `${base}/invitations`
+      href: `/team/invitations`
     },
     {
       title: 'Settings',
       description: 'Manage your team settings.',
-      href: `${base}/settings`
+      href: `/team/settings`
     }
   ]
 

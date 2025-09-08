@@ -1,4 +1,4 @@
-// src/app/(dashboard)/[orgSlug]/team/invitations/columns.tsx
+// src/app/(private)/team/invitations/columns.tsx
 'use client'
 import { ColumnDef } from '@tanstack/react-table'
 

@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const authFormSchema = z
   .object({
-    email: z.string().email('Please enter a valid email address'),
+    email: z.email(),
     otp: z.string().optional()
   })
   .refine(
@@ -19,14 +19,6 @@ export const authFormSchema = z
     }
   )
 
-export const emailStepSchema = z.object({
-  email: z.string().email('Please enter a valid email address')
-})
-
-export const otpStepSchema = z.object({
-  otp: z.string().length(6, 'Verification code must be 6 digits')
-})
-
-export type EmailStepData = z.infer<typeof emailStepSchema>
-export type OTPStepData = z.infer<typeof otpStepSchema>
+export const emailOnlySchema = authFormSchema.pick({ email: true })
+export const otpOnlySchema = authFormSchema.pick({ otp: true })
 export type AuthFormData = z.infer<typeof authFormSchema>

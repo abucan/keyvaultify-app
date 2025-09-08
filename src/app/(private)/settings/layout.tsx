@@ -1,7 +1,7 @@
-// src/app/(dashboard)/[orgSlug]/settings/layout.tsx
+// src/app/(private)/settings/layout.tsx
 'use client'
 import Link from 'next/link'
-import { useParams, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { CreditCard, Settings, Trash } from 'lucide-react'
 
 import { Card } from '@/components/ui/card'
@@ -12,27 +12,23 @@ export default function SettingsLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const { orgSlug } = useParams<{ orgSlug: string }>() as { orgSlug?: string }
-
-  const base = `/${orgSlug}/settings`
-
   const settings = [
     {
       title: 'General',
       description: 'Manage your account settings and preferences.',
-      href: `${base}/general`,
+      href: `/settings/general`,
       icon: Settings
     },
     {
       title: 'Billing',
       description: 'Manage your billing information and subscriptions.',
-      href: `${base}/billing`,
+      href: `/settings/billing`,
       icon: CreditCard
     },
     {
       title: 'Danger',
       description: 'Delete your account and all associated data.',
-      href: `${base}/danger`,
+      href: `/settings/danger`,
       icon: Trash
     }
   ]

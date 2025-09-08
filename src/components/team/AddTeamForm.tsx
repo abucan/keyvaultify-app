@@ -34,7 +34,7 @@ export function AddTeamForm() {
       name: '',
       slug: ''
     },
-    mode: 'onChange'
+    mode: 'onSubmit'
   })
   const [pending, startTransition] = useTransition()
 

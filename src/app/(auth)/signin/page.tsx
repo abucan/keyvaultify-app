@@ -2,14 +2,12 @@
 'use client'
 
 import { useState } from 'react'
-import { redirect } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 import { AuthForm } from '@/components/auth-form'
 import { OTPForm } from '@/components/auth-form/OTPForm'
 import { Form } from '@/components/ui/form'
-import { authClient } from '@/lib/better-auth/auth-client'
 import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-forms'
 import { AuthFormData, authFormSchema } from '@/lib/zod-schemas/form-schema'
 import { sendSignInWithOtp, verifySignInWithOtp } from '@/server/auth.actions'
@@ -26,7 +24,7 @@ export default function SignInPage() {
       email: '',
       otp: ''
     },
-    mode: 'onBlur'
+    mode: 'onSubmit'
   })
 
   const {
@@ -149,6 +147,7 @@ export default function SignInPage() {
               handleOtpSubmit={handleOtpSubmit}
               goBackToEmail={goBackToEmail}
               loading={loading}
+              disabled={!isDirty || !isValid}
             />
           )}
         </form>
