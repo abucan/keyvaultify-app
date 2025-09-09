@@ -6,14 +6,9 @@ import { redirect } from 'next/navigation'
 import { APIError } from 'better-auth/api'
 
 import { auth } from '@/lib/better-auth/auth'
-import { orgDash } from '@/lib/router/path'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
-import { SwitchOrganizationResult } from '@/types/api-results'
-
-type Result<T extends string = string> =
-  | { ok: true }
-  | { ok: false; code: T | 'INVALID_INPUT' | 'NOT_AUTHORIZED' | 'UNKNOWN' }
+import { TeamSwitchResult } from '@/types/api-results'
 
 function normalizeSlug(s: string) {
   return s
@@ -69,15 +64,17 @@ export async function createTeamAction(formData: FormData) {
 
 export async function switchTeamAction(
   targetOrgId: string
-): Promise<SwitchOrganizationResult> {
+): Promise<TeamSwitchResult> {
   try {
     if (!targetOrgId) return { ok: false, code: 'MISSING_ORG_ID' }
 
     const hdrs = await headers()
 
-    const orgs = await auth.api.listOrganizations({ headers: hdrs })
-    const target = orgs?.find(o => o.id === targetOrgId)
-    if (!target) return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
+    const targetOrg = await auth.api.getFullOrganization({
+      headers: hdrs,
+      query: { organizationId: targetOrgId }
+    })
+    if (!targetOrg) return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
 
     await auth.api.setActiveOrganization({
       headers: hdrs,
@@ -95,7 +92,9 @@ export async function listTeams() {
   return res ?? []
 }
 
-export async function updateTeamSettingsAction(fd: FormData): Promise<Result> {
+export async function updateTeamSettingsAction(
+  fd: FormData
+): Promise<TeamSwitchResult> {
   await requireRole(['owner', 'admin'])
 
   // read active org first so we can compute oldSlug for revalidate/redirect
@@ -169,7 +168,7 @@ export async function updateTeamSettingsAction(fd: FormData): Promise<Result> {
   }
 }
 
-export async function deleteTeamAction(): Promise<Result> {
+export async function deleteTeamAction(): Promise<TeamSwitchResult> {
   await requireRole(['owner'])
   try {
     const full = await auth.api.getFullOrganization({

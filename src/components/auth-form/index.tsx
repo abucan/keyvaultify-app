@@ -25,6 +25,10 @@ export function AuthForm({
   loading,
   disabled
 }: SignUpFormProps) {
+  const handleLastUsed = (provider: 'google' | 'github' | 'email') => {
+    localStorage.setItem('lastUsedProvider', provider)
+  }
+
   return (
     <div className="container max-w-sm space-y-8">
       {/* Title and subtitle */}
@@ -48,11 +52,13 @@ export function AuthForm({
           provider="google"
           text="Continue with Google"
           icon="google"
+          handleLastUsed={handleLastUsed}
         />
         <OAuthButton
           provider="github"
           text="Continue with Github"
           icon="github_light"
+          handleLastUsed={handleLastUsed}
         />
       </div>
       {/* Email input */}

@@ -1,9 +1,11 @@
 // src/lib/better-auth/auth.ts
-// TODO: consider adding server-only import
-import { cookies } from 'next/headers'
+import 'server-only'
+
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { APIError } from 'better-auth/api'
 import { nextCookies } from 'better-auth/next-js'
 import { emailOTP, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
@@ -19,6 +21,38 @@ export const auth = betterAuth({
   }),
   user: {
     deleteUser: {
+      beforeDelete: async () => {
+        try {
+          const hdrs = await headers()
+
+          const rows = await auth.api.listOrganizations({
+            headers: hdrs
+          })
+
+          if (rows.length !== 1) {
+            throw new APIError('FORBIDDEN', {
+              message:
+                'Account deletion is allowed only for users with a single organization.'
+            })
+          }
+
+          await auth.api.deleteOrganization({
+            headers: hdrs,
+            body: {
+              organizationId: rows[0].id
+            },
+            query: {
+              metadata: {
+                isPersonal: true
+              }
+            }
+          })
+        } catch (error: any) {
+          throw new APIError('INTERNAL_SERVER_ERROR', {
+            message: String(error.message)
+          })
+        }
+      },
       enabled: true,
       afterDelete: async ({}) => {
         try {
@@ -44,8 +78,7 @@ export const auth = betterAuth({
           return {
             data: {
               ...session,
-              activeOrganizationId: org?.id ?? null,
-              activeOrganizationSlug: org?.slug ?? null
+              activeOrganizationId: org?.id ?? null
             }
           }
         }

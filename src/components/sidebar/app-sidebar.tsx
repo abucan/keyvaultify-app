@@ -54,11 +54,7 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher
-          teams={ctx.teams}
-          orgId={ctx.org.id}
-          orgSlug={ctx.org.slug}
-        />
+        <TeamSwitcher teams={ctx.teams} orgId={ctx.org.id} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

@@ -1,6 +1,11 @@
 // src/middleware.ts
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { betterFetch } from '@better-fetch/fetch'
+
+import { auth } from './lib/better-auth/auth'
+
+type Session = typeof auth.$Infer.Session
 
 export async function middleware(request: NextRequest) {
   console.log('✅ Middleware running for:', request.nextUrl.pathname)
@@ -11,10 +16,18 @@ export async function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.some(route => pathname === route)
 
   try {
-    const sessionToken = request.cookies.get('better-auth.session_token')?.value
+    const { data: session } = await betterFetch<Session>(
+      '/api/auth/get-session',
+      {
+        baseURL: request.nextUrl.origin,
+        headers: {
+          cookie: request.headers.get('cookie') ?? ''
+        }
+      }
+    )
 
     // If user is authenticated and trying to access auth pages, redirect to dashboard
-    if (sessionToken && pathname === '/signin') {
+    if (session?.session && session?.user && pathname === '/signin') {
       console.log('✅ User already authenticated, redirecting to dashboard')
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
@@ -26,7 +39,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // For protected routes, check authentication
-    if (!sessionToken) {
+    if (!session) {
       console.log('❌ No session token, redirecting to /signin')
       return NextResponse.redirect(new URL('/signin', request.url))
     }

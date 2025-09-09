@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/(private)/layout.tsx
 import 'server-only'
 
 import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 import { ModeToggle } from '@/components/shared/ModeToggle'
 import { SearchCommand } from '@/components/shared/SearchCommand'
@@ -27,7 +26,7 @@ export default async function DashboardLayout({
 }) {
   const hdrs = await headers()
   const session = await auth.api.getSession({ headers: hdrs })
-  if (!session?.user) redirect('/signin')
+  if (!session?.user) notFound()
 
   let full = await auth.api
     .getFullOrganization({ headers: hdrs })

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useTransition } from 'react'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -29,14 +29,11 @@ import { AddTeamForm } from '../team/AddTeamForm'
 
 export function TeamSwitcher({
   teams,
-  orgId,
-  orgSlug
+  orgId
 }: {
   teams: Team[]
   orgId: string | null
-  orgSlug: string | null
 }) {
-  const pathname = usePathname()
   const router = useRouter()
   const [pending, startTransition] = useTransition()
 
@@ -96,15 +93,15 @@ export function TeamSwitcher({
               <DropdownMenuLabel className="text-muted-foreground text-xs">
                 Teams
               </DropdownMenuLabel>
-              {teams.map((team, index) => (
+              {teams.map(team => (
                 <DropdownMenuItem
                   key={team.slug}
                   onClick={() => {
                     startTransition(async () => {
                       const res = await switchTeamAction(team.id)
                       if (res.ok) {
-                        toast.success('Switched team.')
-                        router.refresh() // pick up new active org in the same /dashboard path
+                        toast.success('Switched to a new team.')
+                        router.refresh()
                       } else {
                         const msg =
                           res.code === 'NOT_FOUND_OR_NO_ACCESS'

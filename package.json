@@ -18,6 +18,7 @@
     "email:dev": "email dev --dir src/lib/email/templates -p 3001"
   },
   "dependencies": {
+    "@better-fetch/fetch": "^1.1.18",
     "@hookform/resolvers": "^5.2.1",
     "@number-flow/react": "^0.5.10",
     "@radix-ui/react-alert-dialog": "^1.1.15",

@@ -8,8 +8,6 @@ import { Toaster } from '@/components/ui/sonner'
 // import { env } from '@/lib/utils/env'
 import './globals.css'
 
-// Inter, Outfit, Roboto, Roboto_Mono, Spectral
-
 const fontBricolageGrotesque = Bricolage_Grotesque({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
