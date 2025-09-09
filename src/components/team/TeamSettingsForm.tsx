@@ -42,7 +42,6 @@ const TeamSettingsFormSchema = z.object({
   name: z.string().optional(),
   slug: z.string().optional(),
   logo: z.string().optional(),
-  billing_email: z.string().optional(),
   default_role: z.string().optional()
 })
 
@@ -50,7 +49,6 @@ export function TeamSettingsForm({
   name,
   slug,
   logo,
-  billing_email,
   default_role,
   updateTeamSettings
 }: Organization) {
@@ -60,7 +58,6 @@ export function TeamSettingsForm({
       name: name,
       slug: slug,
       logo: logo,
-      billing_email: billing_email,
       default_role: default_role
     }
   })
@@ -89,7 +86,6 @@ export function TeamSettingsForm({
     fd.append('name', values.name ?? '')
     fd.append('slug', values.slug ?? '')
     fd.append('logo', values.logo ?? '')
-    fd.append('billing_email', values.billing_email ?? '')
     fd.append('default_role', values.default_role ?? '')
     const res = await updateTeamSettings(fd)
     if (!res?.ok) {
@@ -187,23 +183,6 @@ export function TeamSettingsForm({
                 )}
               />
             </div>
-            <Separator className="my-6" />
-            <FormField
-              control={form.control}
-              name="billing_email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Billing email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Team billing email" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your team billing email.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <Separator className="my-6" />
             <FormField
               control={form.control}

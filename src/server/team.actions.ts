@@ -113,15 +113,12 @@ export async function updateTeamSettingsAction(
     name: String(fd.get('name') ?? oldName),
     slug: fd.get('slug') ? normalizeSlug(String(fd.get('slug'))) : undefined,
     logo: String(fd.get('logo') ?? oldLogo),
-    billing_email: String(
-      fd.get('billing_email') ?? oldMetadata?.billing_email ?? ''
-    ),
     default_role: String(
       fd.get('default_role') ?? oldMetadata?.default_role ?? ''
     )
   }
 
-  const { name, slug, logo, billing_email, default_role } = raw
+  const { name, slug, logo, default_role } = raw
 
   // Only owners can change slug
   if (slug && slug !== oldSlug) {
@@ -139,7 +136,6 @@ export async function updateTeamSettingsAction(
           ...(slug ? { slug } : {}),
           ...(logo ? { logo } : {}),
           metadata: {
-            ...(billing_email ? { billing_email } : {}),
             ...(default_role ? { default_role } : {})
           }
         }

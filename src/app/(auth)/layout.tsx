@@ -1,13 +1,20 @@
 // src/app/(auth)/layout.tsx
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { ShieldCheck } from 'lucide-react'
 
 import KeyVaultifyTerminal from '@/components/terminal/keyvaultify-terminal'
+import { auth } from '@/lib/better-auth/auth'
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (session?.session?.activeOrganizationId) {
+    redirect('/dashboard')
+  }
   return (
     <div className="flex h-screen">
       <div className="flex flex-col w-[60%] relative">

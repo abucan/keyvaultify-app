@@ -67,7 +67,6 @@ export type Organization = {
   name: string
   slug: string
   logo: string
-  billing_email: string
   default_role: string
   updateTeamSettings: (values: FormData) => Promise<Result>
 }
