@@ -42,7 +42,7 @@ export default async function RootLayout({
           // LATER: enableSystem
         >
           <main>{children}</main>
-          <Toaster richColors />
+          <Toaster richColors position="top-center" />
         </ThemeProvider>
       </body>
     </html>

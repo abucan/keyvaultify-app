@@ -1,14 +1,19 @@
 // src/components/team/AddTeamForm.tsx
 'use client'
 import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { APIError } from 'better-auth/api'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import {
+  AddTeamFormData,
+  addTeamFormSchema
+} from '@/lib/zod-schemas/form-schema'
 import { createTeamAction } from '@/server/team.actions'
 
+import { toastRes } from '../toast-result'
 import { Button } from '../ui/button'
 import {
   Form,
@@ -20,16 +25,13 @@ import {
 } from '../ui/form'
 import { Input } from '../ui/input'
 
-const schema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  slug: z.string().min(3, { message: 'Slug is required' })
-})
-
-type FormValues = z.infer<typeof schema>
-
-export function AddTeamForm() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+export function AddTeamForm({
+  setAddTeamDialogOpen
+}: {
+  setAddTeamDialogOpen: (open: boolean) => void
+}) {
+  const form = useForm<AddTeamFormData>({
+    resolver: zodResolver(addTeamFormSchema),
     defaultValues: {
       name: '',
       slug: ''
@@ -37,25 +39,36 @@ export function AddTeamForm() {
     mode: 'onSubmit'
   })
   const [pending, startTransition] = useTransition()
+  const router = useRouter()
 
-  async function onSubmit(values: FormValues) {
+  const { isDirty, isValid } = form.formState
+
+  async function onSubmit(values: AddTeamFormData) {
     const fd = new FormData()
     fd.append('name', values.name)
     fd.append('slug', values.slug)
 
     startTransition(async () => {
-      try {
-        await createTeamAction(fd)
+      const res = await createTeamAction(fd)
+
+      toastRes(res, {
+        success: 'New team created. Switching to new team...',
+        errors: {
+          INVALID_INPUT: 'Please check the fields.',
+          UNAUTHORIZED: 'Please sign in.',
+          SLUG_IS_TAKEN: 'Please provide a different slug.',
+          ORGANIZATION_ALREADY_EXISTS: 'Please provide a different slug.'
+        }
+      })
+
+      if (res.ok) {
+        setAddTeamDialogOpen(false)
+        router.refresh()
         form.reset()
-        toast.success('Team created')
-      } catch (e) {
+      } else if (res.code === 'INVALID_INPUT') {
         form.setError('slug', {
-          message:
-            e instanceof APIError && e.body?.code === 'SLUG_IS_TAKEN'
-              ? 'Slug is unavailable. Please try a different slug.'
-              : e instanceof Error && e.message === 'SLUG_IS_TAKEN'
-                ? 'Slug is unavailable. Please try a different slug.'
-                : 'Unknown error'
+          type: 'manual',
+          message: 'Please provide a valid slug.'
         })
       }
     })
@@ -90,7 +103,11 @@ export function AddTeamForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
+        <Button
+          type="submit"
+          disabled={pending || !isDirty || !isValid}
+          className="w-full"
+        >
           Create team
         </Button>
       </form>

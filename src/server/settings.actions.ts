@@ -4,6 +4,7 @@ import {
   deleteUserProfile as _delete,
   updateUserProfile as _update
 } from '@/lib/auth/profile'
+import { R } from '@/types/api-results'
 
 export async function updateUserProfileAction(values: {
   name?: string
@@ -12,6 +13,6 @@ export async function updateUserProfileAction(values: {
   await _update(values)
 }
 
-export async function deleteUserProfileAction() {
-  await _delete()
+export async function deleteUserProfileAction(): Promise<R> {
+  return await _delete()
 }

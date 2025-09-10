@@ -6,9 +6,11 @@ import { redirect } from 'next/navigation'
 import { APIError } from 'better-auth/api'
 
 import { auth } from '@/lib/better-auth/auth'
+import { mapError } from '@/lib/errors/mapError'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
-import { TeamSwitchResult } from '@/types/api-results'
+import { addTeamFormSchema } from '@/lib/zod-schemas/form-schema'
+import { R, TeamSwitchResult } from '@/types/api-results'
 
 function normalizeSlug(s: string) {
   return s
@@ -25,40 +27,63 @@ function safeParseJSON(str: string) {
   }
 }
 
-export async function createTeamAction(formData: FormData) {
-  const name = String(formData.get('name') ?? '').trim()
-  let slug = String(formData.get('slug') ?? '').trim()
-  if (!name || !slug) throw new Error('Missing name or slug')
+export async function createTeamAction(
+  formData: FormData
+): Promise<R<{ id: string }>> {
+  const input = {
+    name: String(formData.get('name') ?? '').trim(),
+    slug: String(formData.get('slug') ?? '').trim()
+  }
 
-  slug = normalizeTeamSlug(slug)
-  assertTeamSlug(slug)
+  const parsed = addTeamFormSchema.safeParse(input)
+  if (!parsed.success)
+    return {
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'Please provide a valid name and slug.'
+    }
 
-  // Check availability (don’t leak exact reason on failure to the UI)
+  const name = parsed.data.name
+  const slug = normalizeTeamSlug(parsed.data.slug)
   try {
+    assertTeamSlug(slug)
+  } catch {
+    return {
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'Please provide a valid slug.'
+    }
+  }
+
+  try {
+    const _headers = await headers()
+    const session = await auth.api.getSession({ headers: _headers })
+    if (!session?.user)
+      return {
+        ok: false,
+        code: 'NOT_AUTHORIZED',
+        message: 'You must be logged in to create a team.'
+      }
+
     await auth.api.checkOrganizationSlug({
-      headers: await headers(),
+      headers: _headers,
       body: { slug }
     })
 
-    await auth.api.createOrganization({
-      headers: await headers(),
+    const created = await auth.api.createOrganization({
+      headers: _headers,
       body: { name, slug }
     })
 
-    // Make it active for this session
     await auth.api.setActiveOrganization({
-      headers: await headers(),
-      body: { organizationSlug: slug }
+      headers: _headers,
+      body: { organizationId: created?.id }
     })
-  } catch (error: unknown) {
-    if (error instanceof APIError) {
-      console.log(error)
-      throw new Error(error?.body?.code)
-    }
-    throw new Error('Failed to create team')
-  } finally {
-    //  revalidatePath('/dashboard')
-    //d  redirect('/dashboard')
+
+    return { ok: true, data: { id: created?.id ?? '' } }
+  } catch (error) {
+    const { code, message } = mapError(error)
+    return { ok: false, code, message }
   }
 }
 
@@ -68,16 +93,16 @@ export async function switchTeamAction(
   try {
     if (!targetOrgId) return { ok: false, code: 'MISSING_ORG_ID' }
 
-    const hdrs = await headers()
+    const _headers = await headers()
 
     const targetOrg = await auth.api.getFullOrganization({
-      headers: hdrs,
+      headers: _headers,
       query: { organizationId: targetOrgId }
     })
     if (!targetOrg) return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
 
     await auth.api.setActiveOrganization({
-      headers: hdrs,
+      headers: _headers,
       body: { organizationId: targetOrgId }
     })
 

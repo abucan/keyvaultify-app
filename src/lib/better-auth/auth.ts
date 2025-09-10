@@ -32,7 +32,7 @@ export const auth = betterAuth({
           if (rows.length !== 1) {
             throw new APIError('FORBIDDEN', {
               message:
-                'Account deletion is allowed only for users with a single organization.'
+                'Make sure you only have one organization and are the only owner of the organization before deleting your account.'
             })
           }
 

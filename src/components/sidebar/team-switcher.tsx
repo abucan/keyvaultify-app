@@ -54,7 +54,7 @@ export function TeamSwitcher({
         title="Add team"
         description="Add a new team."
       >
-        <AddTeamForm />
+        <AddTeamForm setAddTeamDialogOpen={setAddTeamDialogOpen} />
       </AddDialog>
       <SidebarMenu>
         <SidebarMenuItem>

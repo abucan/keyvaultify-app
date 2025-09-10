@@ -19,3 +19,8 @@ export type SwitchOrganizationResult =
 export type TeamSwitchResult<T extends string = string> =
   | { ok: true }
   | { ok: false; code: T | 'INVALID_INPUT' | 'NOT_AUTHORIZED' | 'UNKNOWN' }
+
+// src/types/result.ts
+export type R<T = void> =
+  | { ok: true; data?: T }
+  | { ok: false; code: string; message?: string }
