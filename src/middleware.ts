@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  const publicRoutes = ['/', '/signin']
+  const publicRoutes = ['/', '/signin', '/sentry-example-page']
   const isPublicRoute = publicRoutes.some(route => pathname === route)
 
   try {

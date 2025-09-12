@@ -2,7 +2,6 @@
 import 'server-only'
 
 import { cookies, headers } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { APIError } from 'better-auth/api'
@@ -19,8 +18,15 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite'
   }),
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5
+    }
+  },
   user: {
     deleteUser: {
+      enabled: true,
       beforeDelete: async () => {
         try {
           const hdrs = await headers()
@@ -32,7 +38,7 @@ export const auth = betterAuth({
           if (rows.length !== 1) {
             throw new APIError('FORBIDDEN', {
               message:
-                'Make sure you only have one organization and are the only owner of the organization before deleting your account.'
+                'Ensure you’re the sole owner of a single organization before deleting your account.'
             })
           }
 
@@ -53,14 +59,11 @@ export const auth = betterAuth({
           })
         }
       },
-      enabled: true,
       afterDelete: async ({}) => {
         try {
           ;(await cookies()).delete('better-auth.session_token')
-          redirect('/signin')
         } catch (error) {
           console.error('Error during post-delete cleanup:', error)
-          redirect('/signin') // Fallback redirect
         }
       }
     }
@@ -135,6 +138,7 @@ export const auth = betterAuth({
       sendVerificationOnSignUp: true,
       allowedAttempts: 3,
       async sendVerificationOTP({ email, otp }) {
+        // TODO: Enable this later
         /*      
            await sendOTPEmail({
           email,

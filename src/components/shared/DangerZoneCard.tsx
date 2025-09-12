@@ -1,10 +1,11 @@
 // src/components/shared/DangerZoneCard.tsx
+'use client'
+import { useActionState, useEffect, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { Trash2 } from 'lucide-react'
 
-import { Result } from '@/types/auth'
+import { R } from '@/types/result'
 
-import { Button } from '../ui/button'
+import { toastRes } from '../toast-result'
 import {
   Card,
   CardContent,
@@ -20,18 +21,30 @@ type DangerZoneCardProps = {
   title: string
   description: string
   content: string
-  onConfirm: () => Promise<Result> | void
-  loadingText?: string
-  disabled?: boolean
+  formAction: (prevState?: R | undefined, formData?: FormData) => Promise<R>
+  errorMessages?: Record<string, string>
 }
 
 export function DangerZoneCard({
   title,
   description,
   content,
-  onConfirm,
-  loadingText
+  formAction,
+  errorMessages
 }: DangerZoneCardProps) {
+  const [open, setOpen] = useState(false)
+  const [state, boundAction] = useActionState<R | undefined, FormData>(
+    formAction,
+    undefined
+  )
+
+  useEffect(() => {
+    if (state && state.ok === false) {
+      toastRes(state, { errors: errorMessages ?? {} })
+      setOpen(false)
+    }
+  }, [state, errorMessages])
+
   return (
     <Card className="w-3/4">
       <CardHeader className="gap-0">
@@ -43,25 +56,20 @@ export function DangerZoneCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-row items-start gap-4">
-          <AlertTriangle size={40} className="text-destructive" />
-          <p className="text-sm font-bricolage-grotesque text-muted-foreground">
+        <div className="flex flex-row items-center gap-4">
+          <AlertTriangle size={26} className="text-destructive" />
+          <p className="text-sm max-w-xl font-bricolage-grotesque text-muted-foreground">
             {content}
           </p>
         </div>
       </CardContent>
       <CardFooter>
         <ConfirmDialog
-          triggerButton={
-            <Button variant={'destructive'}>
-              <Trash2 className="w-4 h-4" />
-              {title}
-            </Button>
-          }
+          open={open}
+          onOpenChange={setOpen}
           title={title}
           description={description}
-          onConfirm={onConfirm}
-          loadingText={loadingText}
+          action={boundAction}
         />
       </CardFooter>
     </Card>

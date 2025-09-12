@@ -1,10 +1,10 @@
 // src/app/(private)/settings/general/page.tsx
 import { headers } from 'next/headers'
+import { unauthorized } from 'next/navigation'
 
+import { GeneralSettingsForm } from '@/components/settings/GeneralSettingsForm'
 import { auth } from '@/lib/better-auth/auth'
 import { updateUserProfileAction } from '@/server/settings.actions'
-
-import { GeneralSettingsForm } from './components/GeneralSettingsForm'
 
 export default async function GeneralSettingsPage() {
   const session = await auth.api.getSession({
@@ -14,16 +14,15 @@ export default async function GeneralSettingsPage() {
   const user = session?.user
 
   if (!user) {
-    // TODO: Redirect to login page, or show a message
-    return <div>Not authenticated</div>
+    unauthorized()
   }
-
+  // TODO: add what provider it is
   return (
     <GeneralSettingsForm
-      initialUsername={user.name ?? ''}
-      initialImage={user.image ?? ''}
-      email={user.email}
-      updateUserProfile={updateUserProfileAction}
+      initialUsername={user?.name}
+      initialEmail={user?.email}
+      initialImage={user?.image ?? '/shadcn.jfif'}
+      action={updateUserProfileAction}
     />
   )
 }

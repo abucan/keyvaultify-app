@@ -1,6 +1,8 @@
 // src/components/shared/ConfirmDialog.tsx
 'use client'
 import { useState } from 'react'
+import { Loader, Trash2 } from 'lucide-react'
+import { useFormStatus } from 'react-dom'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,48 +14,42 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { Result } from '@/types/auth'
 
 import { Input } from '../ui/input'
 
-interface ConfirmDialogProps {
-  triggerButton: React.ReactNode
+import { SubmitButton } from './SubmitButton'
+
+type ConfirmDialogProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
   title: string
   description: string
-  onConfirm: () => Promise<Result> | void
-  disabled?: boolean
-  loadingText?: string
+  action: (formData: FormData) => void
 }
 
 export function ConfirmDialog({
-  triggerButton,
+  open,
+  onOpenChange,
   title,
   description,
-  onConfirm,
-  disabled = false,
-  loadingText = 'Loading...'
+  action
 }: ConfirmDialogProps) {
-  const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [confirmationText, setConfirmationText] = useState('')
-
-  const handleConfirm = async () => {
-    try {
-      setIsLoading(true)
-      await onConfirm()
-      setOpen(false)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   const isConfirmEnabled = confirmationText.toUpperCase() === 'DELETE'
 
+  const handleOpenChange = (next: boolean) => {
+    if (!next) setConfirmationText('')
+    onOpenChange(next)
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{triggerButton}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button type="button" variant="destructive">
+          <Trash2 className="w-4 h-4" />
+          <span>{title}</span>
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-bricolage-grotesque text-xl font-bold">
@@ -63,30 +59,26 @@ export function ConfirmDialog({
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <Input
-            placeholder="Type DELETE to confirm"
-            value={confirmationText}
-            onChange={e => setConfirmationText(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={handleConfirm}
-            disabled={disabled || isLoading || !isConfirmEnabled}
-          >
-            {isLoading ? loadingText : 'Confirm'}
-          </Button>
-        </DialogFooter>
+
+        <form action={action}>
+          <div className="py-4">
+            <Input
+              placeholder="Type DELETE to confirm"
+              value={confirmationText}
+              onChange={e => setConfirmationText(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleOpenChange(false)}
+            >
+              Cancel
+            </Button>
+            <SubmitButton disabledLogic={!isConfirmEnabled} />
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

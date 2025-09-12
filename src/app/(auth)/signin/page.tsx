@@ -144,10 +144,10 @@ export default function SignInPage() {
             <OTPForm
               config={otpVerificationConfig}
               control={control}
-              handleOtpSubmit={handleOtpSubmit}
-              goBackToEmail={goBackToEmail}
               loading={loading}
               disabled={!isDirty || !isValid}
+              handleOtpSubmit={handleOtpSubmit}
+              goBackToEmail={goBackToEmail}
             />
           )}
         </form>

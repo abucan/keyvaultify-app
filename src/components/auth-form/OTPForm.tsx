@@ -1,5 +1,5 @@
 // src/components/auth-form/OTPForm.tsx
-import { MoveLeft } from 'lucide-react'
+import { Loader, MoveLeft } from 'lucide-react'
 import { Control, useWatch } from 'react-hook-form'
 
 import { AuthFormConfig } from '@/lib/config/auth-forms'
@@ -79,7 +79,14 @@ export function OTPForm({
           type="submit"
           disabled={loading || String(otp).length !== 6 || disabled}
         >
-          {config.submitText}
+          {loading ? (
+            <div className="flex flex-row items-center justify-center gap-2">
+              <Loader className="animate-spin" />
+              <span>Verifying...</span>
+            </div>
+          ) : (
+            <span>{config.submitText}</span>
+          )}
         </Button>
         <Button
           className="w-full font-roboto-mono"

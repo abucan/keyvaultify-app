@@ -17,6 +17,7 @@ type FullOrg = {
   members?: Member[]
 }
 
+// TODO: Move Later
 function parseMeta(meta: unknown): Record<string, unknown> {
   if (typeof meta === 'string') {
     try {
@@ -30,8 +31,6 @@ function parseMeta(meta: unknown): Record<string, unknown> {
 
 export async function getAuthContext(): Promise<{
   ctx: SidebarCtx
-  sessionUserId: string
-  org: FullOrg
 }> {
   const _headers = await headers()
 
@@ -69,5 +68,5 @@ export async function getAuthContext(): Promise<{
     teams
   }
 
-  return { ctx, sessionUserId: session.user!.id, org: full }
+  return { ctx }
 }

@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/server/auth.actions.ts
 'use server'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { auth } from '@/lib/better-auth/auth'
+import { mapError } from '@/lib/errors/mapError'
 import { emailOnlySchema, otpOnlySchema } from '@/lib/zod-schemas/form-schema'
-import { OTPSignInResult } from '@/types/api-results'
+import { R } from '@/types/result'
 
-export async function sendSignInWithOtp(
-  fd: FormData
-): Promise<OTPSignInResult> {
+export async function sendSignInWithOtp(fd: FormData): Promise<R> {
   const email = String(fd.get('email') ?? '').trim()
   if (!emailOnlySchema.safeParse({ email }).success)
     return { ok: false, code: 'INVALID_EMAIL' }
@@ -22,41 +20,33 @@ export async function sendSignInWithOtp(
     })
     return { ok: true }
   } catch (e: any) {
-    const msg = String(e?.message || '')
-    if (msg.toLowerCase().includes('rate'))
-      return { ok: false, code: 'RATE_LIMITED' }
-    if (msg.includes('403')) return { ok: false, code: 'NOT_AUTHORIZED' }
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 }
 
-export async function verifySignInWithOtp(
-  fd: FormData
-): Promise<OTPSignInResult> {
-  const email = String(fd.get('email') ?? '').trim()
-  const otp = String(fd.get('otp') ?? '').trim()
+export async function verifySignInWithOtp(fd: FormData): Promise<R> {
+  const input = {
+    email: String(fd.get('email') ?? '').trim(),
+    otp: String(fd.get('otp') ?? '').trim()
+  }
 
-  if (!emailOnlySchema.safeParse({ email }).success)
+  if (!emailOnlySchema.safeParse({ email: input.email }).success)
     return { ok: false, code: 'INVALID_EMAIL' }
-  if (!otpOnlySchema.safeParse({ otp }).success)
+  if (!otpOnlySchema.safeParse({ otp: input.otp }).success)
     return { ok: false, code: 'INVALID_OTP' }
 
   try {
     await auth.api.signInEmailOTP({
       headers: await headers(),
       body: {
-        email,
-        otp
+        email: input.email,
+        otp: input.otp
       }
     })
   } catch (e: any) {
-    const msg = String(e?.message || '')
-    if (msg.toLowerCase().includes('expired'))
-      return { ok: false, code: 'OTP_EXPIRED' }
-    if (msg.toLowerCase().includes('invalid'))
-      return { ok: false, code: 'INVALID_OTP' }
-    if (msg.includes('403')) return { ok: false, code: 'NOT_AUTHORIZED' }
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 
   redirect('/dashboard')

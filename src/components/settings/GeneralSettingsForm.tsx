@@ -1,11 +1,10 @@
-// src/app/(private)/settings/general/components/GeneralSettingsForm.tsx
+// src/components/settings/GeneralSettingsForm.tsx
 'use client'
 import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import * as z from 'zod'
 
+import { toastRes } from '@/components/toast-result'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,28 +27,25 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { useUploadThing } from '@/lib/utils'
-
-const ProfileFormSchema = z.object({
-  username: z.string().optional(),
-  image: z.string().optional()
-})
+import {
+  ProfileFormData,
+  profileFormSchema
+} from '@/lib/zod-schemas/form-schema'
+import { R } from '@/types/result'
 
 export function GeneralSettingsForm({
   initialUsername,
+  initialEmail,
   initialImage,
-  email,
-  updateUserProfile
+  action
 }: {
   initialUsername: string
+  initialEmail: string
   initialImage: string
-  email: string
-  updateUserProfile: (values: {
-    name?: string
-    image?: string
-  }) => Promise<void>
+  action: (values: FormData) => Promise<R>
 }) {
-  const form = useForm<z.infer<typeof ProfileFormSchema>>({
-    resolver: zodResolver(ProfileFormSchema),
+  const form = useForm<ProfileFormData>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
       username: initialUsername,
       image: initialImage
@@ -75,14 +71,23 @@ export function GeneralSettingsForm({
     }
   }
 
-  async function onSubmit(values: z.infer<typeof ProfileFormSchema>) {
-    await updateUserProfile({
-      name: values.username,
-      image: values.image
+  async function onSubmit(values: ProfileFormData) {
+    const fd = new FormData()
+    fd.append('name', values.username ?? '')
+    fd.append('image', values.image ?? '')
+
+    const res = await action(fd)
+    toastRes(res, {
+      success: 'Profile updated successfully.',
+      errors: {
+        INVALID_INPUT: 'Please check your inputs.',
+        UNAUTHORIZED: 'Please sign in.'
+      }
     })
 
-    toast.success('Profile updated successfully')
-    form.reset({ username: values.username, image: values.image })
+    if (res?.ok) {
+      form.reset({ username: values.username, image: values.image })
+    }
   }
 
   return (
@@ -158,7 +163,7 @@ export function GeneralSettingsForm({
               <FormItem>
                 <FormLabel>Email address</FormLabel>
                 <FormControl>
-                  <Input value={email} disabled />
+                  <Input value={initialEmail} disabled />
                 </FormControl>
                 <FormDescription>
                   Used for password recovery and notifications.

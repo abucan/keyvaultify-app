@@ -24,7 +24,15 @@ export const addTeamFormSchema = z.object({
   slug: z.string().min(3)
 })
 
+export const profileFormSchema = z.object({
+  username: z.string().optional(),
+  image: z.string().optional()
+})
+
 export const emailOnlySchema = authFormSchema.pick({ email: true })
 export const otpOnlySchema = authFormSchema.pick({ otp: true })
+
+/* helper types */
 export type AuthFormData = z.infer<typeof authFormSchema>
 export type AddTeamFormData = z.infer<typeof addTeamFormSchema>
+export type ProfileFormData = z.infer<typeof profileFormSchema>

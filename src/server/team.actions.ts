@@ -10,7 +10,7 @@ import { mapError } from '@/lib/errors/mapError'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
 import { addTeamFormSchema } from '@/lib/zod-schemas/form-schema'
-import { R, TeamSwitchResult } from '@/types/api-results'
+import { R, TeamSwitchResult } from '@/types/result'
 
 function normalizeSlug(s: string) {
   return s

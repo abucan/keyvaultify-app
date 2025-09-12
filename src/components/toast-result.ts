@@ -1,8 +1,8 @@
-// src/lib/ui/toastRes.ts
+// src/components/toast-result.ts
 'use client'
 import { toast } from 'sonner'
 
-import type { R } from '@/types/api-results'
+import type { R } from '@/types/result'
 
 type Msg = string | ((r: R<any>) => string)
 type ErrMap = Record<string, Msg>
