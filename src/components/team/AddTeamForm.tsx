@@ -4,8 +4,6 @@ import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z } from 'zod'
 
 import {
   AddTeamFormData,
@@ -24,6 +22,7 @@ import {
   FormMessage
 } from '../ui/form'
 import { Input } from '../ui/input'
+import { DialogFooter } from '../ui/dialog'
 
 export function AddTeamForm({
   setAddTeamDialogOpen
@@ -52,7 +51,7 @@ export function AddTeamForm({
       const res = await createTeamAction(fd)
 
       toastRes(res, {
-        success: 'New team created. Switching to new team...',
+        success: 'Switched to a newly created team.',
         errors: {
           INVALID_INPUT: 'Please check the fields.',
           UNAUTHORIZED: 'Please sign in.',
@@ -76,7 +75,7 @@ export function AddTeamForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
         <FormField
           control={form.control}
           name="name"
@@ -103,13 +102,15 @@ export function AddTeamForm({
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          disabled={pending || !isDirty || !isValid}
-          className="w-full"
-        >
-          Create team
-        </Button>
+        <DialogFooter>
+          <Button
+            type="submit"
+            disabled={pending || !isDirty || !isValid}
+            className="w-full"
+          >
+            Create team
+          </Button>
+        </DialogFooter>
       </form>
     </Form>
   )

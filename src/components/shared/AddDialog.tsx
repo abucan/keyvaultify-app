@@ -26,8 +26,12 @@ export function AddDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <DialogTitle className="font-bricolage-grotesque text-xl font-bold">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="font-bricolage-grotesque text-sm text-muted-foreground">
+            {description}
+          </DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>

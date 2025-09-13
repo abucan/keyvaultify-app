@@ -5,7 +5,6 @@ import { useTransition } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
-import { toast } from 'sonner'
 
 import {
   DropdownMenu,
@@ -26,6 +25,7 @@ import { Team } from '@/types/auth'
 
 import { AddDialog } from '../shared/AddDialog'
 import { AddTeamForm } from '../team/AddTeamForm'
+import { toastRes } from '../toast-result'
 
 export function TeamSwitcher({
   teams,
@@ -52,7 +52,7 @@ export function TeamSwitcher({
         open={addTeamDialogOpen}
         onOpenChange={setAddTeamDialogOpen}
         title="Add team"
-        description="Add a new team."
+        description="Add a new team to your account."
       >
         <AddTeamForm setAddTeamDialogOpen={setAddTeamDialogOpen} />
       </AddDialog>
@@ -78,6 +78,7 @@ export function TeamSwitcher({
                     {activeTeam?.name}
                   </span>
                   <span className="truncate text-xs font-bricolage-grotesque">
+                    {/* TODO: Add team subscription type */}
                     Hobby
                   </span>
                 </div>
@@ -99,17 +100,17 @@ export function TeamSwitcher({
                   onClick={() => {
                     startTransition(async () => {
                       const res = await switchTeamAction(team.id)
+                      toastRes(res, {
+                        success: `Switched to a ${res?.ok && res?.data?.name} team.`,
+                        errors: {
+                          MISSING_ORG_ID: 'Missing team id.',
+                          NOT_FOUND_OR_NO_ACCESS:
+                            "You don't have access to that team."
+                        }
+                      })
+
                       if (res.ok) {
-                        toast.success('Switched to a new team.')
                         router.refresh()
-                      } else {
-                        const msg =
-                          res.code === 'NOT_FOUND_OR_NO_ACCESS'
-                            ? "You don't have access to that team."
-                            : res.code === 'MISSING_ORG_ID'
-                              ? 'Missing team id.'
-                              : 'Could not switch team.'
-                        toast.error(msg)
                       }
                     })
                   }}

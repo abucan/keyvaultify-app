@@ -2,15 +2,14 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { APIError } from 'better-auth/api'
+import { redirect, unauthorized } from 'next/navigation'
 
 import { auth } from '@/lib/better-auth/auth'
 import { mapError } from '@/lib/errors/mapError'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
 import { addTeamFormSchema } from '@/lib/zod-schemas/form-schema'
-import { R, TeamSwitchResult } from '@/types/result'
+import { R } from '@/types/result'
 
 function normalizeSlug(s: string) {
   return s
@@ -58,12 +57,9 @@ export async function createTeamAction(
   try {
     const _headers = await headers()
     const session = await auth.api.getSession({ headers: _headers })
-    if (!session?.user)
-      return {
-        ok: false,
-        code: 'NOT_AUTHORIZED',
-        message: 'You must be logged in to create a team.'
-      }
+    if (!session?.user) {
+      unauthorized()
+    }
 
     await auth.api.checkOrganizationSlug({
       headers: _headers,
@@ -89,26 +85,30 @@ export async function createTeamAction(
 
 export async function switchTeamAction(
   targetOrgId: string
-): Promise<TeamSwitchResult> {
+): Promise<R<{ name: string }>> {
+  if (!targetOrgId) {
+    return { ok: false, code: 'MISSING_ORG_ID' }
+  }
+
   try {
-    if (!targetOrgId) return { ok: false, code: 'MISSING_ORG_ID' }
-
     const _headers = await headers()
-
     const targetOrg = await auth.api.getFullOrganization({
       headers: _headers,
       query: { organizationId: targetOrgId }
     })
-    if (!targetOrg) return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
+    if (!targetOrg) {
+      return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
+    }
 
-    await auth.api.setActiveOrganization({
+    const newActiveOrg = await auth.api.setActiveOrganization({
       headers: _headers,
       body: { organizationId: targetOrgId }
     })
 
-    return { ok: true }
-  } catch {
-    return { ok: false, code: 'UNKNOWN' }
+    return { ok: true, data: { name: newActiveOrg?.name ?? '' } }
+  } catch (error) {
+    const { code, message } = mapError(error)
+    return { ok: false, code, message }
   }
 }
 
@@ -117,9 +117,7 @@ export async function listTeams() {
   return res ?? []
 }
 
-export async function updateTeamSettingsAction(
-  fd: FormData
-): Promise<TeamSwitchResult> {
+export async function updateTeamSettingsAction(fd: FormData): Promise<R> {
   await requireRole(['owner', 'admin'])
 
   // read active org first so we can compute oldSlug for revalidate/redirect
@@ -189,7 +187,7 @@ export async function updateTeamSettingsAction(
   }
 }
 
-export async function deleteTeamAction(): Promise<TeamSwitchResult> {
+export async function deleteTeamAction(): Promise<R> {
   await requireRole(['owner'])
   try {
     const full = await auth.api.getFullOrganization({
