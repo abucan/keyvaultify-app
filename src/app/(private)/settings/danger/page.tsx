@@ -1,5 +1,6 @@
 // src/app/(private)/settings/danger/page.tsx
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
+import Link from 'next/link'
 import { deleteUserProfileAction } from '@/server/settings.actions'
 
 export default function DangerSettingsPage() {
@@ -7,7 +8,19 @@ export default function DangerSettingsPage() {
     <DangerZoneCard
       title="Delete your account"
       description="Delete your account and all associated data."
-      content="Deleting your account is irreversible and will not end your subscription. For managing your subscription, please visit the billing page."
+      content={
+        <>
+          Deleting your account is irreversible and will not end your
+          subscription. For managing your subscription, please visit the{' '}
+          <Link
+            href="/settings/billing"
+            className="underline font-medium text-primary hover:text-primary-foreground transition-all duration-200"
+          >
+            billing page
+          </Link>
+          .
+        </>
+      }
       formAction={deleteUserProfileAction}
       errorMessages={{
         UNAUTHORIZED: 'Please sign in.',

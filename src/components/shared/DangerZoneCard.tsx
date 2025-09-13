@@ -1,6 +1,6 @@
 // src/components/shared/DangerZoneCard.tsx
 'use client'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState, type ReactNode } from 'react'
 import { AlertTriangle } from 'lucide-react'
 
 import { R } from '@/types/result'
@@ -20,7 +20,7 @@ import { ConfirmDialog } from './ConfirmDialog'
 type DangerZoneCardProps = {
   title: string
   description: string
-  content: string
+  content: ReactNode
   formAction: (prevState?: R | undefined, formData?: FormData) => Promise<R>
   errorMessages?: Record<string, string>
 }

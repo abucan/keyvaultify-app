@@ -40,8 +40,29 @@ export async function getActiveSubscriptionForOrg(orgId?: string) {
 }
 
 export async function getEntitlements(orgId?: string) {
-  const sub = await getActiveSubscriptionForOrg(orgId)
-  if (!sub) {
+  try {
+    const sub = await getActiveSubscriptionForOrg(orgId)
+    if (!sub) {
+      return {
+        isActive: false,
+        status: 'canceled' as SubStatus,
+        plan: undefined as PlanKey | undefined,
+        interval: undefined as BillingInterval | undefined,
+        currentPeriodEnd: null as Date | null
+      }
+    }
+
+    const status = sub.status as SubStatus
+    const planInfo = priceToPlan(sub.stripePriceId ?? undefined)
+
+    return {
+      isActive: ACTIVE.includes(status),
+      status,
+      plan: planInfo?.plan,
+      interval: planInfo?.interval,
+      currentPeriodEnd: sub.currentPeriodEnd ?? null
+    }
+  } catch (error) {
     return {
       isActive: false,
       status: 'canceled' as SubStatus,
@@ -49,17 +70,6 @@ export async function getEntitlements(orgId?: string) {
       interval: undefined as BillingInterval | undefined,
       currentPeriodEnd: null as Date | null
     }
-  }
-
-  const status = sub.status as SubStatus
-  const planInfo = priceToPlan(sub.stripePriceId ?? undefined)
-
-  return {
-    isActive: ACTIVE.includes(status),
-    status,
-    plan: planInfo?.plan,
-    interval: planInfo?.interval,
-    currentPeriodEnd: sub.currentPeriodEnd ?? null
   }
 }
 

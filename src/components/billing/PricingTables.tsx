@@ -23,7 +23,7 @@ export function PricingTables() {
   const [frequency, setFrequency] = useState<string>('monthly')
 
   return (
-    <div className="not-prose flex flex-col text-center @container">
+    <div className="flex flex-col text-center">
       <div className="flex flex-col items-center justify-center gap-4">
         <Tabs
           defaultValue={frequency}
@@ -32,13 +32,10 @@ export function PricingTables() {
         >
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
-            <TabsTrigger value="yearly">
-              Yearly
-              <Badge variant="secondary">20% off</Badge>
-            </TabsTrigger>
+            <TabsTrigger value="yearly">Yearly (20% off)</TabsTrigger>
           </TabsList>
         </Tabs>
-        <div className="grid w-full max-w-4xl gap-4 @2xl:grid-cols-3">
+        <div className="w-full flex flex-row gap-4">
           {plans.map(plan => (
             <Card
               className={cn(
