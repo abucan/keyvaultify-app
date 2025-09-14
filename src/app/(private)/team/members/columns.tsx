@@ -69,6 +69,7 @@ export const columns: ColumnDef<MemberRow>[] = [
 
       return (
         <RoleCell
+          email={m.email}
           memberId={m.id}
           initialRole={m.role as Role}
           canEdit={canEdit}
@@ -88,6 +89,7 @@ export const columns: ColumnDef<MemberRow>[] = [
 
       return (
         <ActionsCell
+          email={m.email}
           memberId={m.id}
           canLeave={canLeave}
           canRemove={canRemove}

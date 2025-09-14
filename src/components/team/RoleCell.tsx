@@ -2,7 +2,6 @@
 'use client'
 import * as React from 'react'
 import { useTransition } from 'react'
-import { toast } from 'sonner'
 
 import {
   Select,
@@ -13,8 +12,10 @@ import {
 } from '@/components/ui/select'
 import { updateMemberRoleAction } from '@/server/members.actions'
 import type { Role } from '@/types/auth'
+import { toastRes } from '../toast-result'
 
 type RoleCellProps = {
+  email: string
   memberId: string
   initialRole: Role
   canEdit: boolean
@@ -23,6 +24,7 @@ type RoleCellProps = {
 }
 
 export function RoleCell({
+  email,
   memberId,
   initialRole,
   canEdit,
@@ -42,21 +44,19 @@ export function RoleCell({
 
     startTransition(async () => {
       const res = await updateMemberRoleAction(fd)
-      if (!res.ok) {
-        // revert optimistic UI
-        setOptimisticRole(prev)
-
-        if (res.code === 'LAST_OWNER_PROTECTED') {
-          toast.error('You cannot demote the last owner.')
-        } else if (res.code === 'NOT_AUTHORIZED') {
-          toast.error('You’re not allowed to change this role.')
-        } else if (res.code === 'INVALID_INPUT') {
-          toast.error('Invalid input.')
-        } else {
-          toast.error('Something went wrong.')
+      toastRes(res, {
+        success: `${email} updated to ${res.ok && res.data?.role}.`,
+        errors: {
+          INVALID_INPUT: 'Invalid input.',
+          NOT_AUTHORIZED: 'You’re not allowed to change this role.',
+          LAST_OWNER_PROTECTED: 'You cannot demote the last owner.'
         }
+      })
+
+      if (res.ok) {
+        setOptimisticRole(next)
       } else {
-        toast.success('Role updated')
+        setOptimisticRole(prev)
       }
     })
   }
@@ -64,6 +64,7 @@ export function RoleCell({
   // local UI guards (server is still the authority)
   const disableOwnerDemotion = isTargetOwner && !hasOtherOwners
   const disabled = isPending || !canEdit
+  console.log(isTargetOwner, !isTargetOwner)
 
   return (
     <Select
@@ -75,7 +76,7 @@ export function RoleCell({
         <SelectValue placeholder="Role" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="owner" disabled={!canEdit}>
+        <SelectItem value="owner" disabled={!canEdit || !isTargetOwner}>
           Owner
         </SelectItem>
         <SelectItem

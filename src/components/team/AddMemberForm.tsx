@@ -3,12 +3,9 @@
 import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z } from 'zod'
 
 import { inviteMemberAction } from '@/server/members.actions'
 
-import { Button } from '../ui/button'
 import {
   Form,
   FormControl,
@@ -25,16 +22,20 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
+import {
+  AddMemberFormData,
+  addMemberFormSchema
+} from '@/lib/zod-schemas/form-schema'
+import { toastRes } from '../toast-result'
+import { AddButton } from '../shared/AddButton'
 
-const schema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  role: z.enum(['member', 'admin', 'owner'])
-})
-type FormValues = z.infer<typeof schema>
-
-export function AddMemberForm() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+export function AddMemberForm({
+  setAddMemberDialogOpen
+}: {
+  setAddMemberDialogOpen: (open: boolean) => void
+}) {
+  const form = useForm<AddMemberFormData>({
+    resolver: zodResolver(addMemberFormSchema),
     defaultValues: {
       email: '',
       role: 'member'
@@ -43,25 +44,32 @@ export function AddMemberForm() {
   })
   const [pending, startTransition] = useTransition()
 
-  async function onSubmit(values: FormValues) {
+  async function onSubmit(values: AddMemberFormData) {
     const fd = new FormData()
     fd.append('email', values.email)
     fd.append('role', values.role)
 
     startTransition(async () => {
-      try {
-        await inviteMemberAction(fd)
+      const res = await inviteMemberAction(fd)
+      toastRes(res, {
+        success: `Invitation sent to ${res.ok && res.data?.email}`,
+        errors: {
+          INVALID_INPUT: 'Please provide a valid email and role.',
+          NOT_AUTHORIZED: 'Please sign in.',
+          UNKNOWN: 'Failed to send invitation.'
+        }
+      })
+
+      if (res.ok) {
         form.reset()
-        toast.success('Invitation sent')
-      } catch {
-        toast.error('Failed to send invitation')
+        setAddMemberDialogOpen(false)
       }
     })
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
         <div className="flex flex-row gap-4 w-full">
           <FormField
             control={form.control}
@@ -83,7 +91,7 @@ export function AddMemberForm() {
               <FormItem>
                 <FormLabel>Role</FormLabel>
                 <FormControl>
-                  <Select {...field}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a role" />
                     </SelectTrigger>
@@ -99,9 +107,11 @@ export function AddMemberForm() {
             )}
           />
         </div>
-        <Button type="submit" disabled={pending}>
-          Send invitation
-        </Button>
+        <AddButton
+          disabledLogic={pending}
+          title="Send invitation"
+          loadingTitle="Sending..."
+        />
       </form>
     </Form>
   )

@@ -29,6 +29,11 @@ export const profileFormSchema = z.object({
   image: z.string().optional()
 })
 
+export const addMemberFormSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  role: z.enum(['member', 'admin', 'owner'])
+})
+
 export const emailOnlySchema = authFormSchema.pick({ email: true })
 export const otpOnlySchema = authFormSchema.pick({ otp: true })
 
@@ -36,3 +41,4 @@ export const otpOnlySchema = authFormSchema.pick({ otp: true })
 export type AuthFormData = z.infer<typeof authFormSchema>
 export type AddTeamFormData = z.infer<typeof addTeamFormSchema>
 export type ProfileFormData = z.infer<typeof profileFormSchema>
+export type AddMemberFormData = z.infer<typeof addMemberFormSchema>

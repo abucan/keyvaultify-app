@@ -1,8 +1,7 @@
 // src/components/shared/ConfirmDialog.tsx
 'use client'
 import { useState } from 'react'
-import { Loader, Trash2 } from 'lucide-react'
-import { useFormStatus } from 'react-dom'
+import { Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -25,6 +24,9 @@ type ConfirmDialogProps = {
   title: string
   description: string
   action: (formData: FormData) => void
+  isDisabled?: boolean
+  icon?: React.ReactNode
+  confirmText?: string
 }
 
 export function ConfirmDialog({
@@ -32,10 +34,13 @@ export function ConfirmDialog({
   onOpenChange,
   title,
   description,
-  action
+  action,
+  isDisabled,
+  icon,
+  confirmText = 'DELETE'
 }: ConfirmDialogProps) {
   const [confirmationText, setConfirmationText] = useState('')
-  const isConfirmEnabled = confirmationText.toUpperCase() === 'DELETE'
+  const isConfirmEnabled = confirmationText.toUpperCase() === confirmText
 
   const handleOpenChange = (next: boolean) => {
     if (!next) setConfirmationText('')
@@ -45,9 +50,16 @@ export function ConfirmDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button type="button" variant="destructive">
-          <Trash2 className="w-4 h-4" />
-          <span>{title}</span>
+        <Button
+          type="button"
+          variant="outline"
+          className="border-red-100"
+          disabled={isDisabled}
+        >
+          {icon || <Trash2 className="w-4 h-4" />}
+          <span className="text-red-500 font-bricolage-grotesque disabled:text-red-100">
+            {title}
+          </span>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -63,7 +75,7 @@ export function ConfirmDialog({
         <form action={action}>
           <div className="py-4">
             <Input
-              placeholder="Type DELETE to confirm"
+              placeholder={`Type ${confirmText} to confirm`}
               value={confirmationText}
               onChange={e => setConfirmationText(e.target.value)}
             />

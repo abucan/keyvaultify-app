@@ -61,43 +61,40 @@ export function DataTable<TData, TValue>({
         title="Add member"
         description="Add a new member to your team."
       >
-        <AddMemberForm />
+        <AddMemberForm setAddMemberDialogOpen={setAddMemberDialogOpen} />
       </AddDialog>
-      <div className="flex flex-col gap-4 w-3/4">
+      <div className="flex flex-col gap-4 w-3/4 lg:w-full">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               {isDisabled ? (
-                <span tabIndex={0} aria-disabled="true" className="inline-flex">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="border-primary disabled:pointer-events-none w-full"
-                    onClick={() => setAddMemberDialogOpen(true)}
-                    disabled
-                  >
-                    <Plus className="size-4 mr-2" />
-                    <span className="font-bricolage-grotesque">Add Member</span>
-                  </Button>
-                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="self-end"
+                  onClick={() => setAddMemberDialogOpen(true)}
+                  disabled
+                >
+                  <Plus className="size-4" />
+                  <span className="font-bricolage-grotesque">Add Member</span>
+                </Button>
               ) : (
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-primary w-full"
+                  className="self-end"
                   onClick={() => setAddMemberDialogOpen(true)}
                 >
-                  <Plus className="size-4 mr-2" />
+                  <Plus className="size-4" />
                   <span className="font-bricolage-grotesque">Add Member</span>
                 </Button>
               )}
             </TooltipTrigger>
-
-            <TooltipContent>
-              {isDisabled
-                ? 'This is a personal organization. You cannot add members.'
-                : 'Add a member'}
-            </TooltipContent>
+            {isDisabled && (
+              <TooltipContent>
+                This is a personal organization. You cannot add members.
+              </TooltipContent>
+            )}
           </Tooltip>
         </TooltipProvider>
         <Card className="overflow-hidden rounded-md border p-0 m-0 w-full">

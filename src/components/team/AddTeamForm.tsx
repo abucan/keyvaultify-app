@@ -12,7 +12,6 @@ import {
 import { createTeamAction } from '@/server/team.actions'
 
 import { toastRes } from '../toast-result'
-import { Button } from '../ui/button'
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import {
 } from '../ui/form'
 import { Input } from '../ui/input'
 import { DialogFooter } from '../ui/dialog'
+import { AddButton } from '../shared/AddButton'
 
 export function AddTeamForm({
   setAddTeamDialogOpen
@@ -103,13 +103,11 @@ export function AddTeamForm({
           )}
         />
         <DialogFooter>
-          <Button
-            type="submit"
-            disabled={pending || !isDirty || !isValid}
-            className="w-full"
-          >
-            Create team
-          </Button>
+          <AddButton
+            disabledLogic={pending || !isDirty || !isValid}
+            title="Create team"
+            loadingTitle="Creating..."
+          />
         </DialogFooter>
       </form>
     </Form>
