@@ -101,7 +101,7 @@ export function TeamSwitcher({
                     startTransition(async () => {
                       const res = await switchTeamAction(team.id)
                       toastRes(res, {
-                        success: `Switched to a ${res?.ok && res?.data?.name} team.`,
+                        success: `Switched to a ${res?.ok && res?.data?.name}.`,
                         errors: {
                           MISSING_ORG_ID: 'Missing team id.',
                           NOT_FOUND_OR_NO_ACCESS:

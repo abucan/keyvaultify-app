@@ -12,7 +12,7 @@ export function toastRes<T>(
   opts?: { success?: Msg; errors?: ErrMap }
 ) {
   if (res.ok) {
-    if (opts?.success) toast.success(resolve(opts.success, res))
+    if (opts?.success) toast.info(resolve(opts.success, res))
     return
   }
   const msg = opts?.errors?.[res.code] ?? res.message ?? 'Something went wrong.'

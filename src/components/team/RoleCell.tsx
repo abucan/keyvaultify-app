@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select'
 import { updateMemberRoleAction } from '@/server/members.actions'
 import type { Role } from '@/types/auth'
+
 import { toastRes } from '../toast-result'
 
 type RoleCellProps = {
@@ -45,7 +46,10 @@ export function RoleCell({
     startTransition(async () => {
       const res = await updateMemberRoleAction(fd)
       toastRes(res, {
-        success: `${email} updated to ${res.ok && res.data?.role}.`,
+        success: res => {
+          if (!res.ok) return ''
+          return `${email} updated to ${res.data.role.charAt(0).toUpperCase() + res.data.role.slice(1)}.`
+        },
         errors: {
           INVALID_INPUT: 'Invalid input.',
           NOT_AUTHORIZED: 'You’re not allowed to change this role.',
@@ -64,7 +68,7 @@ export function RoleCell({
   // local UI guards (server is still the authority)
   const disableOwnerDemotion = isTargetOwner && !hasOtherOwners
   const disabled = isPending || !canEdit
-  console.log(isTargetOwner, !isTargetOwner)
+  console.log(email, isTargetOwner, !isTargetOwner)
 
   return (
     <Select

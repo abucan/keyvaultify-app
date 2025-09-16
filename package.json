@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "dev:app": "next dev",
     "dev:stripe": "stripe listen --events checkout.session.completed,customer.subscription.created,customer.subscription.updated,customer.subscription.deleted --forward-to http://localhost:3000/api/stripe/webhook",
     "dev:all": "concurrently -k -n next,stripe -c auto \"npm:dev:app\" \"npm:dev:stripe\"",
