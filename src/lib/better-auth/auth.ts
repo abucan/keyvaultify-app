@@ -108,7 +108,8 @@ export const auth = betterAuth({
               slug,
               userId: user.id,
               metadata: {
-                isPersonal: true
+                isPersonal: true,
+                defaultRole: 'member'
               }
             }
           })
@@ -149,6 +150,24 @@ export const auth = betterAuth({
       }
     }),
     organization({
+      organizationDeletion: {
+        afterDelete: async () => {
+          const _headers = await headers()
+          const orgs = await auth.api.listOrganizations({
+            headers: _headers,
+            query: {
+              metadata: {
+                isPersonal: true
+              }
+            }
+          })
+
+          await auth.api.setActiveOrganization({
+            headers: _headers,
+            body: { organizationId: orgs[0].id }
+          })
+        }
+      },
       requireEmailVerificationOnInvitation: true,
       sendInvitationEmail: async ({ invitation, organization, inviter }) => {
         /* await sendInvitationEmail({

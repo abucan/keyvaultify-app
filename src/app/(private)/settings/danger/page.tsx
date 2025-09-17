@@ -1,6 +1,7 @@
 // src/app/(private)/settings/danger/page.tsx
-import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
 import Link from 'next/link'
+
+import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
 import { deleteUserProfileAction } from '@/server/settings.actions'
 
 export default function DangerSettingsPage() {

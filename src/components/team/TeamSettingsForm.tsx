@@ -3,8 +3,6 @@
 import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import * as z from 'zod'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -28,8 +26,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { useUploadThing } from '@/lib/utils'
+import {
+  TeamSettingsFormData,
+  teamSettingsFormSchema
+} from '@/lib/zod-schemas/form-schema'
 import { Organization } from '@/types/auth'
 
+import { toastRes } from '../toast-result'
 import {
   Select,
   SelectContent,
@@ -38,13 +41,6 @@ import {
   SelectValue
 } from '../ui/select'
 
-const TeamSettingsFormSchema = z.object({
-  name: z.string().optional(),
-  slug: z.string().optional(),
-  logo: z.string().optional(),
-  default_role: z.string().optional()
-})
-
 export function TeamSettingsForm({
   name,
   slug,
@@ -52,8 +48,8 @@ export function TeamSettingsForm({
   default_role,
   updateTeamSettings
 }: Organization) {
-  const form = useForm<z.infer<typeof TeamSettingsFormSchema>>({
-    resolver: zodResolver(TeamSettingsFormSchema),
+  const form = useForm<TeamSettingsFormData>({
+    resolver: zodResolver(teamSettingsFormSchema),
     defaultValues: {
       name: name,
       slug: slug,
@@ -81,24 +77,27 @@ export function TeamSettingsForm({
     }
   }
 
-  async function onSubmit(values: z.infer<typeof TeamSettingsFormSchema>) {
+  async function onSubmit(values: TeamSettingsFormData) {
     const fd = new FormData()
-    fd.append('name', values.name ?? '')
-    fd.append('slug', values.slug ?? '')
-    fd.append('logo', values.logo ?? '')
-    fd.append('default_role', values.default_role ?? '')
+    fd.append('name', values.name ?? name)
+    fd.append('slug', values.slug ?? slug)
+    fd.append('logo', values.logo ?? logo)
+    fd.append('default_role', values.default_role ?? default_role)
     const res = await updateTeamSettings(fd)
-    if (!res?.ok) {
-      if (res?.code === 'SLUG_TAKEN') toast.error('Slug already in use.')
-      else if (res?.code === 'INVALID_INPUT')
-        toast.error('Please check your inputs.')
-      else if (res?.code === 'NOT_AUTHORIZED') toast.error('Not authorized.')
-      else toast.error('Could not update team.')
-      return
-    }
 
-    toast.success('Team updated')
-    form.reset(values)
+    toastRes(res, {
+      success: 'Team updated',
+      errors: {
+        SLUG_TAKEN: 'Slug already in use.',
+        INVALID_INPUT: 'Please check your inputs.',
+        NOT_AUTHORIZED: 'Not authorized.',
+        UNKNOWN: 'Could not update team.'
+      }
+    })
+
+    if (res.ok) {
+      form.reset(values)
+    }
   }
 
   return (

@@ -68,7 +68,7 @@ export async function createTeamAction(
 
     const created = await auth.api.createOrganization({
       headers: _headers,
-      body: { name, slug }
+      body: { name, slug, metadata: { defaultRole: 'member' } }
     })
 
     await auth.api.setActiveOrganization({
@@ -193,22 +193,19 @@ export async function deleteTeamAction(): Promise<R> {
     const full = await auth.api.getFullOrganization({
       headers: await headers()
     })
-    const members = full?.members ?? full?.members ?? []
-    if (Array.isArray(members) && members.length > 1) {
-      return { ok: false, code: 'HAS_MEMBERS' }
+
+    if (!full) {
+      return { ok: false, code: 'NOT_FOUND' }
     }
 
     await auth.api.deleteOrganization({
       headers: await headers(),
       body: { organizationId: full?.id ?? '' }
     })
-    // After deletion, revalidate generic shells and go somewhere safe
-    revalidatePath('/(dashboard)')
-    redirect('/dashboard')
+
+    return { ok: true }
   } catch (e: any) {
-    const msg = String(e?.message || '')
-    if (msg.includes('403')) return { ok: false, code: 'NOT_AUTHORIZED' }
-    console.error('deleteTeamAction failed', e)
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 }

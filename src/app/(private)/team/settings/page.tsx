@@ -16,19 +16,35 @@ export default async function SettingsPage() {
   const metadata = JSON.parse(fullTeam?.metadata ?? '{}')
 
   return (
-    <div className="w-full flex flex-col gap-4 mb-6">
-      <TeamSettingsForm
-        {...fullTeam}
-        {...metadata}
-        updateTeamSettings={updateTeamSettingsAction}
-      />
-      <DangerZoneCard
-        title="Delete team"
-        description="Delete your team and all associated data."
-        content="Deleting your team is irreversible and will not end your subscription. To delete your team, please make sure you are the only owner of the team."
-        onConfirm={deleteTeamAction}
-        loadingText="Deleting..."
-      />
-    </div>
+    <>
+      {fullTeam && (
+        <div className="w-full flex flex-col gap-4 mb-6">
+          <TeamSettingsForm
+            id={fullTeam?.id}
+            name={fullTeam?.name}
+            slug={fullTeam?.slug}
+            logo={fullTeam?.logo ?? ''}
+            default_role={metadata?.defaultRole ?? ''}
+            updateTeamSettings={updateTeamSettingsAction}
+          />
+          <DangerZoneCard
+            title="Delete team"
+            description="Delete your team and all associated data."
+            content={
+              <>
+                Deleting your team is irreversible and will not end your
+                subscription. To delete your team, please make sure you are the
+                only owner of the team.
+              </>
+            }
+            formAction={deleteTeamAction}
+            errorMessages={{
+              UNAUTHORIZED: 'Please sign in.',
+              USER_NOT_FOUND: 'User not found.'
+            }}
+          />
+        </div>
+      )}
+    </>
   )
 }

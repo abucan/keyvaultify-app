@@ -1,6 +1,6 @@
 // src/components/shared/DangerZoneCard.tsx
 'use client'
-import { useActionState, useEffect, useState, type ReactNode } from 'react'
+import { type ReactNode, useActionState, useEffect, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 
 import { R } from '@/types/result'

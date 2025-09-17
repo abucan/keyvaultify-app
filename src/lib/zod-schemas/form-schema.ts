@@ -34,6 +34,13 @@ export const addMemberFormSchema = z.object({
   role: z.enum(['member', 'admin', 'owner'])
 })
 
+export const teamSettingsFormSchema = z.object({
+  name: z.string().optional(),
+  slug: z.string().optional(),
+  logo: z.string().optional(),
+  default_role: z.string().optional()
+})
+
 export const emailOnlySchema = authFormSchema.pick({ email: true })
 export const otpOnlySchema = authFormSchema.pick({ otp: true })
 
@@ -42,3 +49,4 @@ export type AuthFormData = z.infer<typeof authFormSchema>
 export type AddTeamFormData = z.infer<typeof addTeamFormSchema>
 export type ProfileFormData = z.infer<typeof profileFormSchema>
 export type AddMemberFormData = z.infer<typeof addMemberFormSchema>
+export type TeamSettingsFormData = z.infer<typeof teamSettingsFormSchema>

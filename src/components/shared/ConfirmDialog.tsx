@@ -56,7 +56,7 @@ export function ConfirmDialog({
           className="border-red-100"
           disabled={isDisabled}
         >
-          {icon || <Trash2 className="w-4 h-4" />}
+          {icon || <Trash2 className="w-4 h-4 text-red-500" />}
           <span className="text-red-500 font-bricolage-grotesque disabled:text-red-100">
             {title}
           </span>
