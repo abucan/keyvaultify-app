@@ -72,7 +72,7 @@ export const columns: ColumnDef<InvitationRow>[] = [
     cell: ({ row }) => {
       const r = row.original
       return (
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row items-center justify-between">
           <CopyLinkCell
             url={row.original.acceptUrl}
             canCopy={row.original._acl.canCopy}

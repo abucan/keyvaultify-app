@@ -1,15 +1,15 @@
 // src/components/team/InvitationActionsCell.tsx
 'use client'
 import { useTransition } from 'react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { CircleX, Mail } from 'lucide-react'
 
-import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import {
   cancelInvitationAction,
   resendInvitationAction
 } from '@/server/invitations.actions'
+
+import { toastRes } from '../toast-result'
 
 export function InvitationActionsCell(props: {
   invitationId: string
@@ -18,7 +18,6 @@ export function InvitationActionsCell(props: {
   canResend: boolean
   canCancel: boolean
 }) {
-  const router = useRouter()
   const [resending, startResend] = useTransition()
   const [cancelling, startCancel] = useTransition()
 
@@ -28,16 +27,13 @@ export function InvitationActionsCell(props: {
       fd.append('email', props.email)
       fd.append('role', props.role)
       const res = await resendInvitationAction(fd)
-      if (!res.ok) {
-        toast.error(
-          res.code === 'NOT_AUTHORIZED'
-            ? 'Not authorized to resend.'
-            : 'Failed to resend invitation.'
-        )
-        return
-      }
-      toast.success('Invitation resent')
-      router.refresh()
+      toastRes(res, {
+        success: `Invitation resent to ${res.ok && res.data?.email}`,
+        errors: {
+          NOT_AUTHORIZED: 'Not authorized to resend.',
+          UNKNOWN: 'Failed to resend invitation.'
+        }
+      })
     })
 
   const doCancel = () =>
@@ -45,43 +41,36 @@ export function InvitationActionsCell(props: {
       const fd = new FormData()
       fd.append('invitationId', props.invitationId)
       const res = await cancelInvitationAction(fd)
-      if (!res.ok) {
-        toast.error(
-          res.code === 'NOT_AUTHORIZED'
-            ? 'Not authorized to cancel.'
-            : 'Failed to cancel invitation.'
-        )
-        return
-      }
-      toast.success('Invitation cancelled')
-      router.refresh()
+      toastRes(res, {
+        success: `Invitation cancelled for ${res.ok && res.data?.email}`,
+        errors: {
+          NOT_AUTHORIZED: 'Not authorized to cancel.',
+          UNKNOWN: 'Failed to cancel invitation.'
+        }
+      })
     })
 
   return (
     <div className="flex gap-2">
       <Button
-        size="sm"
-        variant="secondary"
+        variant="outline"
         disabled={resending || !props.canResend}
         onClick={doResend}
       >
+        <Mail className="size-4" />
         Resend
       </Button>
-
-      <ConfirmDialog
-        triggerButton={
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={cancelling || !props.canCancel}
-          >
-            Cancel
-          </Button>
-        }
-        title="Cancel Invitation"
-        description="Are you sure you want to cancel this invitation?"
-        onConfirm={doCancel}
-      />
+      <Button
+        variant="outline"
+        className="border-red-100"
+        disabled={cancelling || !props.canCancel}
+        onClick={doCancel}
+      >
+        <CircleX className="size-4 text-red-500" />
+        <span className="text-red-500 font-bricolage-grotesque disabled:text-red-100">
+          Cancel
+        </span>
+      </Button>
     </div>
   )
 }

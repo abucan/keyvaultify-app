@@ -6,9 +6,18 @@ import { DataTable } from './data-table'
 
 export default async function MembersPage() {
   const members = await listTeamMembers()
-  const currentUser = members.find(m => m._meta.isSelf === true) ?? null
+  const currentUser =
+    members?.ok && members.data?.find(m => m._meta.isSelf === true)
 
   return (
-    <DataTable columns={columns} data={members} currentUser={currentUser} />
+    <>
+      {currentUser && members?.ok && members?.data && (
+        <DataTable
+          columns={columns}
+          data={members?.data}
+          currentUser={currentUser}
+        />
+      )}
+    </>
   )
 }

@@ -66,6 +66,7 @@ export const columns: ColumnDef<MemberRow>[] = [
       const canEdit = m._acl?.canEditRole === true
       const isTargetOwner = m.role === 'owner'
       const hasOtherOwners = m._meta?.hasOtherOwners === true
+      const canSetOwner = m._acl.canSetOwner === true
 
       return (
         <RoleCell
@@ -75,6 +76,7 @@ export const columns: ColumnDef<MemberRow>[] = [
           canEdit={canEdit}
           isTargetOwner={isTargetOwner}
           hasOtherOwners={hasOtherOwners}
+          canSetOwner={canSetOwner}
         />
       )
     }

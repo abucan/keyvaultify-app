@@ -42,6 +42,7 @@ export async function getAuthContext(): Promise<{
     .catch(() => null)) as FullOrg | null
 
   if (!full?.id) {
+    console.log('No full org id')
     redirect('/onboarding')
   }
 

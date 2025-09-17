@@ -6,5 +6,12 @@ import { DataTable } from './data-table'
 
 export default async function InvitationsPage() {
   const invitations = await listTeamInvitations()
-  return <DataTable columns={columns} data={invitations} />
+
+  return (
+    <>
+      {invitations?.ok && invitations?.data && (
+        <DataTable columns={columns} data={invitations?.data} />
+      )}
+    </>
+  )
 }

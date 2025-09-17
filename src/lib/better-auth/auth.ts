@@ -151,12 +151,13 @@ export const auth = betterAuth({
     organization({
       requireEmailVerificationOnInvitation: true,
       sendInvitationEmail: async ({ invitation, organization, inviter }) => {
-        await sendInvitationEmail({
+        /* await sendInvitationEmail({
           email: invitation?.email,
           teamName: organization?.name,
           acceptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/accept-invitation/${invitation.id}`,
           inviterName: inviter?.user?.name || inviter?.user?.email
         })
+        */
       }
     }),
     nextCookies()

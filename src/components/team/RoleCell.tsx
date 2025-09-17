@@ -22,6 +22,7 @@ type RoleCellProps = {
   canEdit: boolean
   isTargetOwner: boolean
   hasOtherOwners: boolean
+  canSetOwner: boolean
 }
 
 export function RoleCell({
@@ -30,7 +31,8 @@ export function RoleCell({
   initialRole,
   canEdit,
   isTargetOwner,
-  hasOtherOwners
+  hasOtherOwners,
+  canSetOwner
 }: RoleCellProps) {
   const [optimisticRole, setOptimisticRole] = React.useState<Role>(initialRole)
   const [isPending, startTransition] = useTransition()
@@ -80,7 +82,10 @@ export function RoleCell({
         <SelectValue placeholder="Role" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="owner" disabled={!canEdit || !isTargetOwner}>
+        <SelectItem
+          value="owner"
+          disabled={!canEdit || (!canSetOwner && !isTargetOwner)}
+        >
           Owner
         </SelectItem>
         <SelectItem

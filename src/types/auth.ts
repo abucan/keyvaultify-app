@@ -25,6 +25,7 @@ export type MemberRow = Member & {
     canEditRole: boolean
     canRemove: boolean
     canLeave: boolean
+    canSetOwner: boolean
   }
   _meta: {
     hasOtherOwners: boolean

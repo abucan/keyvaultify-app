@@ -1,11 +1,12 @@
 // src/components/team/ActionsCell.tsx
 'use client'
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { leaveTeamAction, removeMemberAction } from '@/server/members.actions'
+
 import { toastRes } from '../toast-result'
 
 export function ActionsCell({
@@ -44,7 +45,7 @@ export function ActionsCell({
           startLeave(async () => {
             const res = await leaveTeamAction()
             toastRes(res, {
-              success: 'You left the team.',
+              success: 'You left the team. Switching to personal workspace.',
               errors: {
                 LAST_OWNER_PROTECTED:
                   'You are the last owner—add/transfer ownership first.',

@@ -4,8 +4,14 @@ import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import {
+  AddMemberFormData,
+  addMemberFormSchema
+} from '@/lib/zod-schemas/form-schema'
 import { inviteMemberAction } from '@/server/members.actions'
 
+import { AddButton } from '../shared/AddButton'
+import { toastRes } from '../toast-result'
 import {
   Form,
   FormControl,
@@ -22,12 +28,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
-import {
-  AddMemberFormData,
-  addMemberFormSchema
-} from '@/lib/zod-schemas/form-schema'
-import { toastRes } from '../toast-result'
-import { AddButton } from '../shared/AddButton'
 
 export function AddMemberForm({
   setAddMemberDialogOpen

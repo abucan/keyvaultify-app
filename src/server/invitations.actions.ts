@@ -1,106 +1,100 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/server/invitations.actions.ts
 'use server'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 import { auth } from '@/lib/better-auth/auth'
+import { mapError } from '@/lib/errors/mapError'
 import { InvitationRow } from '@/types/auth'
+import { R } from '@/types/result'
 
-export type ActionResult =
-  | { ok: true }
-  | { ok: false; code: 'NOT_AUTHORIZED' | 'INVALID_INPUT' | 'UNKNOWN' }
+export async function listTeamInvitations(): Promise<R<InvitationRow[]>> {
+  try {
+    const _headers = await headers()
 
-async function bindOrg(slug: string) {
-  await auth.api.setActiveOrganization({
-    headers: await headers(),
-    body: { organizationSlug: slug }
-  })
-}
+    const [full, session, invitesRes] = await Promise.all([
+      auth.api.getFullOrganization({ headers: _headers }), // for role gating
+      auth.api.getSession({ headers: _headers }),
+      auth.api.listInvitations({ headers: _headers }) // for rows
+    ])
 
-export async function listTeamInvitations(): Promise<InvitationRow[]> {
-  const hdrs = await headers()
+    const currentUserId = session?.session?.userId ?? null
+    const members = full?.members ?? []
+    const me = members.find((m: any) => m.userId === currentUserId)
+    const myRole = (me?.role as 'member' | 'admin' | 'owner') ?? 'member'
 
-  const [full, session, invitesRes] = await Promise.all([
-    auth.api.getFullOrganization({ headers: hdrs }), // for role gating
-    auth.api.getSession({ headers: hdrs }),
-    auth.api.listInvitations({ headers: hdrs }) // for rows
-  ])
+    const canManage = myRole === 'owner' || myRole === 'admin'
 
-  const currentUserId = session?.session?.userId ?? null
-  const members = full?.members ?? []
-  const me = members.find((m: any) => m.userId === currentUserId)
-  const myRole = (me?.role as 'member' | 'admin' | 'owner') ?? 'member'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || ''
+    const rows = {
+      ok: true,
+      data: (invitesRes ?? []).map((inv: any) => {
+        const acceptUrl = `${baseUrl}/api/accept-invitation/${inv.id}`
 
-  const canManage = myRole === 'owner' || myRole === 'admin'
+        return {
+          id: inv.id,
+          email: inv.email,
+          role: (inv.role ?? 'member') as 'member' | 'admin' | 'owner',
+          expiresAt: new Date(inv.expiresAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+          status: inv.status ?? 'pending',
+          acceptUrl,
+          _acl: {
+            canResend: canManage && inv.status === 'pending',
+            canCancel: canManage && inv.status === 'pending',
+            canCopy: inv.status === 'pending'
+          }
+        } satisfies InvitationRow
+      })
+    }
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || ''
-  const rows = (invitesRes ?? []).map((inv: any) => {
-    const acceptUrl = `${baseUrl}/api/accept-invitation/${inv.id}`
-
-    return {
-      id: inv.id,
-      email: inv.email,
-      role: (inv.role ?? 'member') as 'member' | 'admin' | 'owner',
-      expiresAt: new Date(inv.expiresAt).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }),
-      status: inv.status ?? 'pending',
-      acceptUrl,
-      _acl: {
-        canResend: canManage && inv.status === 'pending',
-        canCancel: canManage && inv.status === 'pending',
-        canCopy: inv.status === 'pending'
-      }
-    } satisfies InvitationRow
-  })
-
-  return rows
+    return { ok: true, data: rows.data }
+  } catch (e: any) {
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
+  }
 }
 
 export async function resendInvitationAction(
   fd: FormData
-): Promise<ActionResult> {
-  const email = String(fd.get('email') ?? '').trim()
-  const role = String(fd.get('role') ?? 'member') as
-    | 'member'
-    | 'admin'
-    | 'owner'
-  if (!email) return { ok: false, code: 'INVALID_INPUT' }
+): Promise<R<{ email: string }>> {
+  const input = {
+    email: String(fd.get('email') ?? '').trim(),
+    role: String(fd.get('role') ?? 'member') as 'member' | 'admin' | 'owner'
+  }
+  if (!input.email || !input.role) return { ok: false, code: 'INVALID_INPUT' }
 
   try {
-    // BetterAuth supports resending by passing `resend: true`
     await auth.api.createInvitation({
       headers: await headers(),
-      body: { email, role, resend: true }
+      body: { email: input.email, role: input.role, resend: true }
     })
     revalidatePath('/teams/invitations')
-    return { ok: true }
+    return { ok: true, data: { email: input.email } }
   } catch (e: any) {
-    if (e?.message === 'NOT_AUTHORIZED')
-      return { ok: false, code: 'NOT_AUTHORIZED' }
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 }
 
 export async function cancelInvitationAction(
   fd: FormData
-): Promise<ActionResult> {
+): Promise<R<{ email: string }>> {
   const invitationId = String(fd.get('invitationId') ?? '')
   if (!invitationId) return { ok: false, code: 'INVALID_INPUT' }
 
   try {
-    await auth.api.cancelInvitation({
+    const res = await auth.api.cancelInvitation({
       headers: await headers(),
       body: { invitationId }
     })
     revalidatePath('/teams/invitations')
-    return { ok: true }
+    return { ok: true, data: { email: res?.email ?? '' } }
   } catch (e: any) {
-    if (e?.message === 'NOT_AUTHORIZED')
-      return { ok: false, code: 'NOT_AUTHORIZED' }
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 }
