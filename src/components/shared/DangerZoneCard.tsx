@@ -23,6 +23,7 @@ type DangerZoneCardProps = {
   content: ReactNode
   formAction: (prevState?: R | undefined, formData?: FormData) => Promise<R>
   errorMessages?: Record<string, string>
+  hasPermission?: boolean
 }
 
 export function DangerZoneCard({
@@ -30,7 +31,8 @@ export function DangerZoneCard({
   description,
   content,
   formAction,
-  errorMessages
+  errorMessages,
+  hasPermission
 }: DangerZoneCardProps) {
   const [open, setOpen] = useState(false)
   const [state, boundAction] = useActionState<R | undefined, FormData>(
@@ -70,6 +72,7 @@ export function DangerZoneCard({
           title={title}
           description={description}
           action={boundAction}
+          hasPermission={hasPermission}
         />
       </CardFooter>
     </Card>

@@ -13,6 +13,7 @@ import {
   teamSettingsFormSchema
 } from '@/lib/zod-schemas/form-schema'
 import { R } from '@/types/result'
+import { Member, Organization } from 'better-auth/plugins'
 
 function normalizeSlug(s: string) {
   return s
@@ -198,6 +199,31 @@ export async function deleteTeamAction(): Promise<R> {
     return { ok: true }
   } catch (e: any) {
     const { code, message } = mapError(e)
+    return { ok: false, code, message }
+  }
+}
+
+export async function getTeamInformation(): Promise<
+  R<{ organization: Organization; hasPermission: boolean }>
+> {
+  try {
+    const _headers = await headers()
+
+    const [organization, perm] = await Promise.all([
+      auth.api.getFullOrganization({
+        headers: _headers
+      }) as Promise<Organization>,
+      auth.api.hasPermission({
+        headers: _headers,
+        body: { permissions: { organization: ['update'] } }
+      }) as Promise<{ success: boolean; error: unknown | null }>
+    ])
+
+    const hasPermission = perm.success === true
+
+    return { ok: true, data: { organization, hasPermission } }
+  } catch (error) {
+    const { code, message } = mapError(error)
     return { ok: false, code, message }
   }
 }

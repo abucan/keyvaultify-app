@@ -1,6 +1,6 @@
 // src/components/shared/ConfirmDialog.tsx
 'use client'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -27,6 +27,7 @@ type ConfirmDialogProps = {
   isDisabled?: boolean
   icon?: React.ReactNode
   confirmText?: string
+  hasPermission?: boolean
 }
 
 export function ConfirmDialog({
@@ -37,7 +38,8 @@ export function ConfirmDialog({
   action,
   isDisabled,
   icon,
-  confirmText = 'DELETE'
+  confirmText = 'DELETE',
+  hasPermission
 }: ConfirmDialogProps) {
   const [confirmationText, setConfirmationText] = useState('')
   const isConfirmEnabled = confirmationText.toUpperCase() === confirmText
@@ -47,6 +49,14 @@ export function ConfirmDialog({
     onOpenChange(next)
   }
 
+  const useHasPermission = useMemo(() => {
+    if (title === 'Delete team') {
+      return hasPermission
+    } else {
+      return true
+    }
+  }, [title, hasPermission])
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -54,7 +64,7 @@ export function ConfirmDialog({
           type="button"
           variant="outline"
           className="border-red-100"
-          disabled={isDisabled}
+          disabled={isDisabled || !useHasPermission}
         >
           {icon || <Trash2 className="w-4 h-4 text-red-500" />}
           <span className="text-red-500 font-bricolage-grotesque disabled:text-red-100">

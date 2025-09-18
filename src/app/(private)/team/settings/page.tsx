@@ -1,31 +1,30 @@
 // src/app/(private)/team/settings/page.tsx
-import { headers } from 'next/headers'
-
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
 import { TeamSettingsForm } from '@/components/team/TeamSettingsForm'
-import { auth } from '@/lib/better-auth/auth'
 import {
   deleteTeamAction,
+  getTeamInformation,
   updateTeamSettingsAction
 } from '@/server/team.actions'
 
 export default async function SettingsPage() {
-  const fullTeam = await auth.api.getFullOrganization({
-    headers: await headers()
-  })
-  const metadata = JSON.parse(fullTeam?.metadata ?? '{}')
+  const res = await getTeamInformation()
+  const metadata = res?.ok
+    ? JSON.parse(res?.data?.organization?.metadata ?? '{}')
+    : {}
 
   return (
     <>
-      {fullTeam && (
+      {res?.ok && res?.data && (
         <div className="w-full flex flex-col gap-4 mb-6">
           <TeamSettingsForm
-            id={fullTeam?.id}
-            name={fullTeam?.name}
-            slug={fullTeam?.slug}
-            logo={fullTeam?.logo ?? ''}
-            default_role={metadata?.default_role ?? ''}
+            id={res?.data?.organization?.id}
+            name={res?.data?.organization?.name}
+            slug={res?.data?.organization?.slug}
+            logo={res?.data?.organization?.logo ?? '/shadcn.jfif'}
+            default_role={metadata?.default_role}
             updateTeamSettings={updateTeamSettingsAction}
+            hasPermission={res?.data?.hasPermission}
           />
           <DangerZoneCard
             title="Delete team"
@@ -38,6 +37,7 @@ export default async function SettingsPage() {
               </>
             }
             formAction={deleteTeamAction}
+            hasPermission={res?.data?.hasPermission}
             errorMessages={{
               UNAUTHORIZED: 'Please sign in.',
               USER_NOT_FOUND: 'User not found.'

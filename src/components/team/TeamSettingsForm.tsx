@@ -46,8 +46,9 @@ export function TeamSettingsForm({
   slug,
   logo,
   default_role,
-  updateTeamSettings
-}: Organization) {
+  updateTeamSettings,
+  hasPermission
+}: Organization & { hasPermission: boolean }) {
   const form = useForm<TeamSettingsFormData>({
     resolver: zodResolver(teamSettingsFormSchema),
     defaultValues: {
@@ -124,7 +125,7 @@ export function TeamSettingsForm({
                   type="button"
                   variant={'outline'}
                   onClick={handleChangeAvatar}
-                  disabled={isUploading}
+                  disabled={isUploading || !hasPermission}
                 >
                   {isUploading ? 'Uploading...' : 'Change logo'}
                 </Button>
@@ -134,6 +135,7 @@ export function TeamSettingsForm({
                   hidden
                   accept="image/*"
                   onChange={handleFileChange}
+                  disabled={!hasPermission}
                 />
                 <p className="text-xs text-muted-foreground font-bricolage-grotesque ml-2">
                   (JPG, GIF or PNG. 1MB Max.)
@@ -149,7 +151,11 @@ export function TeamSettingsForm({
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Team name" {...field} />
+                      <Input
+                        placeholder="Team name"
+                        {...field}
+                        disabled={!hasPermission}
+                      />
                     </FormControl>
                     <FormDescription>This is your team name.</FormDescription>
                     <FormMessage />
@@ -162,7 +168,11 @@ export function TeamSettingsForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input type="hidden" {...field} />
+                      <Input
+                        type="hidden"
+                        {...field}
+                        disabled={!hasPermission}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -175,7 +185,11 @@ export function TeamSettingsForm({
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormControl>
-                      <Input placeholder="Team slug" {...field} />
+                      <Input
+                        placeholder="Team slug"
+                        {...field}
+                        disabled={!hasPermission}
+                      />
                     </FormControl>
                     <FormDescription>This is your team slug.</FormDescription>
                     <FormMessage />
@@ -191,7 +205,11 @@ export function TeamSettingsForm({
                 <FormItem>
                   <FormLabel>Default role</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!hasPermission}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />
                       </SelectTrigger>
@@ -211,7 +229,10 @@ export function TeamSettingsForm({
             />
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isUploading || !isDirty}>
+            <Button
+              type="submit"
+              disabled={isUploading || !isDirty || !hasPermission}
+            >
               Save changes
             </Button>
           </CardFooter>

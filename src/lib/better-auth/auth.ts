@@ -90,7 +90,7 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async user => {
-          const slug = `u-${user.id}`
+          const slug = `pw-${user.id}`
 
           const slugExists = await auth.api.checkOrganizationSlug({
             body: {
