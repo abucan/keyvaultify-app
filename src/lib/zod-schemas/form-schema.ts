@@ -38,7 +38,7 @@ export const teamSettingsFormSchema = z.object({
   name: z.string().optional(),
   slug: z.string().optional(),
   logo: z.string().optional(),
-  default_role: z.string().optional()
+  default_role: z.enum(['member', 'admin', 'owner']).optional()
 })
 
 export const emailOnlySchema = authFormSchema.pick({ email: true })

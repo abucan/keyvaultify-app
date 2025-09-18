@@ -24,7 +24,7 @@ export default async function SettingsPage() {
             name={fullTeam?.name}
             slug={fullTeam?.slug}
             logo={fullTeam?.logo ?? ''}
-            default_role={metadata?.defaultRole ?? ''}
+            default_role={metadata?.default_role ?? ''}
             updateTeamSettings={updateTeamSettingsAction}
           />
           <DangerZoneCard

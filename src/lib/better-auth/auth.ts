@@ -109,7 +109,7 @@ export const auth = betterAuth({
               userId: user.id,
               metadata: {
                 isPersonal: true,
-                defaultRole: 'member'
+                default_role: 'member'
               }
             }
           })

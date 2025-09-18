@@ -157,6 +157,7 @@ export async function listTeamMembers(): Promise<R<MemberRow[]>> {
     const metadata = JSON.parse(full?.metadata ?? '{}')
 
     const isPersonalOrg = metadata?.isPersonal ?? false
+    const defaultRole = metadata?.default_role ?? 'member'
 
     return {
       ok: true,
@@ -197,7 +198,7 @@ export async function listTeamMembers(): Promise<R<MemberRow[]>> {
         return {
           ...base,
           _acl: { canEditRole, canRemove, canLeave, canSetOwner },
-          _meta: { hasOtherOwners, isSelf, isOwner, isPersonalOrg }
+          _meta: { hasOtherOwners, isSelf, isOwner, isPersonalOrg, defaultRole }
         } satisfies MemberRow
       })
     }

@@ -61,7 +61,10 @@ export function DataTable<TData, TValue>({
         title="Add member"
         description="Add a new member to your team."
       >
-        <AddMemberForm setAddMemberDialogOpen={setAddMemberDialogOpen} />
+        <AddMemberForm
+          setAddMemberDialogOpen={setAddMemberDialogOpen}
+          defaultRole={currentUser?._meta?.defaultRole as Role}
+        />
       </AddDialog>
       <div className="flex flex-col gap-4 w-3/4 lg:w-full">
         <TooltipProvider>

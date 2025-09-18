@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/teams/acl.ts
 import 'server-only'
 
 import { headers } from 'next/headers'
+import { unauthorized } from 'next/navigation'
 
 import { auth } from '@/lib/better-auth/auth'
 
@@ -26,8 +26,7 @@ export async function getMyRole(): Promise<Role | null> {
 export async function requireRole(allowed: Role[]) {
   const role = await getMyRole()
   if (!role || !allowed.includes(role)) {
-    // keep error neutral for security; surface a friendly message in UI
-    throw new Error('NOT_AUTHORIZED')
+    unauthorized()
   }
   return role
 }

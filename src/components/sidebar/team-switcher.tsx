@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { useTransition } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 
 import {
@@ -34,7 +33,6 @@ export function TeamSwitcher({
   teams: Team[]
   orgId: string | null
 }) {
-  const router = useRouter()
   const [pending, startTransition] = useTransition()
 
   const { isMobile } = useSidebar()
@@ -101,17 +99,12 @@ export function TeamSwitcher({
                     startTransition(async () => {
                       const res = await switchTeamAction(team.id)
                       toastRes(res, {
-                        success: `Switched to a ${res?.ok && res?.data?.name}.`,
                         errors: {
                           MISSING_ORG_ID: 'Missing team id.',
                           NOT_FOUND_OR_NO_ACCESS:
                             "You don't have access to that team."
                         }
                       })
-
-                      if (res.ok) {
-                        router.refresh()
-                      }
                     })
                   }}
                   className="gap-2 p-2"
@@ -132,6 +125,7 @@ export function TeamSwitcher({
               <DropdownMenuItem
                 className="gap-2 p-2"
                 onClick={() => setAddTeamDialogOpen(true)}
+                disabled={pending}
               >
                 <div className="flex flex-row items-center gap-2">
                   <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">

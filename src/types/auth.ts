@@ -32,6 +32,7 @@ export type MemberRow = Member & {
     isSelf: boolean
     isOwner: boolean
     isPersonalOrg: boolean
+    defaultRole: Role
   }
 }
 

@@ -9,6 +9,7 @@ import {
   addMemberFormSchema
 } from '@/lib/zod-schemas/form-schema'
 import { inviteMemberAction } from '@/server/members.actions'
+import { Role } from '@/types/auth'
 
 import { AddButton } from '../shared/AddButton'
 import { toastRes } from '../toast-result'
@@ -30,15 +31,17 @@ import {
 } from '../ui/select'
 
 export function AddMemberForm({
-  setAddMemberDialogOpen
+  setAddMemberDialogOpen,
+  defaultRole
 }: {
   setAddMemberDialogOpen: (open: boolean) => void
+  defaultRole: Role
 }) {
   const form = useForm<AddMemberFormData>({
     resolver: zodResolver(addMemberFormSchema),
     defaultValues: {
       email: '',
-      role: 'member'
+      role: defaultRole
     },
     mode: 'onSubmit'
   })

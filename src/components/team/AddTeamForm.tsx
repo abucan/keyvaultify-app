@@ -11,7 +11,9 @@ import {
 } from '@/lib/zod-schemas/form-schema'
 import { createTeamAction } from '@/server/team.actions'
 
+import { AddButton } from '../shared/AddButton'
 import { toastRes } from '../toast-result'
+import { DialogFooter } from '../ui/dialog'
 import {
   Form,
   FormControl,
@@ -21,8 +23,6 @@ import {
   FormMessage
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { DialogFooter } from '../ui/dialog'
-import { AddButton } from '../shared/AddButton'
 
 export function AddTeamForm({
   setAddTeamDialogOpen
@@ -39,8 +39,6 @@ export function AddTeamForm({
   })
   const [pending, startTransition] = useTransition()
   const router = useRouter()
-
-  const { isDirty, isValid } = form.formState
 
   async function onSubmit(values: AddTeamFormData) {
     const fd = new FormData()
@@ -104,7 +102,7 @@ export function AddTeamForm({
         />
         <DialogFooter>
           <AddButton
-            disabledLogic={pending || !isDirty || !isValid}
+            disabledLogic={pending}
             title="Create team"
             loadingTitle="Creating..."
           />

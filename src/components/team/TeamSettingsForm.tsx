@@ -54,7 +54,7 @@ export function TeamSettingsForm({
       name: name,
       slug: slug,
       logo: logo,
-      default_role: default_role
+      default_role: default_role as 'member' | 'admin' | 'owner'
     }
   })
 
@@ -91,6 +91,7 @@ export function TeamSettingsForm({
         SLUG_TAKEN: 'Slug already in use.',
         INVALID_INPUT: 'Please check your inputs.',
         NOT_AUTHORIZED: 'Not authorized.',
+        NOT_FOUND_OR_NO_ACCESS: 'You are not authorized to update this team.',
         UNKNOWN: 'Could not update team.'
       }
     })
@@ -190,7 +191,7 @@ export function TeamSettingsForm({
                 <FormItem>
                   <FormLabel>Default role</FormLabel>
                   <FormControl>
-                    <Select {...field}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />
                       </SelectTrigger>

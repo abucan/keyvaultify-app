@@ -8,7 +8,10 @@ import { auth } from '@/lib/better-auth/auth'
 import { mapError } from '@/lib/errors/mapError'
 import { requireRole } from '@/lib/teams/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '@/lib/teams/validation'
-import { addTeamFormSchema } from '@/lib/zod-schemas/form-schema'
+import {
+  addTeamFormSchema,
+  teamSettingsFormSchema
+} from '@/lib/zod-schemas/form-schema'
 import { R } from '@/types/result'
 
 function normalizeSlug(s: string) {
@@ -18,11 +21,11 @@ function normalizeSlug(s: string) {
     .replace(/(^-|-$)/g, '')
 }
 
-function safeParseJSON(str: string) {
+function safeJSON<T = any>(v: unknown): T {
   try {
-    return JSON.parse(str)
+    return typeof v === 'string' ? JSON.parse(v) : ((v as T) ?? ({} as T))
   } catch {
-    return {} as any
+    return {} as T
   }
 }
 
@@ -68,7 +71,7 @@ export async function createTeamAction(
 
     const created = await auth.api.createOrganization({
       headers: _headers,
-      body: { name, slug, metadata: { defaultRole: 'member' } }
+      body: { name, slug, metadata: { default_role: 'member' } }
     })
 
     await auth.api.setActiveOrganization({
@@ -100,16 +103,18 @@ export async function switchTeamAction(
       return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
     }
 
-    const newActiveOrg = await auth.api.setActiveOrganization({
+    await auth.api.setActiveOrganization({
       headers: _headers,
       body: { organizationId: targetOrgId }
     })
 
-    return { ok: true, data: { name: newActiveOrg?.name ?? '' } }
+    // return { ok: true, data: { name: newActiveOrg?.name ?? '' } }
   } catch (error) {
     const { code, message } = mapError(error)
     return { ok: false, code, message }
   }
+
+  redirect('/dashboard')
 }
 
 export async function listTeams() {
@@ -118,72 +123,59 @@ export async function listTeams() {
 }
 
 export async function updateTeamSettingsAction(fd: FormData): Promise<R> {
-  await requireRole(['owner', 'admin'])
-
-  // read active org first so we can compute oldSlug for revalidate/redirect
-  const full = await auth.api.getFullOrganization({ headers: await headers() })
-  // Depending on your BetterAuth wrapper shape, adjust these:
-  const oldSlug = full?.slug ?? full?.slug ?? ''
-  const oldName = full?.name ?? full?.name ?? ''
-  const oldLogo = full?.logo ?? full?.logo ?? ''
-  const oldMetadataRaw = full?.metadata ?? full?.metadata ?? '{}'
-  const oldMetadata =
-    typeof oldMetadataRaw === 'string'
-      ? safeParseJSON(oldMetadataRaw)
-      : (oldMetadataRaw ?? {})
-
-  const raw = {
-    name: String(fd.get('name') ?? oldName),
-    slug: fd.get('slug') ? normalizeSlug(String(fd.get('slug'))) : undefined,
-    logo: String(fd.get('logo') ?? oldLogo),
-    default_role: String(
-      fd.get('default_role') ?? oldMetadata?.default_role ?? ''
-    )
-  }
-
-  const { name, slug, logo, default_role } = raw
-
-  // Only owners can change slug
-  if (slug && slug !== oldSlug) {
-    await requireRole(['owner'])
-  }
-
   try {
-    await auth.api.updateOrganization({
-      headers: await headers(),
-      body: {
-        organizationId: full?.id ?? '',
-        data: {
-          // BetterAuth org.update supports name/slug/logo/metadata
-          ...(name ? { name } : {}),
-          ...(slug ? { slug } : {}),
-          ...(logo ? { logo } : {}),
-          metadata: {
-            ...(default_role ? { default_role } : {})
-          }
-        }
-      }
-    })
+    await requireRole(['owner', 'admin'])
 
-    // Revalidate current settings page + sidebar bits under this slug
-    const targetSlug = slug || oldSlug
-    revalidatePath(`/${targetSlug}/team/settings`) // your page
-    revalidatePath(`/${targetSlug}`) // dashboard/home under slug, if used
-    revalidatePath('/(app)') // if your sidebar/layout caches team info, adjust as needed
-
-    // If slug changed, switch active org context + redirect into new slug route
-    if (slug && slug !== oldSlug) {
-      redirect(`/o/${slug}?to=/${slug}/team/settings`)
+    const input = {
+      name: String(fd.get('name') ?? '').trim(),
+      slug: fd.get('slug') && normalizeSlug(String(fd.get('slug')).trim()),
+      logo: String(fd.get('logo') ?? '').trim(),
+      default_role: String(fd.get('default_role') ?? '').trim()
     }
 
+    if (!teamSettingsFormSchema.safeParse(input).success) {
+      return { ok: false, code: 'INVALID_INPUT' }
+    }
+
+    const _headers = await headers()
+    const full = await auth.api.getFullOrganization({
+      headers: _headers
+    })
+
+    if (!full) {
+      return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
+    }
+
+    if (input.slug && input.slug !== full.slug) {
+      await requireRole(['owner'])
+    }
+
+    const oldMeta = safeJSON<Record<string, any>>(full.metadata)
+    const metaUpdates: Record<string, any> = {}
+
+    if (input.default_role && input.default_role !== oldMeta.default_role) {
+      metaUpdates.default_role = input.default_role
+    }
+
+    const data: Record<string, any> = {}
+    if (input.name && input.name !== full.name) data.name = input.name
+    if (input.slug && input.slug !== full.slug) data.slug = input.slug
+    if (input.logo && input.logo !== full.logo) data.logo = input.logo
+    if (Object.keys(metaUpdates).length)
+      data.metadata = { ...oldMeta, ...metaUpdates }
+
+    if (!Object.keys(data).length) return { ok: true }
+
+    await auth.api.updateOrganization({
+      headers: _headers,
+      body: { organizationId: full.id, data }
+    })
+
+    revalidatePath('/team/settings')
     return { ok: true }
   } catch (e: any) {
-    const msg = String(e?.message || '')
-    if (msg.toLowerCase().includes('slug'))
-      return { ok: false, code: 'SLUG_TAKEN' }
-    if (msg.includes('403')) return { ok: false, code: 'NOT_AUTHORIZED' }
-    console.error('updateTeamSettingsAction failed', e)
-    return { ok: false, code: 'UNKNOWN' }
+    const { code, message } = mapError(e)
+    return { ok: false, code, message }
   }
 }
 
