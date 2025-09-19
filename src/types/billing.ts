@@ -2,6 +2,14 @@
 export type PlanKey = 'starter' | 'pro'
 export type BillingInterval = 'monthly' | 'yearly'
 
+type SubStatus =
+  | 'incomplete'
+  | 'trialing'
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+
 export type BasePlan = {
   id: string
   name: string
@@ -13,4 +21,12 @@ export type BasePlan = {
   features: string[]
   cta: string
   popular?: boolean
+}
+
+export type Entitlements = {
+  isActive: boolean
+  status: SubStatus
+  plan: PlanKey | undefined
+  interval: BillingInterval | undefined
+  currentPeriodEnd: Date | null
 }

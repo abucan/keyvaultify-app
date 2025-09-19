@@ -7,7 +7,8 @@ import { subscriptions } from '@/db/schemas/subscription-schema'
 import { getActiveOrgId } from '@/lib/auth/org-context'
 import { PRICE_IDS } from '@/lib/billing/price-ids'
 import { db } from '@/lib/sqlite-db'
-import { BillingInterval, PlanKey } from '@/types/billing'
+import { BillingInterval, Entitlements, PlanKey } from '@/types/billing'
+import { R } from '@/types/result'
 
 type SubStatus =
   | 'incomplete'
@@ -39,16 +40,16 @@ export async function getActiveSubscriptionForOrg(orgId?: string) {
   })
 }
 
-export async function getEntitlements(orgId?: string) {
+export async function getEntitlements(
+  orgId?: string
+): Promise<R<Entitlements>> {
   try {
     const sub = await getActiveSubscriptionForOrg(orgId)
     if (!sub) {
       return {
-        isActive: false,
-        status: 'canceled' as SubStatus,
-        plan: undefined as PlanKey | undefined,
-        interval: undefined as BillingInterval | undefined,
-        currentPeriodEnd: null as Date | null
+        ok: false,
+        code: 'NO_SUBSCRIPTION',
+        message: 'No subscription found'
       }
     }
 
@@ -56,24 +57,25 @@ export async function getEntitlements(orgId?: string) {
     const planInfo = priceToPlan(sub.stripePriceId ?? undefined)
 
     return {
-      isActive: ACTIVE.includes(status),
-      status,
-      plan: planInfo?.plan,
-      interval: planInfo?.interval,
-      currentPeriodEnd: sub.currentPeriodEnd ?? null
+      ok: true,
+      data: {
+        isActive: ACTIVE.includes(status),
+        status,
+        plan: planInfo?.plan,
+        interval: planInfo?.interval,
+        currentPeriodEnd: sub.currentPeriodEnd ?? null
+      }
     }
-  } catch (error) {
+  } catch {
     return {
-      isActive: false,
-      status: 'canceled' as SubStatus,
-      plan: undefined as PlanKey | undefined,
-      interval: undefined as BillingInterval | undefined,
-      currentPeriodEnd: null as Date | null
+      ok: false,
+      code: 'INTERNAL_ERROR',
+      message: 'Internal error'
     }
   }
 }
 
 export async function requirePaidOrg(orgId?: string) {
-  const { isActive } = await getEntitlements(orgId)
-  if (!isActive) throw new Error('Billing required')
+  const res = await getEntitlements(orgId)
+  if (!res.ok) throw new Error('Billing required')
 }

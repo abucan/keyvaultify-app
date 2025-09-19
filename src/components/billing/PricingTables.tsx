@@ -19,7 +19,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { plans } from '@/data/plans'
 import { cn } from '@/lib/utils'
 
-export function PricingTables() {
+export function PricingTables({ currentPlan }: { currentPlan?: string }) {
   const [frequency, setFrequency] = useState<string>('monthly')
 
   return (
@@ -90,23 +90,33 @@ export function PricingTables() {
                 ))}
               </CardContent>
               <CardFooter>
-                <Button
-                  asChild
-                  className="w-full"
-                  variant={plan.popular ? 'default' : 'secondary'}
-                  disabled={plan.id === 'hobby'}
-                >
-                  <Link
-                    href={
-                      plan.id === 'hobby'
-                        ? '#'
-                        : `/api/billing/checkout?plan=${plan.id}&interval=${frequency}`
-                    }
+                {plan.id === currentPlan ? (
+                  <Button
+                    className="w-full"
+                    variant={plan.popular ? 'default' : 'secondary'}
+                    disabled={true}
                   >
                     {plan.cta}
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    className="w-full"
+                    variant={plan.popular ? 'default' : 'secondary'}
+                  >
+                    <Link
+                      href={
+                        plan.id === 'hobby'
+                          ? '#'
+                          : `/api/billing/checkout?plan=${plan.id}&interval=${frequency}`
+                      }
+                    >
+                      {plan.cta}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           ))}
