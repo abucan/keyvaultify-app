@@ -29,10 +29,9 @@ export const auth = betterAuth({
       enabled: true,
       beforeDelete: async () => {
         try {
-          const hdrs = await headers()
-
+          const _headers = await headers()
           const rows = await auth.api.listOrganizations({
-            headers: hdrs
+            headers: _headers
           })
 
           if (rows.length !== 1) {
@@ -41,19 +40,8 @@ export const auth = betterAuth({
                 'Ensure you’re the sole owner of a single organization before deleting your account.'
             })
           }
-
-          await auth.api.deleteOrganization({
-            headers: hdrs,
-            body: {
-              organizationId: rows[0].id
-            },
-            query: {
-              metadata: {
-                isPersonal: true
-              }
-            }
-          })
         } catch (error: any) {
+          console.error('Error during pre-delete cleanup:', error)
           throw new APIError('INTERNAL_SERVER_ERROR', {
             message: String(error.message)
           })
@@ -61,9 +49,28 @@ export const auth = betterAuth({
       },
       afterDelete: async ({}) => {
         try {
+          const _headers = await headers()
+          const rows = await auth.api.listOrganizations({
+            headers: _headers
+          })
+
+          if (rows.length !== 1) {
+            throw new APIError('FORBIDDEN', {
+              message:
+                'Ensure you’re the sole owner of a single organization before deleting your account.'
+            })
+          }
+          await auth.api.deleteOrganization({
+            headers: _headers,
+            body: {
+              organizationId: rows[0].id
+            }
+          })
           ;(await cookies()).delete('better-auth.session_token')
-        } catch (error) {
-          console.error('Error during post-delete cleanup:', error)
+        } catch (error: any) {
+          throw new APIError('INTERNAL_SERVER_ERROR', {
+            message: String(error.message)
+          })
         }
       }
     }
