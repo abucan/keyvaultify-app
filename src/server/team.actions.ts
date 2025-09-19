@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect, unauthorized } from 'next/navigation'
+import { Member, Organization } from 'better-auth/plugins'
 
 import { auth } from '@/lib/better-auth/auth'
 import { mapError } from '@/lib/errors/mapError'
@@ -13,7 +14,6 @@ import {
   teamSettingsFormSchema
 } from '@/lib/zod-schemas/form-schema'
 import { R } from '@/types/result'
-import { Member, Organization } from 'better-auth/plugins'
 
 function normalizeSlug(s: string) {
   return s
@@ -143,11 +143,16 @@ export async function updateTeamSettingsAction(fd: FormData): Promise<R> {
       headers: _headers
     })
 
+    const metadata = safeJSON<Record<string, any>>(full?.metadata)
+
     if (!full) {
       return { ok: false, code: 'NOT_FOUND_OR_NO_ACCESS' }
     }
 
     if (input.slug && input.slug !== full.slug) {
+      if (metadata?.isPersonal) {
+        return { ok: false, code: 'IS_PERSONAL_ORG' }
+      }
       await requireRole(['owner'])
     }
 

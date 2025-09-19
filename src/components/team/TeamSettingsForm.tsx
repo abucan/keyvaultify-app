@@ -47,8 +47,9 @@ export function TeamSettingsForm({
   logo,
   default_role,
   updateTeamSettings,
-  hasPermission
-}: Organization & { hasPermission: boolean }) {
+  hasPermission,
+  isPersonal
+}: Organization & { hasPermission: boolean; isPersonal: boolean }) {
   const form = useForm<TeamSettingsFormData>({
     resolver: zodResolver(teamSettingsFormSchema),
     defaultValues: {
@@ -93,6 +94,8 @@ export function TeamSettingsForm({
         INVALID_INPUT: 'Please check your inputs.',
         NOT_AUTHORIZED: 'Not authorized.',
         NOT_FOUND_OR_NO_ACCESS: 'You are not authorized to update this team.',
+        IS_PERSONAL_ORG:
+          'You cannot change the slug of a personal organization.',
         UNKNOWN: 'Could not update team.'
       }
     })
@@ -188,7 +191,7 @@ export function TeamSettingsForm({
                       <Input
                         placeholder="Team slug"
                         {...field}
-                        disabled={!hasPermission}
+                        disabled={!hasPermission || isPersonal}
                       />
                     </FormControl>
                     <FormDescription>This is your team slug.</FormDescription>
@@ -208,7 +211,7 @@ export function TeamSettingsForm({
                     <Select
                       onValueChange={field.onChange}
                       value={field.value}
-                      disabled={!hasPermission}
+                      disabled={!hasPermission || isPersonal}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />

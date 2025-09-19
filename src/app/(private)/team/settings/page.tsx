@@ -23,6 +23,7 @@ export default async function SettingsPage() {
             slug={res?.data?.organization?.slug}
             logo={res?.data?.organization?.logo ?? '/shadcn.jfif'}
             default_role={metadata?.default_role}
+            isPersonal={metadata?.isPersonal}
             updateTeamSettings={updateTeamSettingsAction}
             hasPermission={res?.data?.hasPermission}
           />
