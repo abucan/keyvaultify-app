@@ -1,4 +1,4 @@
-// src/app/api/accept-invitation/[invitationId]/route.ts
+// src/app/accept-invitation/[invitationId]/route.ts
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -14,10 +14,20 @@ export async function GET(
     await auth.api.acceptInvitation({
       headers: await headers(),
       body: { invitationId: invId }
-    }) // POST /organization/accept-invitation
-  } catch (error) {
-    console.error(error)
-    // If not signed in or invalid, send to sign-in that redirects back here
+    })
+
+    const res = NextResponse.redirect(new URL('/dashboard', _req.url))
+    res.cookies.set('kvf_toast', 'INVITE_ACCEPTED', {
+      maxAge: 10,
+      path: '/',
+      sameSite: 'lax',
+      secure: true,
+      httpOnly: false
+    })
+
+    return res
+  } catch {
+    console.log('Error accepting invitation')
     return NextResponse.redirect(
       new URL(
         `/signin?next=/accept-invitation/${invId}`,
@@ -25,8 +35,4 @@ export async function GET(
       )
     )
   }
-  // Optionally set active org now or rely on user to switch
-  return NextResponse.redirect(
-    new URL('/dashboard', process.env.NEXT_PUBLIC_APP_URL!)
-  )
 }

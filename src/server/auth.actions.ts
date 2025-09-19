@@ -28,7 +28,8 @@ export async function sendSignInWithOtp(fd: FormData): Promise<R> {
 export async function verifySignInWithOtp(fd: FormData): Promise<R> {
   const input = {
     email: String(fd.get('email') ?? '').trim(),
-    otp: String(fd.get('otp') ?? '').trim()
+    otp: String(fd.get('otp') ?? '').trim(),
+    next: String(fd.get('next') ?? '/dashboard').trim()
   }
 
   if (!emailOnlySchema.safeParse({ email: input.email }).success)
@@ -49,5 +50,9 @@ export async function verifySignInWithOtp(fd: FormData): Promise<R> {
     return { ok: false, code, message }
   }
 
-  redirect('/dashboard')
+  const dest =
+    input.next.startsWith('/') && !input.next.startsWith('//')
+      ? input.next
+      : '/dashboard'
+  redirect(dest)
 }

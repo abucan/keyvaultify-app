@@ -10,9 +10,14 @@ type Session = typeof auth.$Infer.Session
 export async function middleware(request: NextRequest) {
   console.log('✅ Middleware running for:', request.nextUrl.pathname)
 
-  const { pathname } = request.nextUrl
+  const { pathname, search } = request.nextUrl
 
-  const publicRoutes = ['/', '/signin', '/sentry-example-page']
+  const publicRoutes = [
+    '/',
+    '/signin',
+    '/sentry-example-page',
+    pathname.startsWith('/accept-invitation')
+  ]
   const isPublicRoute = publicRoutes.some(route => pathname === route)
 
   try {
@@ -29,7 +34,9 @@ export async function middleware(request: NextRequest) {
     // If user is authenticated and trying to access auth pages, redirect to dashboard
     if (session?.session && session?.user && pathname === '/signin') {
       console.log('✅ User already authenticated, redirecting to dashboard')
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      const params = new URLSearchParams(search)
+      const next = params.get('next') || '/dashboard'
+      return NextResponse.redirect(new URL(next, request.url))
     }
 
     // If it's a public route (and not /auth with session), allow access
@@ -41,7 +48,9 @@ export async function middleware(request: NextRequest) {
     // For protected routes, check authentication
     if (!session) {
       console.log('❌ No session token, redirecting to /signin')
-      return NextResponse.redirect(new URL('/signin', request.url))
+      const signIn = new URL('/signin', request.url)
+      signIn.searchParams.set('next', pathname + search)
+      return NextResponse.redirect(signIn)
     }
 
     console.log('✅ Session token found, allowing access to protected route')
@@ -57,5 +66,5 @@ export const config = {
   /*   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|txt|xml|woff2?|woff|ttf|otf|eot)).*)'
   ] */
-  matcher: ['/((?!_next|api|signin|.*\\..*).*)']
+  matcher: ['/((?!_next|api|.*\\..*).*)']
 }

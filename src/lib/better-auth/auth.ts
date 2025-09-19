@@ -72,7 +72,7 @@ export const auth = betterAuth({
     session: {
       create: {
         before: async session => {
-          const slug = `u-${session.userId}`
+          const slug = `pw-${session.userId}`
           const org = await db.query.organization.findFirst({
             where: eq(Organization.slug, slug),
             columns: { id: true, slug: true }
@@ -173,7 +173,7 @@ export const auth = betterAuth({
         /* await sendInvitationEmail({
           email: invitation?.email,
           teamName: organization?.name,
-          acceptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/accept-invitation/${invitation.id}`,
+          acceptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/accept-invitation/${invitation.id}`,
           inviterName: inviter?.user?.name || inviter?.user?.email
         })
         */

@@ -2,6 +2,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
@@ -17,6 +18,10 @@ type Step = 'email' | 'otp'
 export default function SignInPage() {
   const [currentStep, setCurrentStep] = useState<Step>('email')
   const [loading, setLoading] = useState(false)
+
+  /* redirect to the page after login */
+  const sp = useSearchParams()
+  const next = sp.get('next') ?? '/dashboard'
 
   const form = useForm<AuthFormData>({
     resolver: zodResolver(authFormSchema),
@@ -50,6 +55,7 @@ export default function SignInPage() {
     try {
       const fd = new FormData()
       fd.append('email', watchedEmail)
+      fd.append('next', next)
       const res = await sendSignInWithOtp(fd)
 
       if (!res.ok) {
@@ -86,6 +92,7 @@ export default function SignInPage() {
       const fd = new FormData()
       fd.append('email', watchedEmail)
       fd.append('otp', watchedOtp!)
+      fd.append('next', next)
       const res = await verifySignInWithOtp(fd)
 
       if (!res?.ok) {

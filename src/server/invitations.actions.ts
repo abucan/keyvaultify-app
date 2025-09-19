@@ -29,7 +29,7 @@ export async function listTeamInvitations(): Promise<R<InvitationRow[]>> {
     const rows = {
       ok: true,
       data: (invitesRes ?? []).map((inv: any) => {
-        const acceptUrl = `${baseUrl}/api/accept-invitation/${inv.id}`
+        const acceptUrl = `${baseUrl}/accept-invitation/${inv.id}`
 
         return {
           id: inv.id,
