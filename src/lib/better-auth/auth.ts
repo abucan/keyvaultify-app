@@ -30,16 +30,63 @@ export const auth = betterAuth({
       beforeDelete: async () => {
         try {
           const _headers = await headers()
-          const rows = await auth.api.listOrganizations({
-            headers: _headers
-          })
+          const session = await auth.api.getSession({ headers: _headers })
+          if (!session)
+            throw new APIError('UNAUTHORIZED', { message: 'Sign in.' })
 
-          if (rows.length !== 1) {
+          const orgs = await auth.api.listOrganizations({ headers: _headers })
+
+          const personal = orgs.find(
+            (o: any) => o?.metadata?.isPersonal === true
+          )
+          if (!personal) {
             throw new APIError('FORBIDDEN', {
-              message:
-                'Ensure you’re the sole owner of a single organization before deleting your account.'
+              message: 'Personal workspace not found.'
             })
           }
+
+          const others = orgs.filter((o: any) => o.id !== personal.id)
+
+          if (others.length === 0) {
+            await auth.api.deleteOrganization({
+              headers: _headers,
+              body: { organizationId: personal.id }
+            })
+
+            return
+          }
+
+          const results = await Promise.allSettled(
+            others.map(async (o: any) => {
+              const full = await auth.api.getFullOrganization({
+                headers: _headers,
+                query: { organizationId: o.id }
+              })
+              const owners = (full?.members ?? []).filter(
+                (m: any) => m.role === 'owner'
+              )
+              const onlyOwner =
+                owners.length === 1 && owners[0]?.userId === session.user.id
+              if (onlyOwner) {
+                throw new APIError('FORBIDDEN', {
+                  message:
+                    'Transfer ownership in other organizations before deleting your account.'
+                })
+              }
+            })
+          )
+
+          const failed = results.filter((r: any) => r.status === 'rejected')
+          if (failed.length > 0) {
+            throw new APIError('INTERNAL_SERVER_ERROR', {
+              message: 'Failed to retrieve organizations.'
+            })
+          }
+
+          await auth.api.deleteOrganization({
+            headers: _headers,
+            body: { organizationId: personal.id }
+          })
         } catch (error: any) {
           console.error('Error during pre-delete cleanup:', error)
           throw new APIError('INTERNAL_SERVER_ERROR', {
@@ -49,28 +96,9 @@ export const auth = betterAuth({
       },
       afterDelete: async ({}) => {
         try {
-          const _headers = await headers()
-          const rows = await auth.api.listOrganizations({
-            headers: _headers
-          })
-
-          if (rows.length !== 1) {
-            throw new APIError('FORBIDDEN', {
-              message:
-                'Ensure you’re the sole owner of a single organization before deleting your account.'
-            })
-          }
-          await auth.api.deleteOrganization({
-            headers: _headers,
-            body: {
-              organizationId: rows[0].id
-            }
-          })
           ;(await cookies()).delete('better-auth.session_token')
         } catch (error: any) {
-          throw new APIError('INTERNAL_SERVER_ERROR', {
-            message: String(error.message)
-          })
+          console.error('Error during post-delete cleanup:', error)
         }
       }
     }
@@ -169,10 +197,12 @@ export const auth = betterAuth({
             }
           })
 
-          await auth.api.setActiveOrganization({
-            headers: _headers,
-            body: { organizationId: orgs[0].id }
-          })
+          if (orgs?.length > 0) {
+            await auth.api.setActiveOrganization({
+              headers: _headers,
+              body: { organizationId: orgs[0].id }
+            })
+          }
         }
       },
       requireEmailVerificationOnInvitation: true,

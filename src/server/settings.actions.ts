@@ -61,7 +61,7 @@ export async function deleteUserProfileAction(
       body: { callbackURL: '/signin' }
     })
 
-    redirect('/signin')
+    return { ok: true }
   } catch (error) {
     const { code, message } = mapError(error)
     return { ok: false, code, message }
