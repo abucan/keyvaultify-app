@@ -3,14 +3,17 @@ import Link from 'next/link'
 import { Loader } from 'lucide-react'
 import { Control } from 'react-hook-form'
 
+import { OAuthButton } from '@/components/auth-form/OAuthButton'
+import { Button } from '@/components/ui/button'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import { AuthFormConfig } from '@/lib/config/auth-forms'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
-
-import { Button } from '../ui/button'
-import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
-
-import { OAuthButton } from './OAuthButton'
 
 type SignUpFormProps = {
   config: AuthFormConfig

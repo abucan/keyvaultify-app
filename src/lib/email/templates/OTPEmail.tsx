@@ -1,5 +1,5 @@
 // src/lib/email/templates/OTPEmail.tsx
-import EmailLayout from './EmailLayout'
+import EmailLayout from '@/lib/email/templates/EmailLayout'
 
 type OTPEmailProps = {
   otp: string

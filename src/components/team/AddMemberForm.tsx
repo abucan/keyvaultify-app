@@ -4,15 +4,8 @@ import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import {
-  AddMemberFormData,
-  addMemberFormSchema
-} from '@/lib/zod-schemas/form-schema'
-import { inviteMemberAction } from '@/server/members.actions'
-import { Role } from '@/types/auth'
-
-import { AddButton } from '../shared/AddButton'
-import { toastRes } from '../toast-result'
+import { AddButton } from '@/components/shared/AddButton'
+import { toastRes } from '@/components/toast-result'
 import {
   Form,
   FormControl,
@@ -20,15 +13,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '../ui/form'
-import { Input } from '../ui/input'
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '../ui/select'
+} from '@/components/ui/select'
+import {
+  AddMemberFormData,
+  addMemberFormSchema
+} from '@/lib/zod-schemas/form-schema'
+import { inviteMemberAction } from '@/server/members.actions'
+import { Role } from '@/types/auth'
 
 export function AddMemberForm({
   setAddMemberDialogOpen,

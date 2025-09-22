@@ -1,7 +1,7 @@
 import { Loader } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
 
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 
 export function SubmitButton({ disabledLogic }: { disabledLogic: boolean }) {
   const { pending } = useFormStatus()

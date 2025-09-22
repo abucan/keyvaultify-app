@@ -20,7 +20,6 @@ export async function ensureStripeCustomerForActiveOrg() {
   if (existing) return existing.stripeCustomerId
 
   const org = await getActiveOrgFull()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const ownerEmail = org?.members?.find((m: any) =>
     Array.isArray(m.role) ? m.role.includes('owner') : m.role === 'owner'
   )?.user?.email

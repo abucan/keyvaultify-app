@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
-import { Button } from '../ui/button'
-import { Card, CardContent } from '../ui/card'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function ManageBillingCard() {
   return (
@@ -18,7 +18,11 @@ export function ManageBillingCard() {
           height={40}
           className="rounded-lg"
         />
-        <Button asChild variant={'outline'}>
+        <Button
+          asChild
+          variant={'outline'}
+          className="font-bricolage-grotesque"
+        >
           <Link href={`/api/billing/portal`}>
             Manage Billing
             <ArrowUpRight className="h-4 w-4" />

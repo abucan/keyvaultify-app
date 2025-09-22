@@ -2,13 +2,17 @@
 import { Loader, MoveLeft } from 'lucide-react'
 import { Control, useWatch } from 'react-hook-form'
 
+import { Button } from '@/components/ui/button'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
+import { InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
+import { InputOTP } from '@/components/ui/input-otp'
 import { AuthFormConfig } from '@/lib/config/auth-forms'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
-
-import { Button } from '../ui/button'
-import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
-import { InputOTP } from '../ui/input-otp'
 
 type OTPFormProps = {
   config: AuthFormConfig

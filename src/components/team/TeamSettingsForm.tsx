@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import { toastRes } from '@/components/toast-result'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,6 +25,13 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { useUploadThing } from '@/lib/utils'
 import {
@@ -31,15 +39,6 @@ import {
   teamSettingsFormSchema
 } from '@/lib/zod-schemas/form-schema'
 import { Organization } from '@/types/auth'
-
-import { toastRes } from '../toast-result'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '../ui/select'
 
 export function TeamSettingsForm({
   name,

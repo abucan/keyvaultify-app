@@ -1,5 +1,5 @@
 // src/lib/email/templates/TeamInvEmail.tsx
-import EmailLayout from './EmailLayout'
+import EmailLayout from '@/lib/email/templates/EmailLayout'
 
 type TeamInvitationEmailProps = {
   inviterName?: string

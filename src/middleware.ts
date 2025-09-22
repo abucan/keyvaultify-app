@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { betterFetch } from '@better-fetch/fetch'
 
-import { auth } from './lib/better-auth/auth'
+import { auth } from '@/lib/better-auth/auth'
 
 type Session = typeof auth.$Infer.Session
 
@@ -12,13 +12,12 @@ export async function middleware(request: NextRequest) {
 
   const { pathname, search } = request.nextUrl
 
-  const publicRoutes = [
-    '/',
-    '/signin',
-    '/sentry-example-page',
-    pathname.startsWith('/accept-invitation')
-  ]
-  const isPublicRoute = publicRoutes.some(route => pathname === route)
+  const PUBLIC_ROUTE_PREFIXES = ['/accept-invitation']
+  const PUBLIC_ROUTES = ['/', '/signin', '/sentry-example-page']
+
+  const isPublicRoute =
+    PUBLIC_ROUTES.includes(pathname) ||
+    PUBLIC_ROUTE_PREFIXES.some(prefix => pathname.startsWith(prefix))
 
   try {
     const { data: session } = await betterFetch<Session>(

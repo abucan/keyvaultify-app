@@ -3,6 +3,10 @@
 import * as React from 'react'
 import { BookOpen, Home, Key, Settings2, Users } from 'lucide-react'
 
+import { NavMain } from '@/components/sidebar/nav-main'
+import { NavProjects } from '@/components/sidebar/nav-projects'
+import { NavUser } from '@/components/sidebar/nav-user'
+import { TeamSwitcher } from '@/components/sidebar/team-switcher'
 import {
   Sidebar,
   SidebarContent,
@@ -11,11 +15,6 @@ import {
   SidebarRail
 } from '@/components/ui/sidebar'
 import { AppSidebarProps } from '@/types'
-
-import { NavMain } from './nav-main'
-import { NavProjects } from './nav-projects'
-import { NavUser } from './nav-user'
-import { TeamSwitcher } from './team-switcher'
 
 export function AppSidebar({
   ctx,

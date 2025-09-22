@@ -5,6 +5,9 @@ import { useTransition } from 'react'
 import Image from 'next/image'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 
+import { AddDialog } from '@/components/shared/AddDialog'
+import { AddTeamForm } from '@/components/team/AddTeamForm'
+import { toastRes } from '@/components/toast-result'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,10 +24,6 @@ import {
 } from '@/components/ui/sidebar'
 import { switchTeamAction } from '@/server/team.actions'
 import { Team } from '@/types/auth'
-
-import { AddDialog } from '../shared/AddDialog'
-import { AddTeamForm } from '../team/AddTeamForm'
-import { toastRes } from '../toast-result'
 
 export function TeamSwitcher({
   teams,

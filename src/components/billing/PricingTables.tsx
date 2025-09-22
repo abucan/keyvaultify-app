@@ -31,8 +31,12 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
           className="w-full items-end"
         >
           <TabsList>
-            <TabsTrigger value="monthly">Monthly</TabsTrigger>
-            <TabsTrigger value="yearly">Yearly (20% off)</TabsTrigger>
+            <TabsTrigger className="font-bricolage-grotesque" value="monthly">
+              Monthly
+            </TabsTrigger>
+            <TabsTrigger className="font-bricolage-grotesque" value="yearly">
+              Yearly (20% off)
+            </TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="w-full flex flex-row gap-4">
@@ -45,20 +49,20 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
               key={plan.id}
             >
               {plan.popular && (
-                <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full">
+                <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full font-bricolage-grotesque">
                   Popular
                 </Badge>
               )}
               <CardHeader>
-                <CardTitle className="font-medium text-xl">
+                <CardTitle className="font-medium text-xl font-bricolage-grotesque">
                   {plan.name}
                 </CardTitle>
                 <CardDescription>
-                  <p>{plan.description}</p>
+                  <p className="font-bricolage-grotesque">{plan.description}</p>
                   {typeof plan.price[frequency as keyof typeof plan.price] ===
                   'number' ? (
                     <NumberFlow
-                      className="font-medium text-foreground"
+                      className="font-medium text-foreground font-bricolage-grotesque mt-2"
                       format={{
                         style: 'currency',
                         currency: 'USD',
@@ -72,7 +76,7 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
                       }
                     />
                   ) : (
-                    <span className="font-medium text-foreground">
+                    <span className="font-medium text-foreground font-bricolage-grotesque">
                       {plan.price[frequency as keyof typeof plan.price]}.
                     </span>
                   )}
@@ -81,7 +85,7 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
               <CardContent className="grid gap-2">
                 {plan.features.map((feature, index) => (
                   <div
-                    className="flex items-center gap-2 text-muted-foreground text-sm"
+                    className="flex items-center gap-2 text-muted-foreground text-sm font-bricolage-grotesque"
                     key={index}
                   >
                     <BadgeCheck className="h-4 w-4" />
@@ -92,7 +96,7 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
               <CardFooter>
                 {plan.id === currentPlan ? (
                   <Button
-                    className="w-full"
+                    className="w-full font-bricolage-grotesque"
                     variant={plan.popular ? 'default' : 'secondary'}
                     disabled={true}
                   >
@@ -102,7 +106,7 @@ export function PricingTables({ currentPlan }: { currentPlan?: string }) {
                 ) : (
                   <Button
                     asChild
-                    className="w-full"
+                    className="w-full font-bricolage-grotesque"
                     variant={plan.popular ? 'default' : 'secondary'}
                   >
                     <Link

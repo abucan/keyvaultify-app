@@ -1,8 +1,7 @@
+import { TerminalContent } from '@/components/terminal/terminal-content'
+import { TerminalHeader } from '@/components/terminal/terminal-header'
 import { Card } from '@/components/ui/card'
 import type { TerminalTheme } from '@/types/terminal'
-
-import { TerminalContent } from './terminal-content'
-import { TerminalHeader } from './terminal-header'
 
 interface TerminalWindowProps {
   theme: TerminalTheme

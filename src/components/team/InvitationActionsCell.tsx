@@ -3,13 +3,12 @@
 import { useTransition } from 'react'
 import { CircleX, Mail } from 'lucide-react'
 
+import { toastRes } from '@/components/toast-result'
 import { Button } from '@/components/ui/button'
 import {
   cancelInvitationAction,
   resendInvitationAction
 } from '@/server/invitations.actions'
-
-import { toastRes } from '../toast-result'
 
 export function InvitationActionsCell(props: {
   invitationId: string

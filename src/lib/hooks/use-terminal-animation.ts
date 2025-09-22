@@ -2,7 +2,7 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 
-import type { Step, TerminalState } from '../../types/terminal'
+import type { Step, TerminalState } from '@/types/terminal'
 
 export function useTerminalAnimation(steps: Step[]) {
   const [state, setState] = useState<TerminalState>({

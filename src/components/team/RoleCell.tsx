@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useTransition } from 'react'
 
+import { toastRes } from '@/components/toast-result'
 import {
   Select,
   SelectContent,
@@ -12,8 +13,6 @@ import {
 } from '@/components/ui/select'
 import { updateMemberRoleAction } from '@/server/members.actions'
 import type { Role } from '@/types/auth'
-
-import { toastRes } from '../toast-result'
 
 type RoleCellProps = {
   email: string

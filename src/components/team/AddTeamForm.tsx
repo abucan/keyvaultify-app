@@ -5,15 +5,9 @@ import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import {
-  AddTeamFormData,
-  addTeamFormSchema
-} from '@/lib/zod-schemas/form-schema'
-import { createTeamAction } from '@/server/team.actions'
-
-import { AddButton } from '../shared/AddButton'
-import { toastRes } from '../toast-result'
-import { DialogFooter } from '../ui/dialog'
+import { AddButton } from '@/components/shared/AddButton'
+import { toastRes } from '@/components/toast-result'
+import { DialogFooter } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -21,8 +15,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '../ui/form'
-import { Input } from '../ui/input'
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import {
+  AddTeamFormData,
+  addTeamFormSchema
+} from '@/lib/zod-schemas/form-schema'
+import { createTeamAction } from '@/server/team.actions'
 
 export function AddTeamForm({
   setAddTeamDialogOpen

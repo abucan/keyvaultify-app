@@ -1,8 +1,7 @@
 // src/app/(private)/team/invitations/page.tsx
+import { columns } from '@/app/(private)/team/invitations/columns'
+import { DataTable } from '@/app/(private)/team/invitations/data-table'
 import { listTeamInvitations } from '@/server/invitations.actions'
-
-import { columns } from './columns'
-import { DataTable } from './data-table'
 
 export default async function InvitationsPage() {
   const invitations = await listTeamInvitations()

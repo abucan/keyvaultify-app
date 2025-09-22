@@ -35,7 +35,7 @@ export async function inviteMemberAction(
       headers: await headers(),
       body: { email, role: role as 'member' | 'admin' | 'owner' }
     })
-    revalidatePath('/teams/invitations')
+    revalidatePath('/team/invitations')
     return { ok: true, data: { email } }
   } catch (error) {
     const { code, message } = mapError(error)
@@ -63,7 +63,7 @@ export async function updateMemberRoleAction(
         role: input.role as 'member' | 'admin' | 'owner'
       }
     })
-    revalidatePath('/teams/members')
+    revalidatePath('/team/members')
     return { ok: true, data: { role: input.role } }
   } catch (e: any) {
     const { code, message } = mapError(e)
@@ -85,7 +85,7 @@ export async function removeMemberAction(formData: FormData): Promise<R> {
       headers: _headers,
       body: { memberIdOrEmail }
     })
-    revalidatePath('/teams/members')
+    revalidatePath('/team/members')
     return { ok: true }
   } catch (e: any) {
     const { code, message } = mapError(e)

@@ -72,7 +72,7 @@ export async function resendInvitationAction(
       headers: await headers(),
       body: { email: input.email, role: input.role, resend: true }
     })
-    revalidatePath('/teams/invitations')
+    revalidatePath('/team/invitations')
     return { ok: true, data: { email: input.email } }
   } catch (e: any) {
     const { code, message } = mapError(e)
@@ -91,7 +91,7 @@ export async function cancelInvitationAction(
       headers: await headers(),
       body: { invitationId }
     })
-    revalidatePath('/teams/invitations')
+    revalidatePath('/team/invitations')
     return { ok: true, data: { email: res?.email ?? '' } }
   } catch (e: any) {
     const { code, message } = mapError(e)

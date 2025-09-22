@@ -10,9 +10,8 @@ import { emailOTP, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 
 import { organization as Organization } from '@/db/schemas/auth-schema'
+import { sendInvitationEmail, sendOTPEmail } from '@/lib/email/service'
 import { db } from '@/lib/sqlite-db'
-
-import { sendInvitationEmail, sendOTPEmail } from '../email/service'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

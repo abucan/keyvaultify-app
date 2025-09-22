@@ -3,9 +3,8 @@
 import { type ReactNode, useActionState, useEffect, useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 
-import { R } from '@/types/result'
-
-import { toastRes } from '../toast-result'
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import { toastRes } from '@/components/toast-result'
 import {
   Card,
   CardContent,
@@ -13,9 +12,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '../ui/card'
-
-import { ConfirmDialog } from './ConfirmDialog'
+} from '@/components/ui/card'
+import { R } from '@/types/result'
 
 type DangerZoneCardProps = {
   title: string

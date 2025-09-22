@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Trash2 } from 'lucide-react'
 
+import { SubmitButton } from '@/components/shared/SubmitButton'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,10 +14,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-
-import { Input } from '../ui/input'
-
-import { SubmitButton } from './SubmitButton'
+import { Input } from '@/components/ui/input'
 
 type ConfirmDialogProps = {
   open: boolean

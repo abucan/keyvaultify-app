@@ -1,13 +1,11 @@
 // src/components/team/ActionsCell.tsx
 'use client'
 import { useState, useTransition } from 'react'
-import { redirect, useRouter } from 'next/navigation'
 import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import { toastRes } from '@/components/toast-result'
 import { leaveTeamAction, removeMemberAction } from '@/server/members.actions'
-
-import { toastRes } from '../toast-result'
 
 export function ActionsCell({
   email,
@@ -22,7 +20,6 @@ export function ActionsCell({
 }) {
   const [leaving, startLeave] = useTransition()
   const [removing, startRemove] = useTransition()
-  const router = useRouter()
 
   const disableLeave = leaving || !canLeave
   const disableRemove = removing || !canRemove

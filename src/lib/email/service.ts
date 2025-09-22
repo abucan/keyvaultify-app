@@ -2,9 +2,9 @@
 import React from 'react'
 import { render } from '@react-email/render'
 
-import OTPEmail from './templates/OTPEmail'
-import TeamInvitationEmail from './templates/TeamInvEmail'
-import { emailConfig, resend } from './resend'
+import { emailConfig, resend } from '@/lib/email/resend'
+import OTPEmail from '@/lib/email/templates/OTPEmail'
+import TeamInvitationEmail from '@/lib/email/templates/TeamInvEmail'
 
 export class EmailService {
   static async sendOTP(params: {

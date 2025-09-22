@@ -7,8 +7,8 @@ import { useSearchParams } from 'next/navigation'
 import { createAuthClient } from 'better-auth/client'
 import { ChevronRight } from 'lucide-react'
 
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 type OAuthButtonProps = {
   provider: 'google' | 'github'
