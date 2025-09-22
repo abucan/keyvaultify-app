@@ -47,9 +47,14 @@ export async function getEntitlements(
     const sub = await getActiveSubscriptionForOrg(orgId)
     if (!sub) {
       return {
-        ok: false,
-        code: 'NO_SUBSCRIPTION',
-        message: 'No subscription found'
+        ok: true,
+        data: {
+          isActive: false,
+          status: 'trialing',
+          plan: undefined,
+          interval: undefined,
+          currentPeriodEnd: null
+        }
       }
     }
 

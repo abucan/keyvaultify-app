@@ -8,7 +8,7 @@ export default async function BillingSettingsPage() {
   const ent = await getEntitlements()
   return (
     <>
-      {ent.ok && ent.data && (
+      {ent?.ok && ent?.data && (
         <div className="w-3/4 flex flex-col gap-4">
           <div>
             <h1 className="text-2xl font-bold font-bricolage-grotesque">

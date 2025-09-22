@@ -19,7 +19,13 @@ export function CurrentPlanCard({ ent }: { ent: Entitlements }) {
           </h2>
           {ent.status === 'active' && (
             <p className="text-sm font-medium text-muted-foreground font-bricolage-grotesque capitalize">
-              Your subscription is active until{' '}
+              Your subscription renews on{' '}
+              {ent.currentPeriodEnd?.toLocaleDateString()}
+            </p>
+          )}
+          {ent.status === 'canceled' && (
+            <p className="text-sm font-medium text-muted-foreground font-bricolage-grotesque capitalize">
+              Your subscription is canceled and stop on{' '}
               {ent.currentPeriodEnd?.toLocaleDateString()}
             </p>
           )}
