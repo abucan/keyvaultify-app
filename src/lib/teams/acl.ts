@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { unauthorized } from 'next/navigation'
 
 import { auth } from '@/lib/better-auth/auth'
+import { R } from '@/types/result'
 
 type Role = 'owner' | 'admin' | 'member'
 
@@ -35,7 +36,7 @@ export async function requireRole(allowed: Role[]) {
 export async function ensureOwnerSafety(
   targetMemberId?: string,
   nextRole?: Role
-) {
+): Promise<R<void>> {
   const full = await auth.api.getFullOrganization({ headers: await headers() })
   const members = full?.members ?? []
   const owners = members.filter((m: any) => m.role === 'owner')
@@ -43,10 +44,11 @@ export async function ensureOwnerSafety(
 
   // If removing an owner, require at least 2 owners
   if (target && target.role === 'owner') {
-    if (owners.length <= 1) throw new Error('LAST_OWNER_PROTECTED')
+    if (owners.length <= 1) return { ok: false, code: 'LAST_OWNER_PROTECTED' }
   }
   // If changing role of an owner to non-owner, same guard
   if (target && target.role === 'owner' && nextRole && nextRole !== 'owner') {
-    if (owners.length <= 1) throw new Error('LAST_OWNER_PROTECTED')
+    if (owners.length <= 1) return { ok: false, code: 'LAST_OWNER_PROTECTED' }
   }
+  return { ok: true }
 }
