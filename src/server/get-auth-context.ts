@@ -4,8 +4,8 @@ import 'server-only'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { getTeams } from '@/app/(private)/team/_data/team.queries'
 import { auth } from '@/lib/better-auth/auth'
-import { listTeams } from '@/server/team.actions'
 import type { SidebarCtx } from '@/types'
 
 type Member = { userId: string; role: 'owner' | 'admin' | 'member' }
@@ -49,7 +49,7 @@ export async function getAuthContext(): Promise<{
   const role =
     full.members?.find(m => m.userId === session.user!.id)?.role ?? 'member'
 
-  const teams = await listTeams()
+  const teams = await getTeams()
 
   const meta = parseMeta(full.metadata)
   const ctx: SidebarCtx = {
