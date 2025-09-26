@@ -1,4 +1,4 @@
-// src/components/auth-form/OTPForm.tsx
+// src/app/(auth)/signin/components/OTPForm.tsx
 import { Loader, MoveLeft } from 'lucide-react'
 import { Control, useWatch } from 'react-hook-form'
 

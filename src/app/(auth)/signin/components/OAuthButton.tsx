@@ -1,4 +1,4 @@
-// src/components/auth-form/OAuthButton.tsx
+// src/app/(auth)/signin/components/OAuthButton.tsx
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'

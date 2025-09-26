@@ -1,9 +1,9 @@
-// src/components/auth-form/index.tsx
+// src/app/(auth)/signin/components/SignInForm.tsx
 import Link from 'next/link'
 import { Loader } from 'lucide-react'
 import { Control } from 'react-hook-form'
 
-import { OAuthButton } from '@/components/auth-form/OAuthButton'
+import { OAuthButton } from '@/app/(auth)/signin/components/OAuthButton'
 import { Button } from '@/components/ui/button'
 import {
   FormControl,
@@ -15,19 +15,19 @@ import { Input } from '@/components/ui/input'
 import { AuthFormConfig } from '@/lib/config/auth-forms'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
 
-type SignUpFormProps = {
+type SignInFormProps = {
   config: AuthFormConfig
   control: Control<AuthFormData>
   loading: boolean
   disabled?: boolean
 }
 
-export function AuthForm({
+export function SignInForm({
   config,
   control,
   loading,
   disabled
-}: SignUpFormProps) {
+}: SignInFormProps) {
   const handleLastUsed = (provider: 'google' | 'github' | 'email') => {
     localStorage.setItem('lastUsedProvider', provider)
   }

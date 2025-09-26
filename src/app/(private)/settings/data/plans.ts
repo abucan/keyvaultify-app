@@ -1,4 +1,4 @@
-// src/data/plans.ts
+// src/app/(private)/settings/data/plans.ts
 import { BasePlan } from '@/types/billing'
 
 export const plans: BasePlan[] = [

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import NumberFlow from '@number-flow/react'
 import { ArrowRight, BadgeCheck } from 'lucide-react'
 
+import { plans } from '@/app/(private)/settings/data/plans'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,7 +17,6 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { plans } from '@/data/plans'
 import { cn } from '@/lib/utils'
 
 export function PricingTables({ currentPlan }: { currentPlan?: string }) {

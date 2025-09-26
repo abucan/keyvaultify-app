@@ -6,12 +6,13 @@ import { useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { AuthForm } from '@/components/auth-form'
-import { OTPForm } from '@/components/auth-form/OTPForm'
+import { signInWithOtpAction } from '@/app/(auth)/signin/actions/SignInWithOtpAction'
+import { verifySignInOtpAction } from '@/app/(auth)/signin/actions/VerifySignInOtpAction'
+import { OTPForm } from '@/app/(auth)/signin/components/OTPForm'
+import { SignInForm } from '@/app/(auth)/signin/components/SignInForm'
 import { Form } from '@/components/ui/form'
 import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-forms'
 import { AuthFormData, authFormSchema } from '@/lib/zod-schemas/form-schema'
-import { sendSignInWithOtp, verifySignInWithOtp } from '@/server/auth.actions'
 
 type Step = 'email' | 'otp'
 
@@ -56,7 +57,7 @@ export default function SignInPage() {
       const fd = new FormData()
       fd.append('email', watchedEmail)
       fd.append('next', next)
-      const res = await sendSignInWithOtp(fd)
+      const res = await signInWithOtpAction(fd)
 
       if (!res.ok) {
         if (res.code === 'INVALID_EMAIL') {
@@ -93,7 +94,7 @@ export default function SignInPage() {
       fd.append('email', watchedEmail)
       fd.append('otp', watchedOtp!)
       fd.append('next', next)
-      const res = await verifySignInWithOtp(fd)
+      const res = await verifySignInOtpAction(fd)
 
       if (!res?.ok) {
         if (res.code === 'OTP_EXPIRED') {
@@ -140,7 +141,7 @@ export default function SignInPage() {
           onSubmit={handleSubmit(onSubmit)}
         >
           {currentStep === 'email' && (
-            <AuthForm
+            <SignInForm
               config={authFormConfig}
               control={control}
               loading={loading}
