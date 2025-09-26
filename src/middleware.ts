@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl
 
   const PUBLIC_ROUTE_PREFIXES = ['/accept-invitation']
-  const PUBLIC_ROUTES = ['/', '/signin', '/sentry-example-page']
+  const PUBLIC_ROUTES = ['/', '/signin']
 
   const isPublicRoute =
     PUBLIC_ROUTES.includes(pathname) ||
