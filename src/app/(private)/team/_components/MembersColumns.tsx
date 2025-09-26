@@ -1,13 +1,13 @@
-// src/app/(private)/team/members/columns.tsx
+// src/app/(private)/team/_components/MembersColumns.tsx
 'use client'
 import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { ActionsCell } from '@/components/team/ActionsCell'
-import { RoleCell } from '@/components/team/RoleCell'
+import { MemberActionsCell } from '@/app/(private)/team/_components/MemberActionsCell'
+import { RoleCell } from '@/app/(private)/team/_components/RoleCell'
 import { MemberRow, Role } from '@/types/auth'
 
-export const columns: ColumnDef<MemberRow>[] = [
+export const MembersColumns: ColumnDef<MemberRow>[] = [
   {
     accessorKey: 'image',
     header: () => <p className="text-sm font-bricolage-grotesque">Name</p>,
@@ -90,7 +90,7 @@ export const columns: ColumnDef<MemberRow>[] = [
       const canRemove = m._acl?.canRemove === true
 
       return (
-        <ActionsCell
+        <MemberActionsCell
           email={m.email}
           memberId={m.id}
           canLeave={canLeave}

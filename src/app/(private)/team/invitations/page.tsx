@@ -1,15 +1,18 @@
 // src/app/(private)/team/invitations/page.tsx
-import { columns } from '@/app/(private)/team/invitations/columns'
-import { DataTable } from '@/app/(private)/team/invitations/data-table'
-import { listTeamInvitations } from '@/server/invitations.actions'
+import { InvitationsColumns } from '@/app/(private)/team/_components/InvitationsColumns'
+import { InvitationsDataTable } from '@/app/(private)/team/_components/InvitationsDataTable'
+import { getTeamInvitations } from '@/app/(private)/team/_data/team.queries'
 
 export default async function InvitationsPage() {
-  const invitations = await listTeamInvitations()
+  const invitations = await getTeamInvitations()
 
   return (
     <>
       {invitations?.ok && invitations?.data && (
-        <DataTable columns={columns} data={invitations?.data} />
+        <InvitationsDataTable
+          columns={InvitationsColumns}
+          data={invitations?.data}
+        />
       )}
     </>
   )

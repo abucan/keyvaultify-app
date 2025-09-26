@@ -1,9 +1,10 @@
-// src/components/team/AddMemberForm.tsx
+// src/app/(private)/team/_components/AddMemberForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import { inviteMemberAction } from '@/app/(private)/team/_actions/inviteMemberAction'
 import { AddButton } from '@/components/shared/AddButton'
 import { toastRes } from '@/components/toast-result'
 import {
@@ -26,7 +27,6 @@ import {
   AddMemberFormData,
   addMemberFormSchema
 } from '@/lib/zod-schemas/form-schema'
-import { inviteMemberAction } from '@/server/members.actions'
 import { Role } from '@/types/auth'
 
 export function AddMemberForm({

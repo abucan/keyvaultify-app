@@ -1,4 +1,4 @@
-// src/components/team/AddTeamForm.tsx
+// src/app/(private)/team/_components/AddTeamForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'

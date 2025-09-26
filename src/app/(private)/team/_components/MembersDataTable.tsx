@@ -1,4 +1,4 @@
-// src/app/(private)/team/members/data-table.tsx
+// src/app/(private)/team/_components/MembersDataTable.tsx
 'use client'
 import { useState } from 'react'
 import { TooltipTrigger } from '@radix-ui/react-tooltip'
@@ -10,8 +10,8 @@ import {
 } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
 
+import { AddMemberForm } from '@/app/(private)/team/_components/AddMemberForm'
 import { AddDialog } from '@/components/shared/AddDialog'
-import { AddMemberForm } from '@/components/team/AddMemberForm'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   currentUser: MemberRow | null
 }
 
-export function DataTable<TData, TValue>({
+export function MembersDataTable<TData, TValue>({
   columns,
   data,
   currentUser

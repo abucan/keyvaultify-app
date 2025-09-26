@@ -1,9 +1,9 @@
-// src/app/(private)/team/invitations/columns.tsx
+// src/app/(private)/team/_components/InvitationsColumns.tsx
 'use client'
 import { ColumnDef } from '@tanstack/react-table'
 
+import { InvitationActionsCell } from '@/app/(private)/team/_components/InvitationActionsCell'
 import { CopyLinkCell } from '@/components/shared/CopyLinkCell'
-import { InvitationActionsCell } from '@/components/team/InvitationActionsCell'
 import { Badge } from '@/components/ui/badge'
 import { InvitationRow, InviteStatus } from '@/types/auth'
 
@@ -33,7 +33,7 @@ const STATUS_STYLES: Record<
   }
 }
 
-export const columns: ColumnDef<InvitationRow>[] = [
+export const InvitationsColumns: ColumnDef<InvitationRow>[] = [
   {
     accessorKey: 'email',
     header: () => <p className="text-sm font-bricolage-grotesque ml-2">Name</p>,

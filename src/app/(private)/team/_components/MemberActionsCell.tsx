@@ -1,13 +1,14 @@
-// src/components/team/ActionsCell.tsx
+// src/app/(private)/team/_components/MemberActionsCell.tsx
 'use client'
 import { useState, useTransition } from 'react'
 import { CircleX, SquareArrowOutUpLeft } from 'lucide-react'
 
+import { leaveTeamAction } from '@/app/(private)/team/_actions/leaveTeamAction'
+import { removeMemberAction } from '@/app/(private)/team/_actions/removeMemberAction'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { toastRes } from '@/components/toast-result'
-import { leaveTeamAction, removeMemberAction } from '@/server/members.actions'
 
-export function ActionsCell({
+export function MemberActionsCell({
   email,
   memberId,
   canLeave,

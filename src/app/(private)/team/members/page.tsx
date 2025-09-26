@@ -1,18 +1,18 @@
 // src/app/(private)/team/members/page.tsx
-import { columns } from '@/app/(private)/team/members/columns'
-import { DataTable } from '@/app/(private)/team/members/data-table'
-import { listTeamMembers } from '@/server/members.actions'
+import { MembersColumns } from '@/app/(private)/team/_components/MembersColumns'
+import { MembersDataTable } from '@/app/(private)/team/_components/MembersDataTable'
+import { getTeamMembers } from '@/app/(private)/team/_data/team.queries'
 
 export default async function MembersPage() {
-  const members = await listTeamMembers()
+  const members = await getTeamMembers()
   const currentUser =
     members?.ok && members.data?.find(m => m._meta.isSelf === true)
 
   return (
     <>
       {currentUser && members?.ok && members?.data && (
-        <DataTable
-          columns={columns}
+        <MembersDataTable
+          columns={MembersColumns}
           data={members?.data}
           currentUser={currentUser}
         />

@@ -66,7 +66,7 @@ export async function getAuthContext(): Promise<{
       isPersonal: Boolean(meta?.isPersonal)
     },
     membership: { role },
-    teams
+    teams: teams?.ok ? teams.data : []
   }
 
   return { ctx }

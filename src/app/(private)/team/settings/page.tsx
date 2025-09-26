@@ -1,11 +1,9 @@
 // src/app/(private)/team/settings/page.tsx
+import { deleteTeamAction } from '@/app/(private)/team/_actions/deleteTeamAction'
+import { updateTeamAction } from '@/app/(private)/team/_actions/updateTeamAction'
+import { TeamSettingsForm } from '@/app/(private)/team/_components/TeamSettingsForm'
+import { getTeamInformation } from '@/app/(private)/team/_data/team.queries'
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
-import { TeamSettingsForm } from '@/components/team/TeamSettingsForm'
-import {
-  deleteTeamAction,
-  getTeamInformation,
-  updateTeamSettingsAction
-} from '@/server/team.actions'
 
 export default async function SettingsPage() {
   const res = await getTeamInformation()
@@ -24,7 +22,7 @@ export default async function SettingsPage() {
             logo={res?.data?.organization?.logo ?? '/shadcn.jfif'}
             default_role={metadata?.default_role}
             isPersonal={metadata?.isPersonal}
-            updateTeamSettings={updateTeamSettingsAction}
+            updateTeamSettings={updateTeamAction}
             hasPermission={res?.data?.hasPermission}
           />
           <DangerZoneCard

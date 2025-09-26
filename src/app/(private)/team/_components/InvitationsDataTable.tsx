@@ -1,4 +1,4 @@
-// src/app/(private)/team/invitations/data-table.tsx
+// src/app/(private)/team/_components/InvitationsDataTable.tsx
 'use client'
 import {
   ColumnDef,
@@ -22,7 +22,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function InvitationsDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {

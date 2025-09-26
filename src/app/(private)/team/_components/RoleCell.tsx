@@ -1,8 +1,9 @@
-// src/components/team/RoleCell.tsx
+// src/app/(private)/team/_components/RoleCell.tsx
 'use client'
 import * as React from 'react'
 import { useTransition } from 'react'
 
+import { updateMemberRoleAction } from '@/app/(private)/team/_actions/updateMemberRoleAction'
 import { toastRes } from '@/components/toast-result'
 import {
   Select,
@@ -11,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { updateMemberRoleAction } from '@/server/members.actions'
 import type { Role } from '@/types/auth'
 
 type RoleCellProps = {
