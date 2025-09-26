@@ -1,4 +1,4 @@
-// src/components/billing/PricingTables.tsx
+// src/app/(private)/settings/components/PricingTables.tsx
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'

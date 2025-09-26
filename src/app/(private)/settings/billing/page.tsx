@@ -1,8 +1,8 @@
 // src/app/(private)/settings/billing/page.tsx
-import { CurrentPlanCard } from '@/components/billing/CurrentPlanCard'
-import { ManageBillingCard } from '@/components/billing/ManageBillingCard'
-import { PricingTables } from '@/components/billing/PricingTables'
-import { getEntitlements } from '@/lib/billing/entitlements'
+import { CurrentPlanCard } from '@/app/(private)/settings/components/CurrentPlanCard'
+import { ManageBillingCard } from '@/app/(private)/settings/components/ManageBillingCard'
+import { PricingTables } from '@/app/(private)/settings/components/PricingTables'
+import { getEntitlements } from '@/app/(private)/settings/utils/entitlements'
 
 export default async function BillingSettingsPage() {
   const ent = await getEntitlements()

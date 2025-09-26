@@ -1,4 +1,4 @@
-// src/components/billing/ManageBillingCard.tsx
+// src/app/(private)/settings/components/ManageBillingCard.tsx
 
 import Image from 'next/image'
 import Link from 'next/link'

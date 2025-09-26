@@ -3,9 +3,9 @@ import { NextRequest } from 'next/server'
 import { eq } from 'drizzle-orm'
 import Stripe from 'stripe' // note: value+type import
 
+import { mapSub } from '@/app/(private)/settings/utils/webhook'
 import { subscriptions } from '@/db/schemas/subscription-schema'
 import { stripeCustomers } from '@/db/schemas/subscription-schema'
-import { mapSub } from '@/lib/billing/webhook'
 import { db } from '@/lib/sqlite-db'
 import { stripe } from '@/lib/stripe/stripe'
 

@@ -2,10 +2,10 @@
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { ensureStripeCustomerForActiveOrg } from '@/app/(private)/settings/utils/customer'
+import { PRICE_IDS } from '@/app/(private)/settings/utils/price-ids'
 import { requireOwner } from '@/lib/auth/guards'
 import { getActiveOrgId } from '@/lib/auth/org-context'
-import { ensureStripeCustomerForActiveOrg } from '@/lib/billing/customer'
-import { PRICE_IDS } from '@/lib/billing/price-ids'
 import { stripe } from '@/lib/stripe/stripe'
 import { BillingInterval, PlanKey } from '@/types/billing'
 

@@ -2,9 +2,9 @@
 import { headers } from 'next/headers'
 import { unauthorized } from 'next/navigation'
 
-import { GeneralSettingsForm } from '@/components/settings/GeneralSettingsForm'
+import { updateUserProfileAction } from '@/app/(private)/settings/actions/updateUserProfileAction'
+import { GeneralSettingsForm } from '@/app/(private)/settings/components/GeneralSettingsForm'
 import { auth } from '@/lib/better-auth/auth'
-import { updateUserProfileAction } from '@/server/settings.actions'
 
 export default async function GeneralSettingsPage() {
   const session = await auth.api.getSession({

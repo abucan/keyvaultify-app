@@ -1,4 +1,4 @@
-// src/components/billing/CurrentPlanCard.tsx
+// src/app/(private)/settings/components/CurrentPlanCard.tsx
 import { CreditCard } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'

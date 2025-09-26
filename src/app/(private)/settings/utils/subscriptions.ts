@@ -1,15 +1,15 @@
-// src/lib/billing/subscriptions.ts
+// src/app/(private)/settings/utils/subscriptions.ts
 import 'server-only'
 
 import { headers } from 'next/headers'
 
+import { getActiveSubscriptionForOrg } from '@/app/(private)/settings/utils/entitlements'
 import { requireOwner } from '@/lib/auth/guards'
-import { getActiveSubscriptionForOrg } from '@/lib/billing/entitlements'
 import { stripe } from '@/lib/stripe/stripe'
 
 function err(msg: string) {
   const e = new Error(msg)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   ;(e as any).status = 400
   return e
 }

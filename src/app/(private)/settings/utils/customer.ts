@@ -1,4 +1,4 @@
-// src/lib/billing/customer.ts
+// src/app/(private)/settings/utils/customer.ts
 import 'server-only'
 
 import { headers } from 'next/headers'

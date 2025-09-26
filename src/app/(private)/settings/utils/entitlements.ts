@@ -1,11 +1,11 @@
-// src/lib/billing/entitlements.ts
+// src/app/(private)/settings/utils/entitlements.ts
 import 'server-only'
 
 import { desc, eq } from 'drizzle-orm'
 
+import { PRICE_IDS } from '@/app/(private)/settings/utils/price-ids'
 import { subscriptions } from '@/db/schemas/subscription-schema'
 import { getActiveOrgId } from '@/lib/auth/org-context'
-import { PRICE_IDS } from '@/lib/billing/price-ids'
 import { db } from '@/lib/sqlite-db'
 import { BillingInterval, Entitlements, PlanKey } from '@/types/billing'
 import { R } from '@/types/result'

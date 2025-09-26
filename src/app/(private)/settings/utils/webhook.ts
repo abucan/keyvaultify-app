@@ -1,4 +1,4 @@
-// src/lib/billing/webhook.ts
+// src/app/(private)/settings/utils/webhook.ts
 import Stripe from 'stripe'
 
 import { subscriptions } from '@/db/schemas/subscription-schema'

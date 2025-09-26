@@ -2,8 +2,8 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
+import { ensureStripeCustomerForActiveOrg } from '@/app/(private)/settings/utils/customer'
 import { requireOwner } from '@/lib/auth/guards'
-import { ensureStripeCustomerForActiveOrg } from '@/lib/billing/customer'
 import { stripe } from '@/lib/stripe/stripe'
 
 export const runtime = 'nodejs'
