@@ -1,4 +1,4 @@
-// src/app/(private)/team/_components/InvitationsDataTable.tsx
+// src/app/(private)/team/components/InvitationsDataTable.tsx
 'use client'
 import {
   ColumnDef,

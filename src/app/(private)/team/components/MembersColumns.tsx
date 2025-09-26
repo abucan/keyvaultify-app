@@ -1,10 +1,10 @@
-// src/app/(private)/team/_components/MembersColumns.tsx
+// src/app/(private)/team/components/MembersColumns.tsx
 'use client'
 import Image from 'next/image'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { MemberActionsCell } from '@/app/(private)/team/_components/MemberActionsCell'
-import { RoleCell } from '@/app/(private)/team/_components/RoleCell'
+import { MemberActionsCell } from '@/app/(private)/team/components/MemberActionsCell'
+import { RoleCell } from '@/app/(private)/team/components/RoleCell'
 import { MemberRow, Role } from '@/types/auth'
 
 export const MembersColumns: ColumnDef<MemberRow>[] = [

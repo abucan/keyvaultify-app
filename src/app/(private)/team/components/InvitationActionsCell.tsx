@@ -1,10 +1,10 @@
-// src/app/(private)/team/_components/InvitationActionsCell.tsx
+// src/app/(private)/team/components/InvitationActionsCell.tsx
 'use client'
 import { useTransition } from 'react'
 import { CircleX, Mail } from 'lucide-react'
 
-import { cancelInvitationAction } from '@/app/(private)/team/_actions/cancelInvitationAction'
-import { resendInvitationAction } from '@/app/(private)/team/_actions/resendInvitationAction'
+import { cancelInvitationAction } from '@/app/(private)/team/actions/cancelInvitationAction'
+import { resendInvitationAction } from '@/app/(private)/team/actions/resendInvitationAction'
 import { toastRes } from '@/components/toast-result'
 import { Button } from '@/components/ui/button'
 

@@ -5,8 +5,8 @@ import { useTransition } from 'react'
 import Image from 'next/image'
 import { ChevronsUpDown, Plus } from 'lucide-react'
 
-import { switchTeamAction } from '@/app/(private)/team/_actions/switchTeamAction'
-import { AddTeamForm } from '@/app/(private)/team/_components/AddTeamForm'
+import { switchTeamAction } from '@/app/(private)/team/actions/switchTeamAction'
+import { AddTeamForm } from '@/app/(private)/team/components/AddTeamForm'
 import { AddDialog } from '@/components/shared/AddDialog'
 import { toastRes } from '@/components/toast-result'
 import {

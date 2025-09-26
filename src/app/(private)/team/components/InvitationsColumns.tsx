@@ -1,8 +1,8 @@
-// src/app/(private)/team/_components/InvitationsColumns.tsx
+// src/app/(private)/team/components/InvitationsColumns.tsx
 'use client'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { InvitationActionsCell } from '@/app/(private)/team/_components/InvitationActionsCell'
+import { InvitationActionsCell } from '@/app/(private)/team/components/InvitationActionsCell'
 import { CopyLinkCell } from '@/components/shared/CopyLinkCell'
 import { Badge } from '@/components/ui/badge'
 import { InvitationRow, InviteStatus } from '@/types/auth'

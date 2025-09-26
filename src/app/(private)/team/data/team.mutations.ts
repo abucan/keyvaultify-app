@@ -1,4 +1,4 @@
-// src/app/(private)/team/_data/team.mutations.ts
+// src/app/(private)/team/data/team.mutations.ts
 import 'server-only'
 
 import { unauthorized } from 'next/dist/client/components/navigation'
@@ -14,8 +14,8 @@ import {
 } from '@/lib/zod-schemas/form-schema'
 import { Role } from '@/types/auth'
 
-import { ensureOwnerSafety, requireRole } from '../_utils/acl'
-import { assertTeamSlug, normalizeTeamSlug } from '../_utils/slug'
+import { ensureOwnerSafety, requireRole } from '../utils/acl'
+import { assertTeamSlug, normalizeTeamSlug } from '../utils/slug'
 
 function safeJSON<T = any>(v: unknown): T {
   try {

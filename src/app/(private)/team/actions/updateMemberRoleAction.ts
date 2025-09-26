@@ -1,10 +1,10 @@
-// src/app/(private)/team/_actions/updateMemberRoleAction.ts
+// src/app/(private)/team/actions/updateMemberRoleAction.ts
 'use server'
 
 import { revalidateTag } from 'next/cache'
 
-import { updateMemberRole } from '@/app/(private)/team/_data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/_data/team.tags'
+import { updateMemberRole } from '@/app/(private)/team/data/team.mutations'
+import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 

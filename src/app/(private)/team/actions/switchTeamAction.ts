@@ -1,9 +1,9 @@
-// src/app/(private)/team/_actions/switchTeamAction.ts
+// src/app/(private)/team/actions/switchTeamAction.ts
 'use server'
 
 import { redirect } from 'next/navigation'
 
-import { switchTeam } from '@/app/(private)/team/_data/team.mutations'
+import { switchTeam } from '@/app/(private)/team/data/team.mutations'
 import { mapError } from '@/lib/errors/mapError'
 import { R } from '@/types/result'
 

@@ -1,10 +1,10 @@
-// src/app/(private)/team/_actions/removeMemberAction.ts
+// src/app/(private)/team/actions/removeMemberAction.ts
 'use server'
 
 import { revalidateTag } from 'next/cache'
 
-import { removeMember } from '@/app/(private)/team/_data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/_data/team.tags'
+import { removeMember } from '@/app/(private)/team/data/team.mutations'
+import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 

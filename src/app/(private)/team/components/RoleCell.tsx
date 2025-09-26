@@ -1,9 +1,9 @@
-// src/app/(private)/team/_components/RoleCell.tsx
+// src/app/(private)/team/components/RoleCell.tsx
 'use client'
 import * as React from 'react'
 import { useTransition } from 'react'
 
-import { updateMemberRoleAction } from '@/app/(private)/team/_actions/updateMemberRoleAction'
+import { updateMemberRoleAction } from '@/app/(private)/team/actions/updateMemberRoleAction'
 import { toastRes } from '@/components/toast-result'
 import {
   Select,

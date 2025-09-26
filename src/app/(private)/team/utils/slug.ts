@@ -1,4 +1,4 @@
-// src/app/(private)/team/_utils/slug.ts
+// src/app/(private)/team/utils/slug.ts
 export function normalizeTeamSlug(slug: string): string {
   return slug
     .toLowerCase()

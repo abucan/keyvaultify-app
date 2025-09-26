@@ -1,20 +1,23 @@
-// src/app/(private)/team/_actions/cancelInvitationAction.ts
+// src/app/(private)/team/actions/resendInvitationAction.ts
 'use server'
 
 import { revalidateTag } from 'next/cache'
 
-import { cancelInvitation } from '@/app/(private)/team/_data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/_data/team.tags'
+import { resendInvitation } from '@/app/(private)/team/data/team.mutations'
+import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 
-export async function cancelInvitationAction(
+export async function resendInvitationAction(
   formData: FormData
 ): Promise<R<{ email: string }>> {
-  const invitationId = String(formData.get('invitationId') ?? '').trim()
+  const input = {
+    email: String(formData.get('email') ?? '').trim(),
+    role: String(formData.get('role') ?? 'member').trim()
+  }
 
   try {
-    const res = await cancelInvitation(invitationId)
+    const res = await resendInvitation(input.email, input.role)
     revalidateTag(TEAMS_TAG)
     return { ok: true, data: res }
   } catch (error: any) {

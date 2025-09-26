@@ -1,4 +1,4 @@
-// src/app/(private)/team/_components/MembersDataTable.tsx
+// src/app/(private)/team/components/MembersDataTable.tsx
 'use client'
 import { useState } from 'react'
 import { TooltipTrigger } from '@radix-ui/react-tooltip'
@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
 
-import { AddMemberForm } from '@/app/(private)/team/_components/AddMemberForm'
+import { AddMemberForm } from '@/app/(private)/team/components/AddMemberForm'
 import { AddDialog } from '@/components/shared/AddDialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'

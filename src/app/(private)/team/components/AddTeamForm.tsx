@@ -1,11 +1,11 @@
-// src/app/(private)/team/_components/AddTeamForm.tsx
+// src/app/(private)/team/components/AddTeamForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { createTeamAction } from '@/app/(private)/team/_actions/createTeamAction'
+import { createTeamAction } from '@/app/(private)/team/actions/createTeamAction'
 import { AddButton } from '@/components/shared/AddButton'
 import { toastRes } from '@/components/toast-result'
 import { DialogFooter } from '@/components/ui/dialog'

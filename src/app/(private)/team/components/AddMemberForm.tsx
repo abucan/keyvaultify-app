@@ -1,10 +1,10 @@
-// src/app/(private)/team/_components/AddMemberForm.tsx
+// src/app/(private)/team/components/AddMemberForm.tsx
 'use client'
 import { useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { inviteMemberAction } from '@/app/(private)/team/_actions/inviteMemberAction'
+import { inviteMemberAction } from '@/app/(private)/team/actions/inviteMemberAction'
 import { AddButton } from '@/components/shared/AddButton'
 import { toastRes } from '@/components/toast-result'
 import {

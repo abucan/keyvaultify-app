@@ -1,4 +1,4 @@
-// src/app/(private)/team/_utils/acl.ts
+// src/app/(private)/team/utils/acl.ts
 import 'server-only'
 
 import { headers } from 'next/headers'

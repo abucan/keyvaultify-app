@@ -1,4 +1,4 @@
-// src/app/(private)/team/_components/TeamSettingsForm.tsx
+// src/app/(private)/team/components/TeamSettingsForm.tsx
 'use client'
 import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'

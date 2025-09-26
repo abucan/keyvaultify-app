@@ -1,16 +1,16 @@
-// src/app/(private)/team/_actions/leaveTeamAction.ts
+// src/app/(private)/team/actions/deleteTeamAction.ts
 'use server'
 
 import { revalidateTag } from 'next/cache'
 
-import { leaveTeam } from '@/app/(private)/team/_data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/_data/team.tags'
+import { deleteTeam } from '@/app/(private)/team/data/team.mutations'
+import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
 import { mapError } from '@/lib/errors/mapError'
 import { R } from '@/types/result'
 
-export async function leaveTeamAction(): Promise<R> {
+export async function deleteTeamAction(): Promise<R> {
   try {
-    await leaveTeam()
+    await deleteTeam()
     revalidateTag(TEAMS_TAG)
     return { ok: true }
   } catch (error: any) {

@@ -1,8 +1,8 @@
 // src/app/(private)/team/settings/page.tsx
-import { deleteTeamAction } from '@/app/(private)/team/_actions/deleteTeamAction'
-import { updateTeamAction } from '@/app/(private)/team/_actions/updateTeamAction'
-import { TeamSettingsForm } from '@/app/(private)/team/_components/TeamSettingsForm'
-import { getTeamInformation } from '@/app/(private)/team/_data/team.queries'
+import { deleteTeamAction } from '@/app/(private)/team/actions/deleteTeamAction'
+import { updateTeamAction } from '@/app/(private)/team/actions/updateTeamAction'
+import { TeamSettingsForm } from '@/app/(private)/team/components/TeamSettingsForm'
+import { getTeamInformation } from '@/app/(private)/team/data/team.queries'
 import { DangerZoneCard } from '@/components/shared/DangerZoneCard'
 
 export default async function SettingsPage() {

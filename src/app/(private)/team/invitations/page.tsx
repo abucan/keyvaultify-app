@@ -1,7 +1,7 @@
 // src/app/(private)/team/invitations/page.tsx
-import { InvitationsColumns } from '@/app/(private)/team/_components/InvitationsColumns'
-import { InvitationsDataTable } from '@/app/(private)/team/_components/InvitationsDataTable'
-import { getTeamInvitations } from '@/app/(private)/team/_data/team.queries'
+import { InvitationsColumns } from '@/app/(private)/team/components/InvitationsColumns'
+import { InvitationsDataTable } from '@/app/(private)/team/components/InvitationsDataTable'
+import { getTeamInvitations } from '@/app/(private)/team/data/team.queries'
 
 export default async function InvitationsPage() {
   const invitations = await getTeamInvitations()

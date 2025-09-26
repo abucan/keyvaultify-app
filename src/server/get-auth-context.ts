@@ -4,7 +4,7 @@ import 'server-only'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { getTeams } from '@/app/(private)/team/_data/team.queries'
+import { getTeams } from '@/app/(private)/team/data/team.queries'
 import { auth } from '@/lib/better-auth/auth'
 import type { SidebarCtx } from '@/types'
 

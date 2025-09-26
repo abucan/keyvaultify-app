@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// src/app/(private)/team/_data/team.queries.ts
+// src/app/(private)/team/data/team.queries.ts
 import 'server-only'
 
 import { unstable_cache } from 'next/cache'
