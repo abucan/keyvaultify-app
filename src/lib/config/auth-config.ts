@@ -1,4 +1,4 @@
-// src/lib/config/auth-forms.ts
+// src/lib/config/auth-config.ts
 export interface FormField {
   name: 'email' | 'otp'
   label: string
@@ -22,8 +22,6 @@ export interface AuthFormConfig {
 export const authFormConfig: AuthFormConfig = {
   title: 'Welcome to Keyvaultify',
   subtitle: 'Enter your email to sign in or to create a new account.',
-  // linkText: 'Sign in',
-  // linkHref: '/auth/signin',
   middleText: 'Or continue using email',
   fields: [
     {

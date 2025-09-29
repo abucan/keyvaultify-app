@@ -1,4 +1,4 @@
-// src/lib/server/get-auth-context.ts
+// src/app/(private)/get-layout-context.ts
 import 'server-only'
 
 import { headers } from 'next/headers'
@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { getTeams } from '@/app/(private)/team/data/team.queries'
 import { auth } from '@/lib/better-auth/auth'
-import type { SidebarCtx } from '@/types'
+import type { SidebarCtx } from '@/types/sidebar'
 
 type Member = { userId: string; role: 'owner' | 'admin' | 'member' }
 type FullOrg = {

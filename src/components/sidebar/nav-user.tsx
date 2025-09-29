@@ -27,7 +27,7 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { authClient } from '@/lib/better-auth/auth-client'
-import { SidebarCtx } from '@/types'
+import { SidebarCtx } from '@/types/sidebar'
 
 export function NavUser({ user }: { user: SidebarCtx['user'] }) {
   const { isMobile } = useSidebar()

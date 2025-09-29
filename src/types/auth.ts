@@ -1,4 +1,6 @@
 // src/types/auth.ts
+import { R } from './result'
+
 export type Role = 'owner' | 'admin' | 'member'
 export type InviteStatus = 'accepted' | 'canceled' | 'rejected' | 'pending'
 
@@ -60,15 +62,11 @@ export type InvitationRow = {
   }
 }
 
-export type Result<T extends string = string> =
-  | { ok: true }
-  | { ok: false; code: T | 'INVALID_INPUT' | 'NOT_AUTHORIZED' | 'UNKNOWN' }
-
 export type Organization = {
   id: string
   name: string
   slug: string
   logo: string
   default_role: string
-  updateTeamSettings: (values: FormData) => Promise<Result>
+  updateTeamSettings: (values: FormData) => Promise<R>
 }

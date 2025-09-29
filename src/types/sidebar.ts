@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { listTeams } from '@/server/team.actions'
+// src/types/sidebar.ts
+import { Team } from './auth'
 
-type SidebarCtx = {
+export type SidebarCtx = {
   user: {
     id: string
     email: string
@@ -17,10 +17,10 @@ type SidebarCtx = {
   membership: {
     role: 'owner' | 'admin' | 'member'
   }
-  teams: Awaited<ReturnType<typeof listTeams>>
+  teams: Team[] | undefined
 }
 
-type AppSidebarProps = {
+export type AppSidebarProps = {
   ctx: {
     user: {
       id: string
@@ -30,6 +30,6 @@ type AppSidebarProps = {
     }
     org: { id: string; slug: string; name: string; isPersonal?: boolean }
     membership: { role: 'owner' | 'admin' | 'member' }
-    teams: any[]
+    teams: Team[] | undefined
   }
 }

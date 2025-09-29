@@ -14,7 +14,7 @@ import {
   SidebarHeader,
   SidebarRail
 } from '@/components/ui/sidebar'
-import { AppSidebarProps } from '@/types'
+import { AppSidebarProps } from '@/types/sidebar'
 
 export function AppSidebar({
   ctx,
@@ -53,7 +53,7 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={ctx.teams} orgId={ctx.org.id} />
+        <TeamSwitcher teams={ctx?.teams ?? []} orgId={ctx.org.id} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

@@ -12,7 +12,7 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { AuthFormConfig } from '@/lib/config/auth-forms'
+import { AuthFormConfig } from '@/lib/config/auth-config'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
 
 type SignInFormProps = {

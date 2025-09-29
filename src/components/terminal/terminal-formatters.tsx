@@ -1,4 +1,4 @@
-// src/lib/utils/terminal-formatters.tsx
+// src/components/terminal/terminal-formatters.tsx
 export function formatOutputLine(line: string, isDark: boolean) {
   if (line.startsWith('✅'))
     return (

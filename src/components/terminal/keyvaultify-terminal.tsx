@@ -4,7 +4,7 @@ import { StepTitle } from '@/components/terminal/step-title'
 import { TerminalWindow } from '@/components/terminal/terminal-window'
 import { steps } from '@/data/terminal-steps'
 import { useTerminalAnimation } from '@/lib/hooks/use-terminal-animation'
-import { getTerminalTheme } from '@/lib/utils/terminal-formatters'
+import { getTerminalTheme } from '@/components/terminal/terminal-formatters'
 
 /* interface Step {
   title: string

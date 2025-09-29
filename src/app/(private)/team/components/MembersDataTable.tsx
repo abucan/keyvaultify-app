@@ -27,7 +27,6 @@ import {
   TooltipContent,
   TooltipProvider
 } from '@/components/ui/tooltip'
-import { requireAdminOrOwner } from '@/lib/utils/helpers'
 import { MemberRow, Role } from '@/types/auth'
 
 interface DataTableProps<TData, TValue> {
@@ -48,6 +47,10 @@ export function MembersDataTable<TData, TValue>({
   })
 
   const [addMemberDialogOpen, setAddMemberDialogOpen] = useState(false)
+
+  function requireAdminOrOwner(role: Role) {
+    return role === 'admin' || role === 'owner'
+  }
 
   const isDisabled =
     !requireAdminOrOwner(currentUser?.role as Role) ||

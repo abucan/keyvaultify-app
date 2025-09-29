@@ -11,7 +11,7 @@ import { verifySignInOtpAction } from '@/app/(auth)/signin/actions/VerifySignInO
 import { OTPForm } from '@/app/(auth)/signin/components/OTPForm'
 import { SignInForm } from '@/app/(auth)/signin/components/SignInForm'
 import { Form } from '@/components/ui/form'
-import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-forms'
+import { authFormConfig, otpVerificationConfig } from '@/lib/config/auth-config'
 import { AuthFormData, authFormSchema } from '@/lib/zod-schemas/form-schema'
 
 type Step = 'email' | 'otp'

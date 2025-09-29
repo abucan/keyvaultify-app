@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { InputOTP } from '@/components/ui/input-otp'
-import { AuthFormConfig } from '@/lib/config/auth-forms'
+import { AuthFormConfig } from '@/lib/config/auth-config'
 import { AuthFormData } from '@/lib/zod-schemas/form-schema'
 
 type OTPFormProps = {

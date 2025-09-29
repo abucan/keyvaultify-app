@@ -1,6 +1,7 @@
 // src/app/(private)/layout.tsx
 import 'server-only'
 
+import { getAuthContext } from '@/app/(private)/get-layout-context'
 import { ModeToggle } from '@/components/shared/ModeToggle'
 import { SearchCommand } from '@/components/shared/SearchCommand'
 import { AppSidebar } from '@/components/sidebar/app-sidebar'
@@ -10,7 +11,6 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '@/components/ui/sidebar'
-import { getAuthContext } from '@/server/get-auth-context'
 
 export const dynamic = 'force-dynamic'
 
