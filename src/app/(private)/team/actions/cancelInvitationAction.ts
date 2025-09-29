@@ -4,7 +4,7 @@
 import { revalidateTag } from 'next/cache'
 
 import { cancelInvitation } from '@/app/(private)/team/data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
+import { TEAM_INVITATIONS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 
@@ -15,7 +15,7 @@ export async function cancelInvitationAction(
 
   try {
     const res = await cancelInvitation(invitationId)
-    revalidateTag(TEAMS_TAG)
+    revalidateTag(TEAM_INVITATIONS_TAG)
     return { ok: true, data: res }
   } catch (error: any) {
     return {

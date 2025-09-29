@@ -4,7 +4,7 @@
 import { revalidateTag } from 'next/cache'
 
 import { inviteMember } from '@/app/(private)/team/data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
+import { TEAM_INVITATIONS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 
@@ -18,7 +18,7 @@ export async function inviteMemberAction(
     }
 
     const res = await inviteMember(input.email, input.role)
-    revalidateTag(TEAMS_TAG)
+    revalidateTag(TEAM_INVITATIONS_TAG)
     return { ok: true, data: res }
   } catch (error) {
     return {

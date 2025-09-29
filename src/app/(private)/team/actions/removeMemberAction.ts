@@ -4,7 +4,7 @@
 import { revalidateTag } from 'next/cache'
 
 import { removeMember } from '@/app/(private)/team/data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
+import { TEAM_MEMBERS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 
@@ -12,7 +12,7 @@ export async function removeMemberAction(formData: FormData): Promise<R> {
   const memberId = String(formData.get('memberId') ?? '').trim()
   try {
     await removeMember(memberId)
-    revalidateTag(TEAMS_TAG)
+    revalidateTag(TEAM_MEMBERS_TAG)
     return { ok: true }
   } catch (error: any) {
     return {

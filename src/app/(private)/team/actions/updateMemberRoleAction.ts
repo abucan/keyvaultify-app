@@ -4,7 +4,7 @@
 import { revalidateTag } from 'next/cache'
 
 import { updateMemberRole } from '@/app/(private)/team/data/team.mutations'
-import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
+import { TEAM_MEMBERS_TAG } from '@/app/(private)/team/data/team.tags'
 import { BusinessError } from '@/lib/errors/business-error'
 import { R } from '@/types/result'
 
@@ -18,7 +18,7 @@ export async function updateMemberRoleAction(
 
   try {
     const res = await updateMemberRole(input.memberId, input.role)
-    revalidateTag(TEAMS_TAG)
+    revalidateTag(TEAM_MEMBERS_TAG)
     return { ok: true, data: res }
   } catch (error: any) {
     return {

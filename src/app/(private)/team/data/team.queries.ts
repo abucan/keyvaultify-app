@@ -11,7 +11,7 @@ import { mapError } from '@/lib/errors/mapError'
 import { InvitationRow, Member, MemberRow, Role, Team } from '@/types/auth'
 import { R } from '@/types/result'
 
-import { TEAMS_TAG } from './team.tags'
+import { TEAM_INVITATIONS_TAG, TEAM_MEMBERS_TAG, TEAMS_TAG } from './team.tags'
 
 const _getTeamsCached = unstable_cache(
   async (_headers: Headers, _userId?: string) => {
@@ -78,7 +78,7 @@ const _getTeamMembersCached = unstable_cache(
     })
   },
   ['team-members-by-org'],
-  { tags: [TEAMS_TAG] }
+  { tags: [TEAM_MEMBERS_TAG] }
 )
 
 const _getTeamInvitationsCached = unstable_cache(
@@ -125,7 +125,7 @@ const _getTeamInvitationsCached = unstable_cache(
     })
   },
   ['team-invitations-by-org'],
-  { tags: [TEAMS_TAG] }
+  { tags: [TEAM_INVITATIONS_TAG] }
 )
 
 export async function getTeams(): Promise<R<Team[]>> {
