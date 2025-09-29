@@ -63,7 +63,7 @@ export function TeamSwitcher({
               >
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Image
-                    src={activeTeam?.logo ?? '/shadcn.jfif'}
+                    src={activeTeam?.logo ?? '/avatars/shadcn.jfif'}
                     alt={activeTeam?.name ?? 'team logo'}
                     width={32}
                     height={32}
@@ -110,7 +110,7 @@ export function TeamSwitcher({
                 >
                   <div className="flex size-6 items-center justify-center rounded-md border">
                     <Image
-                      src={team.logo ?? '/shadcn.jfif'}
+                      src={team.logo ?? '/avatars/shadcn.jfif'}
                       alt={team.name ?? 'team logo'}
                       width={32}
                       height={32}

@@ -119,7 +119,9 @@ export function TeamSettingsForm({
           <CardContent>
             <div className="flex flex-row gap-4 items-center">
               <Avatar className="rounded-md size-16">
-                <AvatarImage src={form.watch('logo') || '/shadcn.jfif'} />
+                <AvatarImage
+                  src={form.watch('logo') || '/avatars/shadcn.jfif'}
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1.5 items-start">

@@ -21,7 +21,7 @@ export default async function GeneralSettingsPage() {
     <GeneralSettingsForm
       initialUsername={user?.name}
       initialEmail={user?.email}
-      initialImage={user?.image ?? '/shadcn.jfif'}
+      initialImage={user?.image ?? '/avatars/shadcn.jfif'}
       action={updateUserProfileAction}
     />
   )

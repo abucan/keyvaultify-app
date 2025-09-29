@@ -15,7 +15,7 @@ export const MembersColumns: ColumnDef<MemberRow>[] = [
       return (
         <div className="flex flex-row items-center gap-2.5">
           <Image
-            src={row.original.image || '/shadcn.jfif'}
+            src={row.original.image || '/avatars/shadcn.jfif'}
             alt={row.original.name}
             width={40}
             height={40}

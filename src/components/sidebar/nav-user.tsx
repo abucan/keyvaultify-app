@@ -43,7 +43,7 @@ export function NavUser({ user }: { user: SidebarCtx['user'] }) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={user?.image ?? '/shadcn.jfif'}
+                  src={user?.image ?? '/avatars/shadcn.jfif'}
                   alt={user?.name ?? 'username'}
                 />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
@@ -69,7 +69,7 @@ export function NavUser({ user }: { user: SidebarCtx['user'] }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={user?.image ?? '/shadcn.jfif'}
+                    src={user?.image ?? '/avatars/shadcn.jfif'}
                     alt={user?.name ?? 'username'}
                   />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
