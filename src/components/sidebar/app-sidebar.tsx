@@ -24,6 +24,7 @@ export function AppSidebar({
     return {
       navMain: [
         { title: 'Dashboard', url: '/dashboard', icon: Home },
+        { title: 'Projects', url: '/projects', icon: Key },
         {
           title: 'Team',
           url: '/team',
@@ -41,14 +42,20 @@ export function AppSidebar({
           items: [
             { title: 'General', url: '/settings/general' },
             { title: 'Billing', url: '/settings/billing' },
+            { title: 'Developer', url: '/settings/developer' },
             { title: 'Danger', url: '/settings/danger' }
           ]
         }
       ],
-      projects: [{ name: 'Keyvaultify (DEMO)', url: '#', icon: Key }],
+      projects: ctx.projects.map(p => ({
+        name: p.name,
+        url: `/projects/${p.id}`,
+        icon: Key,
+        id: p.id
+      })),
       docs: { title: 'Documentation', url: '#', icon: BookOpen }
     }
-  }, [])
+  }, [ctx.projects])
 
   return (
     <Sidebar collapsible="icon" {...props}>

@@ -2,19 +2,25 @@
 import { sql } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
+import { organization } from './auth-schema'
+
 export const projects = sqliteTable('projects', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
   description: text('description'),
-  userId: text('userId').notNull(),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  )
+  slug: text('slug'),
+  organizationId: text('organizationId')
+    .notNull()
+    .references(() => organization.id, { onDelete: 'cascade' }),
+  createdBy: text('createdBy').notNull(),
+  createdAt: integer('createdAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date())
 })
 
 export const environments = sqliteTable('environments', {
@@ -26,12 +32,12 @@ export const environments = sqliteTable('environments', {
   projectId: text('projectId')
     .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  )
+  createdAt: integer('createdAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date())
 })
 
 export const secrets = sqliteTable('secrets', {
@@ -43,29 +49,38 @@ export const secrets = sqliteTable('secrets', {
   environmentId: text('environmentId')
     .notNull()
     .references(() => environments.id, { onDelete: 'cascade' }),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  )
+  createdAt: integer('createdAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date())
 })
+// Note: Unique constraint on (environmentId, key) is enforced at application level
+// in createSecret() and updateSecret() mutations to prevent duplicate keys per environment
 
 export const apiTokens = sqliteTable('api_tokens', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
-  token: text('token').notNull().unique(),
-  userId: text('userId').notNull(), // references auth-schema.user.id
+  tokenHash: text('tokenHash').notNull().unique(), // bcrypt hash of the token
+  tokenPrefix: text('tokenPrefix').notNull(), // First 8 chars for display (e.g., "kvf_Ab3c")
+  organizationId: text('organizationId')
+    .notNull()
+    .references(() => organization.id, { onDelete: 'cascade' }),
+  projectId: text('projectId').references(() => projects.id, {
+    onDelete: 'cascade'
+  }), // null = all projects
+  createdBy: text('createdBy').notNull(), // userId who created it
   lastUsed: integer('lastUsed', { mode: 'timestamp' }),
-  expiresAt: integer('expiresAt', { mode: 'timestamp' }),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(
-    sql`CURRENT_TIMESTAMP`
-  )
+  expiresAt: integer('expiresAt', { mode: 'timestamp' }), // null = never expires
+  createdAt: integer('createdAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date())
 })
 
 export type Project = typeof projects.$inferSelect

@@ -28,6 +28,49 @@ export const teamSettingsFormSchema = z.object({
   default_role: z.enum(['member', 'admin', 'owner']).optional()
 })
 
+export const addProjectFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Project name is required')
+    .max(100, 'Project name must be less than 100 characters'),
+  description: z
+    .string()
+    .max(500, 'Description must be less than 500 characters')
+    .optional(),
+  slug: z
+    .string()
+    .min(1)
+    .max(50, 'Slug must be less than 50 characters')
+    .regex(
+      /^[a-z0-9-]+$/,
+      'Slug must contain only lowercase letters, numbers, and hyphens'
+    )
+    .optional()
+})
+
+export const addEnvironmentFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Environment name is required')
+    .max(100, 'Environment name must be less than 100 characters'),
+  description: z
+    .string()
+    .max(500, 'Description must be less than 500 characters')
+    .optional()
+})
+
+export const addSecretFormSchema = z.object({
+  key: z
+    .string()
+    .min(1, 'Secret key is required')
+    .max(200, 'Secret key must be less than 200 characters')
+    .regex(
+      /^[A-Z0-9_]+$/,
+      'Secret key must contain only uppercase letters, numbers, and underscores'
+    ),
+  value: z.string().min(1, 'Secret value is required')
+})
+
 export const emailOnlySchema = authFormSchema.pick({ email: true })
 export const otpOnlySchema = authFormSchema.pick({ otp: true })
 
@@ -37,3 +80,6 @@ export type AddTeamFormData = z.infer<typeof addTeamFormSchema>
 export type ProfileFormData = z.infer<typeof profileFormSchema>
 export type AddMemberFormData = z.infer<typeof addMemberFormSchema>
 export type TeamSettingsFormData = z.infer<typeof teamSettingsFormSchema>
+export type AddProjectFormData = z.infer<typeof addProjectFormSchema>
+export type AddEnvironmentFormData = z.infer<typeof addEnvironmentFormSchema>
+export type AddSecretFormData = z.infer<typeof addSecretFormSchema>

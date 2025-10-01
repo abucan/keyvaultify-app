@@ -10,6 +10,12 @@ type SubStatus =
   | 'canceled'
   | 'unpaid'
 
+export type PlanLimits = {
+  projects: number | 'unlimited'
+  secrets: number | 'unlimited'
+  environments: 'unlimited'
+}
+
 export type BasePlan = {
   id: string
   name: string
@@ -21,6 +27,7 @@ export type BasePlan = {
   features: string[]
   cta: string
   popular?: boolean
+  limits: PlanLimits
 }
 
 export type Entitlements = {
@@ -29,4 +36,5 @@ export type Entitlements = {
   plan: PlanKey | undefined
   interval: BillingInterval | undefined
   currentPeriodEnd: Date | null
+  limits: PlanLimits
 }

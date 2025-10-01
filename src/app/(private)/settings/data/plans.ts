@@ -18,7 +18,12 @@ export const plans: BasePlan[] = [
       '100 Secrets'
     ],
     cta: 'Subscribe to Starter',
-    popular: true
+    popular: true,
+    limits: {
+      projects: 10,
+      secrets: 100,
+      environments: 'unlimited'
+    }
   },
   {
     id: 'pro',
@@ -35,6 +40,11 @@ export const plans: BasePlan[] = [
       'Unlimited Environments',
       'Unlimited Secrets'
     ],
-    cta: 'Subscribe to Pro'
+    cta: 'Subscribe to Pro',
+    limits: {
+      projects: 'unlimited',
+      secrets: 'unlimited',
+      environments: 'unlimited'
+    }
   }
 ]

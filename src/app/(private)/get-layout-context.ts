@@ -51,6 +51,15 @@ export async function getAuthContext(): Promise<{
 
   const teams = await getTeams()
 
+  // Import projects dynamically to avoid circular dependencies
+  const { getProjects } = await import(
+    '@/app/(private)/projects/data/projects.queries'
+  )
+  const projectsResult = await getProjects()
+  const projects = projectsResult.ok
+    ? projectsResult.data.map(p => ({ id: p.id, name: p.name }))
+    : []
+
   const meta = parseMeta(full.metadata)
   const ctx: SidebarCtx = {
     user: {
@@ -66,7 +75,8 @@ export async function getAuthContext(): Promise<{
       isPersonal: Boolean(meta?.isPersonal)
     },
     membership: { role },
-    teams: teams?.ok ? teams.data : []
+    teams: teams?.ok ? teams.data : [],
+    projects
   }
 
   return { ctx }
