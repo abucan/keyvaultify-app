@@ -29,9 +29,14 @@ export const ApiTokensColumns: ColumnDef<ApiTokenRow>[] = [
             <p className="text-sm font-bricolage-grotesque font-[500]">
               {row.original.name}
             </p>
-            <p className="text-xs text-muted-foreground font-mono">
-              {tokenPrefix}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground font-mono">
+                {tokenPrefix}
+              </p>
+              <Badge variant="outline" className="text-xs">
+                {row.original.organizationName}
+              </Badge>
+            </div>
           </div>
           <Button
             variant="ghost"
