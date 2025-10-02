@@ -6,6 +6,7 @@ import { Key } from 'lucide-react'
 
 import { ProjectRow } from '@/app/(private)/projects/data/projects.queries'
 import { Badge } from '@/components/ui/badge'
+import { ProjectActionsCell } from './ProjectActionsCell'
 
 export const ProjectsColumns: ColumnDef<ProjectRow>[] = [
   {
@@ -83,6 +84,19 @@ export const ProjectsColumns: ColumnDef<ProjectRow>[] = [
         <p className="text-sm font-[400] text-muted-foreground font-bricolage-grotesque">
           {formatted}
         </p>
+      )
+    }
+  },
+  {
+    id: 'actions',
+    header: () => <p className="text-sm font-bricolage-grotesque">Actions</p>,
+    cell: ({ row }) => {
+      return (
+        <ProjectActionsCell
+          projectId={row.original.id}
+          projectName={row.original.name}
+          projectDescription={row.original.description}
+        />
       )
     }
   }

@@ -7,7 +7,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { Plus } from 'lucide-react'
+import { Plus, Download, Copy } from 'lucide-react'
 
 import {
   SecretRow,
@@ -55,6 +55,31 @@ export function SecretsDataTable({
   const [addSecretDialogOpen, setAddSecretDialogOpen] = useState(false)
   const [bulkAddSecretDialogOpen, setBulkAddSecretDialogOpen] = useState(false)
 
+  const handleExportEnv = () => {
+    const envContent = data
+      .map(secret => `${secret.key}=${secret.value}`)
+      .join('\n')
+
+    const blob = new Blob([envContent], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${environments.find(e => e.id === environmentId)?.name.toLowerCase() || 'secrets'}.env`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const handleCopyAll = async () => {
+    const envContent = data
+      .map(secret => `${secret.key}=${secret.value}`)
+      .join('\n')
+
+    await navigator.clipboard.writeText(envContent)
+    // You could add a toast notification here
+  }
+
   return (
     <>
       <AddDialog
@@ -85,7 +110,7 @@ export function SecretsDataTable({
       </AddDialog>
 
       <div className="flex flex-col gap-4 w-3/4 lg:w-full">
-        <div className="flex gap-2 self-end">
+        <div className="flex gap-2 self-end flex-wrap">
           <Button
             type="button"
             variant="outline"
@@ -101,6 +126,24 @@ export function SecretsDataTable({
           >
             <Plus className="size-4" />
             <span className="font-bricolage-grotesque">Bulk Add</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleExportEnv}
+            disabled={data.length === 0}
+          >
+            <Download className="size-4" />
+            <span className="font-bricolage-grotesque">Export .env</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCopyAll}
+            disabled={data.length === 0}
+          >
+            <Copy className="size-4" />
+            <span className="font-bricolage-grotesque">Copy All</span>
           </Button>
         </div>
 
