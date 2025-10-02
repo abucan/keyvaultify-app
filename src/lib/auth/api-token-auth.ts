@@ -1,13 +1,13 @@
 // src/lib/auth/api-token-auth.ts
 import 'server-only'
 
-import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
+import { eq } from 'drizzle-orm'
 
-import { apiTokens } from '@/db/schemas/app-schema'
-import { auth } from '@/lib/better-auth/auth'
-import { hashToken, isValidTokenFormat } from '@/lib/auth/api-token'
 import { updateTokenLastUsed } from '@/app/(private)/settings/developer/data/tokens.mutations'
+import { apiTokens } from '@/db/schemas/app-schema'
+import { hashToken, isValidTokenFormat } from '@/lib/auth/api-token'
+import { auth } from '@/lib/better-auth/auth'
 import { db } from '@/lib/sqlite-db'
 
 export type ApiTokenContext = {
