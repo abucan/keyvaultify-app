@@ -13,6 +13,7 @@ import {
   teamSettingsFormSchema
 } from '@/lib/zod-schemas/form-schema'
 import { Role } from '@/types/auth'
+import { checkOrganizationLimit } from '@/app/(private)/settings/utils/entitlements'
 
 import { ensureOwnerSafety, requireRole } from '../utils/acl'
 import { assertTeamSlug, normalizeTeamSlug } from '../utils/slug'
@@ -41,6 +42,22 @@ export async function createTeam(name: string, slug: string): Promise<string> {
   const _headers = await headers()
 
   try {
+    // Check organization limit before creating
+    const session = await auth.api.getSession({ headers: _headers })
+    if (!session?.session?.userId) {
+      throw new BusinessError('UNAUTHORIZED', 'User not authenticated')
+    }
+
+    const canCreateOrg = await checkOrganizationLimit(
+      session.session.userId
+    )
+    if (!canCreateOrg) {
+      throw new BusinessError(
+        'ORGANIZATION_LIMIT_REACHED',
+        'You have reached the maximum number of organizations for your plan. Please upgrade to create more organizations.'
+      )
+    }
+
     await auth.api.checkOrganizationSlug({
       headers: _headers,
       body: { slug: cleanedSlug }
@@ -159,6 +176,58 @@ export async function deleteTeam(): Promise<void> {
       headers: _headers,
       body: { organizationId: full.id }
     })
+
+    // After deletion, set a personal organization as active if available
+    const orgs = await auth.api.listOrganizations({
+      headers: _headers
+    })
+
+    const personalOrg = orgs?.find(
+      (o: any) => JSON.parse(o.metadata || '{}')?.isPersonal === true
+    )
+
+    if (orgs?.length > 0) {
+      await auth.api.setActiveOrganization({
+        headers: _headers,
+        body: { organizationId: personalOrg?.id ?? orgs[0]?.id ?? '' }
+      })
+    } else {
+      // If no organizations exist, create a personal one
+      const session = await auth.api.getSession({ headers: _headers })
+      if (session?.session?.userId) {
+        const base =
+          (session.user.email?.split('@')[0] ?? 'workspace')
+            .toLowerCase()
+            .replace(/[^a-z0-9-]/g, '')
+            .slice(0, 30) || 'workspace'
+
+        const name = `Personal Workspace`
+
+        let created = await auth.api
+          .createOrganization({
+            headers: _headers,
+            body: { name, slug: base, metadata: { isPersonal: true } }
+          })
+          .catch(() => null)
+
+        if (!created?.id) {
+          const alt = `${base}-${Math.random().toString(36).slice(2, 6)}`
+          created = await auth.api
+            .createOrganization({
+              headers: _headers,
+              body: { name, slug: alt, metadata: { isPersonal: true } }
+            })
+            .catch(() => null)
+        }
+
+        if (created?.id) {
+          await auth.api.setActiveOrganization({
+            headers: _headers,
+            body: { organizationId: created.id }
+          })
+        }
+      }
+    }
   } catch (error: any) {
     const { code, message } = mapError(error)
     throw new BusinessError(code, message ?? 'Unexpected error')

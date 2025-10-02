@@ -2,10 +2,10 @@
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { ensureStripeCustomerForActiveOrg } from '@/app/(private)/settings/utils/customer'
+import { ensureStripeCustomerForUser } from '@/app/(private)/settings/utils/customer'
 import { PRICE_IDS } from '@/app/(private)/settings/utils/price-ids'
 import { requireOwner } from '@/lib/auth/guards'
-import { getActiveOrgId } from '@/lib/auth/org-context'
+import { auth } from '@/lib/better-auth/auth'
 import { stripe } from '@/lib/stripe/stripe'
 import { BillingInterval, PlanKey } from '@/types/billing'
 
@@ -17,6 +17,14 @@ const INTERVALS: BillingInterval[] = ['monthly', 'yearly']
 export async function GET(req: NextRequest) {
   await headers()
   await requireOwner()
+
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session?.user) {
+    return NextResponse.json(
+      { error: 'UNAUTHORIZED', message: 'Please sign in' },
+      { status: 401 }
+    )
+  }
 
   const url = new URL(req.url)
   const plan = url.searchParams.get('plan') as PlanKey | null
@@ -30,32 +38,35 @@ export async function GET(req: NextRequest) {
     !INTERVALS.includes(interval)
   ) {
     return NextResponse.json(
-      { error: 'Invalid plan/interval' },
+      { error: 'INVALID_REQUEST', message: 'Invalid plan/interval' },
       { status: 400 }
     )
   }
 
-  const orgId = await getActiveOrgId()
-  if (!orgId)
-    return NextResponse.json(
-      { error: 'No active organization' },
-      { status: 400 }
-    )
-
-  const customerId = await ensureStripeCustomerForActiveOrg()
+  const customerId = await ensureStripeCustomerForUser(session.user.id)
   const price = PRICE_IDS[interval][plan]
 
-  const session = await stripe.checkout.sessions.create({
+  const checkoutSession = await stripe.checkout.sessions.create({
     mode: 'subscription',
     customer: customerId,
     line_items: [{ price, quantity }],
     allow_promotion_codes: true,
-    client_reference_id: orgId,
+    client_reference_id: session.user.id,
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?checkout=cancelled`,
-    subscription_data: { metadata: { organizationId: orgId, plan, interval } },
-    metadata: { organizationId: orgId, plan, interval }
+    subscription_data: { 
+      metadata: { 
+        userId: session.user.id, 
+        plan, 
+        interval 
+      } 
+    },
+    metadata: { 
+      userId: session.user.id, 
+      plan, 
+      interval 
+    }
   })
 
-  return NextResponse.redirect(session.url!, { status: 303 })
+  return NextResponse.redirect(checkoutSession.url!, { status: 303 })
 }

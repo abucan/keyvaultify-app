@@ -1,5 +1,5 @@
 // src/types/billing.ts
-export type PlanKey = 'starter' | 'pro'
+export type PlanKey = 'free' | 'starter' | 'pro'
 export type BillingInterval = 'monthly' | 'yearly'
 
 type SubStatus =
@@ -11,9 +11,11 @@ type SubStatus =
   | 'unpaid'
 
 export type PlanLimits = {
+  organizations: number | 'unlimited'
   projects: number | 'unlimited'
   secrets: number | 'unlimited'
   environments: 'unlimited'
+  teamMembers: number | 'unlimited'
 }
 
 export type BasePlan = {

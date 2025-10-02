@@ -3,6 +3,31 @@ import { BasePlan } from '@/types/billing'
 
 export const plans: BasePlan[] = [
   {
+    id: 'free',
+    name: 'Free',
+    price: {
+      monthly: 0,
+      yearly: 0
+    },
+    description:
+      'Perfect for personal projects and getting started with secret management.',
+    features: [
+      '1 Organization',
+      '3 Projects',
+      'Unlimited Environments',
+      '50 Secrets',
+      '2 Team Members'
+    ],
+    cta: 'Get Started Free',
+    limits: {
+      organizations: 1,
+      projects: 3,
+      secrets: 50,
+      environments: 'unlimited',
+      teamMembers: 2
+    }
+  },
+  {
     id: 'starter',
     name: 'Starter',
     price: {
@@ -12,17 +37,20 @@ export const plans: BasePlan[] = [
     description:
       'The perfect starting place for your web app or personal project.',
     features: [
-      '2 Organization',
+      '2 Organizations',
       '10 Projects',
       'Unlimited Environments',
-      '100 Secrets'
+      '200 Secrets',
+      '5 Team Members'
     ],
     cta: 'Subscribe to Starter',
     popular: true,
     limits: {
+      organizations: 2,
       projects: 10,
-      secrets: 100,
-      environments: 'unlimited'
+      secrets: 200,
+      environments: 'unlimited',
+      teamMembers: 5
     }
   },
   {
@@ -38,13 +66,16 @@ export const plans: BasePlan[] = [
       'Unlimited Organizations',
       'Unlimited Projects',
       'Unlimited Environments',
-      'Unlimited Secrets'
+      'Unlimited Secrets',
+      'Unlimited Team Members'
     ],
     cta: 'Subscribe to Pro',
     limits: {
+      organizations: 'unlimited',
       projects: 'unlimited',
       secrets: 'unlimited',
-      environments: 'unlimited'
+      environments: 'unlimited',
+      teamMembers: 'unlimited'
     }
   }
 ]

@@ -6,32 +6,36 @@ import { eq } from 'drizzle-orm'
 
 import { stripeCustomers } from '@/db/schemas/subscription-schema'
 import { requireOwner } from '@/lib/auth/guards'
-import { getActiveOrgFull, getActiveOrgId } from '@/lib/auth/org-context'
+import { auth } from '@/lib/better-auth/auth'
 import { db } from '@/lib/sqlite-db'
 import { stripe } from '@/lib/stripe/stripe'
 
-export async function ensureStripeCustomerForActiveOrg() {
-  const orgId = await getActiveOrgId()
-  if (!orgId) throw new Error('No active organization.')
+export async function ensureStripeCustomerForUser(userId?: string) {
+  if (!userId) {
+    const session = await auth.api.getSession({ headers: await headers() })
+    if (!session?.user) throw new Error('No user session.')
+    userId = session.user.id
+  }
 
   const existing = await db.query.stripeCustomers.findFirst({
-    where: eq(stripeCustomers.organizationId, orgId)
+    where: eq(stripeCustomers.userId, userId)
   })
   if (existing) return existing.stripeCustomerId
 
-  const org = await getActiveOrgFull()
-  const ownerEmail = org?.members?.find((m: any) =>
-    Array.isArray(m.role) ? m.role.includes('owner') : m.role === 'owner'
-  )?.user?.email
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session?.user) throw new Error('No user session.')
 
   const customer = await stripe.customers.create({
-    name: org?.name,
-    email: ownerEmail,
-    metadata: { organizationId: orgId }
+    email: session.user.email,
+    name: session.user.name || session.user.email?.split('@')[0],
+    metadata: { 
+      userId: userId,
+      source: 'user_registration'
+    }
   })
 
   await db.insert(stripeCustomers).values({
-    organizationId: orgId,
+    userId: userId,
     stripeCustomerId: customer.id
   })
 
@@ -41,7 +45,7 @@ export async function ensureStripeCustomerForActiveOrg() {
 export async function openBillingPortal() {
   await headers()
 
-  const customerId = await ensureStripeCustomerForActiveOrg()
+  const customerId = await ensureStripeCustomerForUser()
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
     return_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing`
@@ -54,7 +58,7 @@ export async function openBillingPortalManaged() {
   await headers()
   await requireOwner()
 
-  const customerId = await ensureStripeCustomerForActiveOrg()
+  const customerId = await ensureStripeCustomerForUser()
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
     return_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing`

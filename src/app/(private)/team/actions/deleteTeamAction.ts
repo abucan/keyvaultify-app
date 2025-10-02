@@ -2,6 +2,7 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 import { deleteTeam } from '@/app/(private)/team/data/team.mutations'
 import { TEAMS_TAG } from '@/app/(private)/team/data/team.tags'
@@ -12,7 +13,8 @@ export async function deleteTeamAction(): Promise<R> {
   try {
     await deleteTeam()
     revalidateTag(TEAMS_TAG)
-    return { ok: true }
+    // Redirect to dashboard after successful deletion
+    redirect('/dashboard')
   } catch (error: any) {
     const { code, message } = mapError(error)
     return { ok: false, code, message }

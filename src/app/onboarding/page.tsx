@@ -19,9 +19,27 @@ export default async function OnboardingPage() {
 
   const orgs = await auth.api.listOrganizations({ headers: _headers })
   if (orgs?.length) {
+    // Try to find a personal organization first
+    const personalOrg = orgs.find(
+      (o: any) => JSON.parse(o.metadata || '{}')?.isPersonal === true
+    )
+
     await auth.api.setActiveOrganization({
       headers: _headers,
-      body: { organizationId: orgs[0].id }
+      body: { organizationId: personalOrg?.id ?? orgs[0].id }
+    })
+    redirect('/dashboard')
+  }
+
+  // Check if user already has a personal organization
+  const existingPersonalOrg = orgs?.find(
+    (o: any) => JSON.parse(o.metadata || '{}')?.isPersonal === true
+  )
+
+  if (existingPersonalOrg) {
+    await auth.api.setActiveOrganization({
+      headers: _headers,
+      body: { organizationId: existingPersonalOrg.id }
     })
     redirect('/dashboard')
   }

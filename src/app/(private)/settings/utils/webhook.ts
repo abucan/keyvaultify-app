@@ -6,7 +6,7 @@ import { subscriptions } from '@/db/schemas/subscription-schema'
 type SubInsert = typeof subscriptions.$inferInsert
 
 export function mapSub(
-  orgId: string,
+  userId: string,
   sub: Stripe.Subscription
 ): Omit<SubInsert, 'id' | 'createdAt'> {
   const items = sub?.items.data ?? []
@@ -30,7 +30,7 @@ export function mapSub(
       : firstPrice?.product?.id) ?? null
 
   return {
-    organizationId: orgId,
+    userId: userId,
     stripeSubscriptionId: sub.id,
     stripeCustomerId: String(sub.customer),
 

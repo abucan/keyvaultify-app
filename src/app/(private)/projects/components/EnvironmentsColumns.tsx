@@ -1,7 +1,7 @@
 // src/app/(private)/projects/components/EnvironmentsColumns.tsx
 import Link from 'next/link'
 import { ColumnDef } from '@tanstack/react-table'
-import { Folder, Shield } from 'lucide-react'
+import { Folder } from 'lucide-react'
 
 import { EnvironmentRow } from '@/app/(private)/projects/data/projects.queries'
 import { EnvironmentActionsCell } from '@/app/(private)/projects/components/EnvironmentActionsCell'
@@ -32,12 +32,6 @@ export const createEnvironmentsColumns = (
               </p>
             )}
           </div>
-          {row.original.isDefault && (
-            <Badge variant="outline" className="ml-2">
-              <Shield className="h-3 w-3 mr-1" />
-              Default
-            </Badge>
-          )}
         </Link>
       )
     }

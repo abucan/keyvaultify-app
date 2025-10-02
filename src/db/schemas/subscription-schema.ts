@@ -3,7 +3,7 @@ import { sql } from 'drizzle-orm'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const stripeCustomers = sqliteTable('stripe_customers', {
-  organizationId: text('organization_id').primaryKey(), // FK to Organization.id (BetterAuth)
+  userId: text('user_id').primaryKey(), // FK to User.id (BetterAuth)
   stripeCustomerId: text('stripe_customer_id').notNull().unique(),
   createdAt: integer('created_at', { mode: 'timestamp_ms' })
     .notNull()
@@ -18,7 +18,7 @@ export const subscriptions = sqliteTable('subscriptions', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
 
-  organizationId: text('organization_id').notNull(), // FK to BetterAuth Organization.id
+  userId: text('user_id').notNull(), // FK to User.id (BetterAuth)
   stripeSubscriptionId: text('stripe_subscription_id').unique(), // null for lifetime/one-time
   stripeCustomerId: text('stripe_customer_id').notNull(),
 

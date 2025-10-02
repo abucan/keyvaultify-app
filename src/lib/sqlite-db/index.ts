@@ -6,7 +6,11 @@ import * as appSchema from '@/db/schemas/app-schema'
 import * as authSchema from '@/db/schemas/auth-schema'
 import * as subscriptionSchema from '@/db/schemas/subscription-schema'
 
-const fullSchema = { ...appSchema, ...authSchema, ...subscriptionSchema }
+const fullSchema = {
+  ...appSchema,
+  ...authSchema,
+  ...subscriptionSchema
+}
 
 const sqlite = new Database(process.env.DATABASE_URL || './dev.db')
 export const db = drizzle(sqlite, { schema: fullSchema })

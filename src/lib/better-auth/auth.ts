@@ -136,6 +136,7 @@ export const auth = betterAuth({
             // TODO: slug already exists, create another one
           }
 
+          // Create personal organization
           await auth.api.createOrganization({
             body: {
               name: 'Personal Workspace',
@@ -147,6 +148,17 @@ export const auth = betterAuth({
               }
             }
           })
+
+          // Create Stripe customer for user immediately
+          try {
+            const { ensureStripeCustomerForUser } = await import(
+              '@/app/(private)/settings/utils/user-billing'
+            )
+            await ensureStripeCustomerForUser(user.id)
+          } catch (error) {
+            console.error('Failed to create Stripe customer for user:', error)
+            // Don't fail user registration if Stripe fails
+          }
         }
       }
     }

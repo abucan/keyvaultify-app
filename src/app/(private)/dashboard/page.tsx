@@ -1,10 +1,14 @@
 // src/app/(private)/dashboard/page.tsx
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import Link from 'next/link'
-import { Key, Plus, FolderKey, Lock } from 'lucide-react'
+import { Key, Plus, FolderKey, Lock, Building2 } from 'lucide-react'
 
 import { getProjects } from '@/app/(private)/projects/data/projects.queries'
-import { getEntitlements } from '@/app/(private)/settings/utils/entitlements'
+import {
+  getEntitlements,
+  getUserOrganizationCount
+} from '@/app/(private)/settings/utils/entitlements'
+import { auth } from '@/lib/better-auth/auth'
 import ToastOnce from '@/components/toast-token'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,11 +20,37 @@ export default async function DashboardPage() {
   const projectsResult = await getProjects()
   const projects = projectsResult.ok ? projectsResult.data : []
 
-  // Get subscription limits
+  // Get user subscription limits
   const entitlementsResult = await getEntitlements()
   const limits = entitlementsResult.ok
     ? entitlementsResult.data.limits
-    : { projects: 3, secrets: 20, environments: 'unlimited' as const }
+    : {
+        projects: 3,
+        secrets: 50,
+        environments: 'unlimited' as const,
+        organizations: 1,
+        teamMembers: 2
+      }
+
+  // Get user ID for organization count
+  const _headers = await headers()
+  const session = await auth.api.getSession({ headers: _headers })
+  const userId = session?.session?.userId
+
+  // Get active organization using the same method as get-layout-context
+  const activeOrg = await auth.api
+    .getFullOrganization({ headers: _headers })
+    .catch(() => null)
+  const activeOrganizationId = activeOrg?.id
+
+  console.log('Dashboard - session:', session)
+  console.log('Dashboard - userId:', userId)
+  console.log('Dashboard - activeOrg:', activeOrg)
+  console.log('Dashboard - activeOrganizationId:', activeOrganizationId)
+
+  const totalOrganizations = userId ? await getUserOrganizationCount(userId) : 0
+
+  console.log('Dashboard - totalOrganizations:', totalOrganizations)
 
   // Calculate stats
   const totalProjects = projects.length
@@ -31,6 +61,8 @@ export default async function DashboardPage() {
   const totalSecrets = projects.reduce((acc, p) => acc + p.secretsCount, 0)
 
   // Format limits for display
+  const organizationsLimit =
+    limits.organizations === 'unlimited' ? 'Unlimited' : limits.organizations
   const projectsLimit =
     limits.projects === 'unlimited' ? 'Unlimited' : limits.projects
   const secretsLimit =
@@ -51,16 +83,77 @@ export default async function DashboardPage() {
               Overview of your projects and secrets
             </p>
           </div>
-          <Link href="/projects">
-            <Button>
-              <Plus className="size-4" />
-              <span className="font-bricolage-grotesque">New Project</span>
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            {limits.organizations !== 'unlimited' &&
+              totalOrganizations < limits.organizations && (
+                <Link href="/team">
+                  <Button variant="outline">
+                    <Building2 className="size-4" />
+                    <span className="font-bricolage-grotesque">
+                      New Organization
+                    </span>
+                  </Button>
+                </Link>
+              )}
+            <Link href="/projects">
+              <Button>
+                <Plus className="size-4" />
+                <span className="font-bricolage-grotesque">New Project</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
+        {/* Organization Limit Warning */}
+        {limits.organizations !== 'unlimited' &&
+          totalOrganizations >= limits.organizations * 0.8 && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-yellow-600" />
+                <div>
+                  <h3 className="text-sm font-medium text-yellow-800">
+                    Organization Limit Warning
+                  </h3>
+                  <p className="text-sm text-yellow-700">
+                    You're using {totalOrganizations} of {limits.organizations}{' '}
+                    organizations.
+                    {totalOrganizations >= limits.organizations
+                      ? " You've reached your limit."
+                      : ` Only ${limits.organizations - totalOrganizations} remaining.`}
+                    {totalOrganizations >= limits.organizations && (
+                      <span>
+                        {' '}
+                        Consider upgrading your plan to create more
+                        organizations.
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
         {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium font-bricolage-grotesque">
+                Organizations
+              </CardTitle>
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold font-bricolage-grotesque">
+                {totalOrganizations} / {organizationsLimit}
+              </div>
+              <p className="text-xs text-muted-foreground font-bricolage-grotesque">
+                {limits.organizations === 'unlimited'
+                  ? 'No limit on your plan'
+                  : `${limits.organizations - totalOrganizations} remaining`}
+              </p>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium font-bricolage-grotesque">

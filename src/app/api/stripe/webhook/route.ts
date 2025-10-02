@@ -25,12 +25,12 @@ export async function POST(req: NextRequest) {
     return new Response('Invalid signature', { status: 400 })
   }
 
-  const getOrgIdByCustomer = async (customerId: string) => {
+  const getUserIdByCustomer = async (customerId: string) => {
     const row = await db.query.stripeCustomers.findFirst({
       where: eq(stripeCustomers.stripeCustomerId, customerId),
-      columns: { organizationId: true }
+      columns: { userId: true }
     })
-    return row?.organizationId ?? null
+    return row?.userId ?? null
   }
 
   switch (event.type) {
@@ -41,12 +41,12 @@ export async function POST(req: NextRequest) {
         session.subscription &&
         session.customer
       ) {
-        const orgId = await getOrgIdByCustomer(String(session.customer))
-        if (orgId) {
+        const userId = await getUserIdByCustomer(String(session.customer))
+        if (userId) {
           const sub = await stripe.subscriptions.retrieve(
             String(session.subscription)
           )
-          const row = mapSub(orgId, sub)
+          const row = mapSub(userId, sub)
 
           await db
             .insert(subscriptions)
@@ -64,9 +64,9 @@ export async function POST(req: NextRequest) {
     case 'customer.subscription.updated':
     case 'customer.subscription.deleted': {
       const sub = event.data.object as Stripe.Subscription
-      const orgId = await getOrgIdByCustomer(String(sub.customer))
-      if (orgId) {
-        const row = mapSub(orgId, sub)
+      const userId = await getUserIdByCustomer(String(sub.customer))
+      if (userId) {
+        const row = mapSub(userId, sub)
 
         await db.insert(subscriptions).values(row).onConflictDoUpdate({
           target: subscriptions.stripeSubscriptionId,

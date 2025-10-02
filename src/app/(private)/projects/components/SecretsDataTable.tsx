@@ -7,7 +7,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { Plus, Download, Copy } from 'lucide-react'
+import { Plus, Download, Copy, FileText } from 'lucide-react'
 
 import {
   SecretRow,
@@ -16,6 +16,8 @@ import {
 import { createSecretsColumns } from '@/app/(private)/projects/components/SecretsColumns'
 import { AddSecretForm } from '@/app/(private)/projects/components/AddSecretForm'
 import { BulkAddSecretForm } from '@/app/(private)/projects/components/BulkAddSecretForm'
+import { InlineSecretRow } from '@/app/(private)/projects/components/InlineSecretRow'
+import { ImportEnvDialog } from '@/app/(private)/projects/components/ImportEnvDialog'
 import { AddDialog } from '@/components/shared/AddDialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -27,6 +29,8 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import { createSecretAction } from '@/app/(private)/projects/actions/createSecretAction'
+import { toast } from 'sonner'
 
 interface DataTableProps {
   data: SecretRow[]
@@ -54,6 +58,12 @@ export function SecretsDataTable({
 
   const [addSecretDialogOpen, setAddSecretDialogOpen] = useState(false)
   const [bulkAddSecretDialogOpen, setBulkAddSecretDialogOpen] = useState(false)
+  const [showInlineAdd, setShowInlineAdd] = useState(false)
+  const [editingSecret, setEditingSecret] = useState<SecretRow | null>(null)
+  const [importedSecrets, setImportedSecrets] = useState<Array<{
+    key: string
+    value: string
+  }> | null>(null)
 
   const handleExportEnv = () => {
     const envContent = data
@@ -77,7 +87,53 @@ export function SecretsDataTable({
       .join('\n')
 
     await navigator.clipboard.writeText(envContent)
-    // You could add a toast notification here
+    toast.success('All secrets copied to clipboard')
+  }
+
+  const handleInlineSave = async (secretData: {
+    key: string
+    value: string
+    environmentIds: string[]
+  }) => {
+    try {
+      // Create secrets for each selected environment
+      for (const envId of secretData.environmentIds) {
+        await createSecretAction({
+          key: secretData.key,
+          value: secretData.value,
+          environmentId: envId,
+          projectId
+        })
+      }
+
+      setShowInlineAdd(false)
+      setEditingSecret(null)
+      setImportedSecrets(null)
+      toast.success('Secret created successfully')
+    } catch (error) {
+      console.error('Error creating secret:', error)
+      toast.error('Failed to create secret')
+    }
+  }
+
+  const handleInlineCancel = () => {
+    setShowInlineAdd(false)
+    setEditingSecret(null)
+    setImportedSecrets(null)
+  }
+
+  const handleImportSecrets = (
+    secrets: Array<{ key: string; value: string }>
+  ) => {
+    setImportedSecrets(secrets)
+    setShowInlineAdd(true)
+  }
+
+  const handleMultiplePaste = (
+    secrets: Array<{ key: string; value: string }>
+  ) => {
+    setImportedSecrets(secrets)
+    setShowInlineAdd(true)
   }
 
   return (
@@ -113,11 +169,27 @@ export function SecretsDataTable({
         <div className="flex gap-2 self-end flex-wrap">
           <Button
             type="button"
+            onClick={() => setShowInlineAdd(true)}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            <Plus className="size-4" />
+            <span className="font-bricolage-grotesque">Add Secret</span>
+          </Button>
+
+          <ImportEnvDialog onImport={handleImportSecrets}>
+            <Button type="button" variant="outline">
+              <FileText className="size-4" />
+              <span className="font-bricolage-grotesque">Import .env</span>
+            </Button>
+          </ImportEnvDialog>
+
+          <Button
+            type="button"
             variant="outline"
             onClick={() => setAddSecretDialogOpen(true)}
           >
             <Plus className="size-4" />
-            <span className="font-bricolage-grotesque">Add Secret</span>
+            <span className="font-bricolage-grotesque">Modal Add</span>
           </Button>
           <Button
             type="button"
@@ -146,6 +218,27 @@ export function SecretsDataTable({
             <span className="font-bricolage-grotesque">Copy All</span>
           </Button>
         </div>
+
+        {/* Inline Add/Edit Section */}
+        {(showInlineAdd || editingSecret) && (
+          <InlineSecretRow
+            environments={environments.map(e => ({ id: e.id, name: e.name }))}
+            onSave={editingSecret ? handleInlineSave : handleInlineSave}
+            onCancel={handleInlineCancel}
+            initialData={
+              editingSecret
+                ? {
+                    key: editingSecret.key,
+                    value: editingSecret.value,
+                    environmentIds: [environmentId]
+                  }
+                : undefined
+            }
+            isEditing={!!editingSecret}
+            onMultiplePaste={handleMultiplePaste}
+            importedSecrets={importedSecrets || undefined}
+          />
+        )}
 
         <Card className="overflow-hidden rounded-md border p-0 m-0 w-full">
           <Table>

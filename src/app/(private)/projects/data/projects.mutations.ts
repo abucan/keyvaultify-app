@@ -54,7 +54,7 @@ export async function createProject(
 
   try {
     // Check if project limit is reached
-    const canCreateProject = await checkProjectLimit(orgId)
+    const canCreateProject = await checkProjectLimit()
     if (!canCreateProject) {
       throw new BusinessError(
         'LIMIT_REACHED',
@@ -480,7 +480,7 @@ export async function createSecret(
 
   try {
     // Check secret limit
-    const canCreateSecret = await checkSecretLimit(orgId)
+    const canCreateSecret = await checkSecretLimit()
     if (!canCreateSecret) {
       throw new BusinessError(
         'LIMIT_REACHED',
